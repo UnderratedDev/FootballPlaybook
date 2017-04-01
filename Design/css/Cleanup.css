@@ -1,0 +1,40 @@
+#canvas {
+    border: 5px solid;
+}
+body {
+  -webkit-user-select: none;
+     -moz-user-select: -moz-none;
+      -ms-user-select: none;
+          user-select: none;
+}
+button {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+.lgreen {
+    background-color: #009900;
+    color: white;
+}
+.shapebtn {
+    width: 2.2em;
+    height: 2.2em;
+}
+.glyphicon {
+    font-size: 2em;
+}
+.blue {
+    color: #95ccff;
+}
+.gray {
+    color: #424242;
+}
+.yellow {
+    color: #f1f827;
+}
+.white {
+    color: white;
+}

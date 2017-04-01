@@ -1,0 +1,29 @@
+To Do List :
+    - Borded around selected button - Jason & Yudhvir (Done)
+    - Drag func on buttons (Circle and X), not required : - Yudhvir (Done)
+        - Icons to pointer - Yudhvir & Jason (Mostly Done)
+    - Delete button - Yudhvir (Done)
+    - Colour change when clicked (Paint) - Yudhvir (Done)
+    - Save - Yudhvir (Done)
+    - add Morris Modal to Make Playbook Page - Jason
+    - Edit play info (Input text to backend call) - Yudhvir (Wait for Jason)
+    - Bootstrap - Jason
+    - Collapse div on save should only expand. - Jason
+    - Collapse should be its own button - Jason
+    - Play info modal - Jason
+    - Make cross fill the grid square and center it - Jason
+    - Handle select multiple for rows (Saved plays) - Jason
+    - Print to PDF - Yudhvir (http://stackoverflow.com/questions/19065562/add-image-in-pdf-using-jspdf)
+    - Backend calls to database - Yudhvir (Email Shawn)
+    
+- Bugs :
+    - Some shapes aren't selectable (I believe this is fixed) - Yudhvir
+    - Grid is selected with ctrl - A, check for grid Line, can copy grid (Should not get here if cannot select)
+    
+- Cool ideas :
+    - Make canvas resizable (Pretty difficult, May not have time) (No library supports this)
+    - Add more shapes (Rectangle, Triangle added)(Arrows?? (Too much)) - Yudhvir
+    - Add keyboard shortcuts (Copy, Paste, Delete, Select All) - Yudhvir (Done)
+    - Images (Url) - Red Players and Blue Players
+    - Add text (Kinda not useful for an image)
+    - Mobile friendly - Jason

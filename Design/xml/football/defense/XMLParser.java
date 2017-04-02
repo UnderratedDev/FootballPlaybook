@@ -9,8 +9,7 @@ public class XMLParser {
         try {
             BufferedReader br = new BufferedReader(new FileReader ("3_4_normal.xml"));
             String line;
-            ArrayList<String> xList = new ArrayList<>();
-            ArrayList<String> yList = new ArrayList<>();
+            ArrayList<String> xList = new ArrayList<>(), yList = new ArrayList<>();
             while ((line = br.readLine ()) != null)
                 if (line.contains ("<X>"))
                     xList.add (line);

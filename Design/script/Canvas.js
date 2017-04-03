@@ -508,7 +508,13 @@ function DesignPlaybookViewModel () {
     });
     
     $('#cLineBtn').click (function () {
-        c.off('mouse:down');
+        var pointer;
+        var points;
+          
+		c.on('mouse:down', function(o) {
+			pointer = c.getPointer(o.e);
+			points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+		});
         // c.defaultCursor = 'default';
         c.defaultCursor = 'crosshair';
         lineDraw = xDraw = cDraw = rDraw = tDraw = egg = true;
@@ -516,7 +522,33 @@ function DesignPlaybookViewModel () {
         c.on ('mouse:down', function (e) {
             if (clDraw)
                 return;
-            drawQuadratic ();
+			var line = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
+				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false });
+
+			line.path[0][1] = 100;
+			line.path[0][2] = 100;
+
+			line.path[1][1] = 200;
+			line.path[1][2] = 200;
+
+			line.path[1][3] = 300;
+			line.path[1][4] = 100;
+
+			line.selectable = false;
+			c.add(line);
+
+			var p1 = makeCurvePoint(200, 200, null, line, null)
+			p1.name = "p1";
+			c.add(p1);
+
+			var p0 = makeCurveCircle(100, 100, line, p1, null);
+			p0.name = "p0";
+			c.add(p0);
+
+			var p2 = makeCurveCircle(300, 100, null, p1, line);
+			p2.name = "p2";
+			c.add(p2);
+            // drawQuadratic ();
             /*
                 c.add (new fabric.Path("M 255 135 A 50 50 0 0 1 200 110", {
                 stroke: self.colour (),
@@ -811,8 +843,10 @@ function DesignPlaybookViewModel () {
     });
     
     function drawQuadratic() {
-
-        var line = new fabric.Path('M 65 0 Q 100, 100, 200, 0', { fill: '', stroke: 'black', objectCaching: false });
+		// var pointer = c.getPointer(o.e);
+         // var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+        var line = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
+			, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false });
 
         line.path[0][1] = 100;
         line.path[0][2] = 100;

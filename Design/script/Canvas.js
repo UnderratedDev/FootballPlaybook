@@ -525,27 +525,27 @@ function DesignPlaybookViewModel () {
 			var line = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
 				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false });
 
-			line.path[0][1] = 100;
-			line.path[0][2] = 100;
+			line.path[0][1] = points[0]; //p1x
+			line.path[0][2] = points[1]; //p0y
 
-			line.path[1][1] = 200;
-			line.path[1][2] = 200;
+			line.path[1][1] = 200; // p1x
+			line.path[1][2] = 200; // p1y
 
-			line.path[1][3] = 300;
-			line.path[1][4] = 100;
+			line.path[1][3] = points[0] + 100; // p2x 
+			line.path[1][4] = points[1] + 100; // p2y
 
 			line.selectable = false;
 			c.add(line);
 
-			var p1 = makeCurvePoint(200, 200, null, line, null)
+			var p1 = makeCurvePoint(line.path[1][1], line.path[1][2], null, line, null)
 			p1.name = "p1";
 			c.add(p1);
 
-			var p0 = makeCurveCircle(100, 100, line, p1, null);
+			var p0 = makeCurveCircle(line.path[0][1], line.path[0][2], line, p1, null);
 			p0.name = "p0";
 			c.add(p0);
 
-			var p2 = makeCurveCircle(300, 100, null, p1, line);
+			var p2 = makeCurveCircle(line.path[1][3], line.path[1][4], null, p1, line);
 			p2.name = "p2";
 			c.add(p2);
             // drawQuadratic ();
@@ -875,11 +875,12 @@ function DesignPlaybookViewModel () {
   };
 
   function makeCurveCircle(left, top, line1, line2, line3) {
-    var c = new fabric.Circle({
-      left: left,
-      top: top,
+    var rad = 12; // radius of p0 and p2 circles (line ends circles)
+	var c = new fabric.Circle({
+      left: left - rad,
+      top: top - rad,
       strokeWidth: 5,
-      radius: 12,
+      radius: rad,
       fill: '#fff',
       stroke: '#666'
     });
@@ -894,11 +895,12 @@ function DesignPlaybookViewModel () {
   }
 
   function makeCurvePoint(left, top, line1, line2, line3) {
-    var c = new fabric.Circle({
-      left: left,
-      top: top,
+    var rad = 14; // radius of p1 circle (skewing circle)
+	var c = new fabric.Circle({
+      left: left - rad,
+      top: top - rad,
       strokeWidth: 8,
-      radius: 14,
+      radius: rad,
       fill: '#fff',
       stroke: '#666'
     });
@@ -945,23 +947,23 @@ function DesignPlaybookViewModel () {
   function onObjectMoving(e) {
     if (e.target.name == "p0" || e.target.name == "p2") {
       var p = e.target;
-
+	  var rad = 12; // radius of p0 and p2 circles (line ends circles)
       if (p.line1) {
-        p.line1.path[0][1] = p.left;
-        p.line1.path[0][2] = p.top;
+        p.line1.path[0][1] = p.left + rad;
+        p.line1.path[0][2] = p.top + rad;
         p.line1.path
       }
       else if (p.line3) {
-        p.line3.path[1][3] = p.left;
-        p.line3.path[1][4] = p.top;
+        p.line3.path[1][3] = p.left + rad;
+        p.line3.path[1][4] = p.top + rad;
       }
     }
     else if (e.target.name == "p1") {
       var p = e.target;
-
+	  var rad = 14; // radius of p1 circle (skewing circle)
       if (p.line2) {
-        p.line2.path[1][1] = p.left;
-        p.line2.path[1][2] = p.top;
+        p.line2.path[1][1] = p.left + rad;
+        p.line2.path[1][2] = p.top + rad;
       }
     }
     else if (e.target.name == "p0" || e.target.name == "p2") {

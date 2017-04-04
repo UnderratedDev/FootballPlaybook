@@ -510,10 +510,10 @@ function DesignPlaybookViewModel () {
     $('#cLineBtn').click (function () {
         var pointer;
         var points;
-		var p2;
+		var p1, p2;
         // c.defaultCursor = 'default';
         c.defaultCursor = 'crosshair';
-        xDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
+        xDraw = cDraw = rDraw = tDraw = egg = true;
 		lineDraw = false;
 		// clDraw   = false;
 		c.on ('mouse:down', function (o) {
@@ -524,7 +524,7 @@ function DesignPlaybookViewModel () {
 			points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
 
 			line = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
-				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false });
+				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true});
 
 			line.path[0][1] = points[0]; //p1x
 			line.path[0][2] = points[1]; //p0y
@@ -532,13 +532,15 @@ function DesignPlaybookViewModel () {
 			line.path[1][1] = points[0] - 50; // p1x
 			line.path[1][2] = points[1] - 50; // p1y
 
-			line.path[1][3] = points[2] ; // p2x 
-			line.path[1][4] = points[3] ; // p2y
-
-			line.selectable = false;
+			line.path[1][3] = points[2]; // p2x 
+			line.path[1][4] = points[3]; // p2y
+	
+			line.name = "curve";
+			// line.selectable = false;
+			line.selectable = true;
 			c.add(line);
 
-			var p1 = makeCurvePoint(line.path[1][1], line.path[1][2], null, line, null)
+			p1 = makeCurvePoint(line.path[1][1], line.path[1][2], null, line, null)
 			p1.name = "p1";
 			c.add(p1);
 
@@ -557,23 +559,35 @@ function DesignPlaybookViewModel () {
             if (!isDown)
                 return;
             var pointer = c.getPointer(o.e);
-            // Calculate the angle when drawing to make this.
-            // line.path[1][1] = pointer.x;
-            // line.path[1][2] = pointer.y; 
             line.path[1][3] = pointer.x;
             line.path[1][4] = pointer.y;
-            // line.set({ x2: pointer.x, y2: pointer.y });
 			p2.setLeft(pointer.x - 12);
 			p2.setTop(pointer.y - 12);
+			line.path[1][1] = pointer.x - 100;
+            line.path[1][2] = pointer.y - 50;
+			p1.setLeft(line.path[1][1] - 12);
+			p1.setTop(line.path[1][2] - 12);
+			// p1.selectable = true;
             c.renderAll();
         });
 
         c.on('mouse:up', function(o){
             if (lineDraw)
                 return;
-            isDown = false;    
+            isDown = false;
+			p1.animate('opacity', '0', {
+				duration: 200,
+				onChange: c.renderAll.bind(c),
+			});
+			p1.selectable = false;
             line.setCoords();
             lineDraw = true;
+			reinit();
+			function reinit() {
+				c.remove(line);
+				line =  new fabric.Path(line.path, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true});
+				c.add(line);
+			}
         });
     });
     
@@ -648,17 +662,17 @@ function DesignPlaybookViewModel () {
             if (tDraw)
                 return;
             c.add(new fabric.Triangle(
-                    {
-                        width: 40,
-                        height: 40,
-                        selectable: false,
-                        fill: 'rgba(0,0,0,0)',
-                        stroke: self.colour (),
-                        strokeWidth: 5,
-                        left   : e.e.offsetX - 20,
-                        top    : e.e.offsetY - 25,
-                        angle: 0,
-                    }));
+				{
+					width: 40,
+					height: 40,
+					selectable: false,
+					fill: 'rgba(0,0,0,0)',
+					stroke: self.colour (),
+					strokeWidth: 5,
+					left   : e.e.offsetX - 20,
+					top    : e.e.offsetY - 25,
+					angle: 0,
+				}));
         });
     });
     
@@ -852,7 +866,7 @@ function DesignPlaybookViewModel () {
                 for (let i = 0; i < objs.length; ++i)
                     if (c.item (i).name != "gridLine")
                         groupObjs.push(c.item (i));
-                 c.setActiveGroup(new fabric.Group(groupObjs)).renderAll();
+                c.setActiveGroup(new fabric.Group(groupObjs)).renderAll();
             }
         }
     });
@@ -899,14 +913,17 @@ function DesignPlaybookViewModel () {
 
   function onObjectSelected(e) {
     var activeObject = e.target;
-
+	
+	console.log(activeObject.name);
     if (activeObject.name == "p0" || activeObject.name == "p2") {
       activeObject.line2.animate('opacity', '1', {
         duration: 200,
         onChange: c.renderAll.bind(c),
       });
       activeObject.line2.selectable = true;
-    }
+    } else if (activeObject.name == "curve") {
+		console.log("Selected curve");
+	}
   }
 
   function onBeforeSelectionCleared(e) {
@@ -957,6 +974,12 @@ function DesignPlaybookViewModel () {
       p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
       p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
     }
+	p && reinit();
+	function reinit() {
+		c.remove(line);
+		line =  new fabric.Path(line.path, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true});
+		c.add(line);
+	}
   }
 }
 

@@ -510,29 +510,30 @@ function DesignPlaybookViewModel () {
     $('#cLineBtn').click (function () {
         var pointer;
         var points;
-          
-		c.on('mouse:down', function(o) {
-			pointer = c.getPointer(o.e);
-			points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
-		});
+		var p2;
         // c.defaultCursor = 'default';
         c.defaultCursor = 'crosshair';
-        lineDraw = xDraw = cDraw = rDraw = tDraw = egg = true;
-        clDraw   = false;
-        c.on ('mouse:down', function (e) {
-            if (clDraw)
-                return;
-			var line = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
+        xDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
+		lineDraw = false;
+		// clDraw   = false;
+		c.on ('mouse:down', function (o) {
+            if (lineDraw)
+				return;
+			isDown   = true;
+        	pointer = c.getPointer(o.e);
+			points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+
+			line = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
 				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false });
 
 			line.path[0][1] = points[0]; //p1x
 			line.path[0][2] = points[1]; //p0y
 
-			line.path[1][1] = 200; // p1x
-			line.path[1][2] = 200; // p1y
+			line.path[1][1] = points[0] - 50; // p1x
+			line.path[1][2] = points[1] - 50; // p1y
 
-			line.path[1][3] = points[0] + 100; // p2x 
-			line.path[1][4] = points[1] + 100; // p2y
+			line.path[1][3] = points[2] ; // p2x 
+			line.path[1][4] = points[3] ; // p2y
 
 			line.selectable = false;
 			c.add(line);
@@ -545,20 +546,34 @@ function DesignPlaybookViewModel () {
 			p0.name = "p0";
 			c.add(p0);
 
-			var p2 = makeCurveCircle(line.path[1][3], line.path[1][4], null, p1, line);
+			p2 = makeCurveCircle(line.path[1][3], line.path[1][4], null, p1, line);
 			p2.name = "p2";
 			c.add(p2);
-            // drawQuadratic ();
-            /*
-                c.add (new fabric.Path("M 255 135 A 50 50 0 0 1 200 110", {
-                stroke: self.colour (),
-                strokeWidth : 2,
-                fill: 'rgba(0,0,0,0)',
-                left : e.e.offsetX - 20,
-                top  : e.e.offsetY - 20,
-                selectable: false
-                })
-            ); */
+        });
+		
+		c.on ('mouse:move', function(o){
+            if (lineDraw)
+                return;
+            if (!isDown)
+                return;
+            var pointer = c.getPointer(o.e);
+            // Calculate the angle when drawing to make this.
+            // line.path[1][1] = pointer.x;
+            // line.path[1][2] = pointer.y; 
+            line.path[1][3] = pointer.x;
+            line.path[1][4] = pointer.y;
+            // line.set({ x2: pointer.x, y2: pointer.y });
+			p2.setLeft(pointer.x - 12);
+			p2.setTop(pointer.y - 12);
+            c.renderAll();
+        });
+
+        c.on('mouse:up', function(o){
+            if (lineDraw)
+                return;
+            isDown = false;    
+            line.setCoords();
+            lineDraw = true;
         });
     });
     
@@ -841,39 +856,7 @@ function DesignPlaybookViewModel () {
             }
         }
     });
-    
-    function drawQuadratic() {
-		// var pointer = c.getPointer(o.e);
-         // var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
-        var line = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
-			, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false });
-
-        line.path[0][1] = 100;
-        line.path[0][2] = 100;
-
-        line.path[1][1] = 200;
-        line.path[1][2] = 200;
-
-        line.path[1][3] = 300;
-        line.path[1][4] = 100;
-
-        line.selectable = false;
-        c.add(line);
-
-        var p1 = makeCurvePoint(200, 200, null, line, null)
-        p1.name = "p1";
-        c.add(p1);
-
-        var p0 = makeCurveCircle(100, 100, line, p1, null);
-        p0.name = "p0";
-        c.add(p0);
-
-        var p2 = makeCurveCircle(300, 100, null, p1, line);
-        p2.name = "p2";
-        c.add(p2);
-
-  };
-
+	
   function makeCurveCircle(left, top, line1, line2, line3) {
     var rad = 12; // radius of p0 and p2 circles (line ends circles)
 	var c = new fabric.Circle({

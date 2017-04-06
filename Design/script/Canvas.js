@@ -16,9 +16,9 @@ function DesignPlaybookViewModel () {
     });
     
     function FormationItem(file, name, img, classActive = false) {
-		this.xml = file;
-		this.playname = name;
-		this.thumbnail = img;
+		this.xml         = file;
+		this.playname    = name;
+		this.thumbnail   = img;
 		this.classActive = classActive;
 	}
 
@@ -716,7 +716,25 @@ function DesignPlaybookViewModel () {
         } else
             dataURL = c.toDataURL();
 
-        document.getElementById('canvasImgSaved').src = dataURL;
+           document.getElementById('canvasImgSaved').src = dataURL;
+           
+           var canJSON = JSON.stringify (c);
+           
+           console.log (canJSON);
+           
+           var dataSend = {"posted_data" : canJSON};
+           
+           console.log (dataSend);
+           
+           $.ajax({
+			type : 'POST',
+			url  : 'designBackend.php',
+			data : dataSend,
+			success : function (response) {
+                console.log (response);
+				}
+			});	
+           
     /*
         c.isDrawingMode = false;
 

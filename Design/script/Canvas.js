@@ -1,9 +1,10 @@
 function DesignPlaybookViewModel () {
     var self = this;
-    var c = this.__canvas = new fabric.Canvas("canvas");
+    var c = new fabric.Canvas("canvas");
     var ctx = c.getContext("2d");
     var line, isDown;
     var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = snapToGrid = selection = ctrlDown = false;
+	var clcVisible = true;
     var grid = 45;
     var canvasWrapper = document.getElementById('canvasWrapper');
     var copiedObjects = new Array ();
@@ -12,7 +13,7 @@ function DesignPlaybookViewModel () {
     c.on({
     'object:selected': onObjectSelected,
     'object:moving': onObjectMoving,
-    'before:selection:cleared': onBeforeSelectionCleared
+    'before:selection:cleared': onBeforeSelectionCleared,
     });
     
     function FormationItem(file, name, img, classActive = false) {
@@ -390,7 +391,15 @@ function DesignPlaybookViewModel () {
        } else
            noSnapObjectsToGrid ();
     });
-    
+
+    $('#CLCVisibleCheck').change (function () {
+        if (clcVisible)
+            hideLineCircles();
+        else
+            showLineCircles();
+        clcVisible = !clcVisible;
+    });
+
     $('#yellowBtn').click (function () {
         self.updateColour("#f1f827");
     });
@@ -450,6 +459,11 @@ function DesignPlaybookViewModel () {
         c.defaultCursor = 'default';
         lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = true;
         selectCanvasObjects (true);
+        selectableLineCircles();
+        c.off('mouse:down'); // turn off events used by curve line
+        c.off('mouse:move');
+        c.off('mouse:up');
+        c.renderAll();
     });
     
     $('#lineBtn').click (function () {
@@ -496,36 +510,25 @@ function DesignPlaybookViewModel () {
 		var p1, p2;
         // c.defaultCursor = 'default';
         c.defaultCursor = 'crosshair';
-        xDraw = cDraw = rDraw = tDraw = egg = true;
+        lineDraw = xDraw = cDraw = rDraw = tDraw = egg = true;
 		clDraw = false;
-		// clDraw   = false;
 		c.on ('mouse:down', function (o) {
             if (clDraw)
 				return;
 			isDown   = true;
         	pointer = c.getPointer(o.e);
-			points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
 
 			line = makeCurveLine(pointer.x, pointer.y);
 			p1 = line.circle1;
 			p2 = line.circle2;
-			line.path[0][1] = points[0]; //p1x
-			line.path[0][2] = points[1]; //p0y
-
-			line.path[1][1] = points[0] - 50; // p1x
-			line.path[1][2] = points[1] - 50; // p1y
-
-			line.path[1][3] = points[2]; // p2x 
-			line.path[1][4] = points[3]; // p2y
-	
-			line.name = "curve";
 			c.add(line);
 
-			
+			clDraw = true;
         });
 		
 		c.on ('mouse:move', function(o){
-            if (clDraw)
+            clDraw = false;
+		    if (clDraw)
                 return;
             if (!isDown)
                 return;
@@ -545,19 +548,19 @@ function DesignPlaybookViewModel () {
             if (clDraw)
                 return;
             isDown = false;
-			p1.animate('opacity', '0', {
-				duration: 200,
-				onChange: c.renderAll.bind(c),
-			});
-			c.remove(line)
-			c.remove(line.circle0)
-			c.remove(line.circle1)
-			c.remove(line.circle2)
-			line = makeCurveLine(line.path[0][1],line.path[0][2],line.path[1][1],line.path[1][2],line.path[1][3],line.path[1][4])
-			c.add(line)
 			c.deactivateAll().renderAll();
-			p1.selectable = false;
-            clDraw = true;
+			p1.animate('opacity', '0', {
+                duration: 200,
+                onChange: c.renderAll.bind(c),
+
+
+            });
+            c.deactivateAll().renderAll();
+            line.circle0.setCoords();
+            line.circle1.setCoords();
+            line.circle2.setCoords();
+            line.setCoords();
+            // clDraw = true;
         });
     });
     
@@ -778,6 +781,73 @@ function DesignPlaybookViewModel () {
         if (e.keyCode == 17) 
             ctrlDown = false;
     });
+	
+	function deleteCurveLine() {
+		
+	}
+    function selectableLineCircles() {
+        objs = c.getObjects();
+	    for (i = 0; i < objs.length; i++) {
+            if (objs[i].name == 'curve') {
+                objs[i].circle0.selectable = true;
+                objs[i].circle1.selectable = true;
+                objs[i].circle2.selectable = true;
+            }
+        }
+    }
+	function unselectableLineCircles() {
+        objs = c.getObjects();
+        for (i = 0; i < objs.length; i++) {
+            if (objs[i].name == 'curve') {
+                objs[i].circle0.selectable = false;
+                objs[i].circle1.selectable = false;
+                objs[i].circle2.selectable = false;
+            }
+        }
+    }
+
+	function showLineCircles() {
+        objs = c.getObjects();
+        for (i = 0; i < objs.length; i++) {
+            if (objs[i].name == 'curve') {
+                objs[i].circle0.animate('opacity', '1', {
+                    duration: 200,
+                    onChange: c.renderAll.bind(c),
+                });
+                objs[i].circle1.animate('opacity', '1', {
+                    duration: 200,
+                    onChange: c.renderAll.bind(c),
+                });
+                objs[i].circle2.animate('opacity', '1', {
+                    duration: 200,
+                    onChange: c.renderAll.bind(c),
+                });
+            }
+        }
+    }
+
+	function hideLineCircles() {
+		objs = c.getObjects();
+		for (i = 0; i < objs.length; i++)  {
+			if(objs[i].name ==  'curve') {
+				objs[i].circle0.selectable = false;
+				objs[i].circle1.selectable = false;
+				objs[i].circle2.selectable = false;
+			    objs[i].circle0.animate('opacity', '0', {
+					duration: 200,
+					onChange: c.renderAll.bind(c),
+				});
+				objs[i].circle1.animate('opacity', '0', {
+					duration: 200,
+					onChange: c.renderAll.bind(c),
+				});
+				objs[i].circle2.animate('opacity', '0', {
+					duration: 200,
+					onChange: c.renderAll.bind(c),
+				});
+			}
+		}
+	}
     
     function pasteOne(clone) {
         // clone.left += 100;  // Adjust for new coordsforitems
@@ -833,7 +903,8 @@ function DesignPlaybookViewModel () {
 	
 	function makeCurveLine(p0x, p0y, p1x = p0x - 50, p1y = p0y - 50, p2x = p0x, p2y = p0y) {
 		var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
-				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true,  selectable: false});
+				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
+                    ,  selectable: false, hasControls: false, hasBorders: false});
 
 		l.path[0][1] = p0x; //p1x
 		l.path[0][2] = p0y; //p0y
@@ -846,7 +917,7 @@ function DesignPlaybookViewModel () {
 
 		l.name = "curve";
 		
-		p1 = makeCurvePoint(l.path[1][1], l.path[1][2], null, l, null)
+		p1 = makeCurvePoint(l.path[1][1], l.path[1][2], null, l, null);
 		p1.name = "p1";
 		c.add(p1);
 
@@ -871,7 +942,8 @@ function DesignPlaybookViewModel () {
       strokeWidth: 5,
       radius: rad,
       fill: '#fff',
-      stroke: '#666'
+      stroke: '#666',
+        selectable: false
     });
 
     c.hasBorders = c.hasControls = false;
@@ -897,7 +969,8 @@ function DesignPlaybookViewModel () {
       strokeWidth: 8,
       radius: rad,
       fill: '#fff',
-      stroke: '#666'
+      stroke: '#666',
+        selectable: false
     });
 
     c.hasBorders = c.hasControls = false;
@@ -920,6 +993,10 @@ function DesignPlaybookViewModel () {
         duration: 200,
         onChange: c.renderAll.bind(c),
       });
+    }
+    if (activeObject.name == "p0" || activeObject.name == "p1" || activeObject.name == "p2") {
+        console.log(activeObject.name);
+        deleteCurveLine(activeObject.line2);
     }
   }
 
@@ -966,14 +1043,7 @@ function DesignPlaybookViewModel () {
       p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
       p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
       p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
-      p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
-	} 
-	else if (e.target.name == "curve") {
-		var l = e.target;
-		l.circle0.setLeft(l.path[0][1]);
-		console.log(l.circle0.name);
-		l.circle0.setTop(l.path[0][2]);
-		c.renderAll();
+    //  p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
 	}
   }
 }

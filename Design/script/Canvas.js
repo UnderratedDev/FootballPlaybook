@@ -1024,16 +1024,22 @@ function DesignPlaybookViewModel () {
         onChange: c.renderAll.bind(c),
       });
     }
-    if (activeObject.name == "p0" || activeObject.name == "p1" || activeObject.name == "p2") {
-        var l;
-        if(activeObject.line2.name == "curve")
-            l = activeObject.line2;
-        else if (activeObject.line1)
-            l = activeObject.line1;
-        else if (activeObject.line3)
-            l = activeObject.line3;
-        deleteCurveLine(l);
-    }
+    $(document).keydown(function (e) {
+          if(e.which == 46) {
+              if (activeObject.name == "p0" || activeObject.name == "p1" || activeObject.name == "p2") {
+                  var l;
+                  if(activeObject.line2.name == "curve")
+                      l = activeObject.line2;
+                  else if (activeObject.line1)
+                      l = activeObject.line1;
+                  else if (activeObject.line3)
+                      l = activeObject.line3;
+                  deleteCurveLine(l);
+                  c.discardActiveGroup().renderAll();
+              }
+          }
+      });
+
   }
 
   function onBeforeSelectionCleared(e) {

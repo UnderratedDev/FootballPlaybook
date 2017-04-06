@@ -509,9 +509,18 @@ function DesignPlaybookViewModel () {
 			line = makeCurveLine(pointer.x, pointer.y);
 			p1 = line.circle1;
 			p2 = line.circle2;
+			line.path[0][1] = points[0]; //p1x
+			line.path[0][2] = points[1]; //p0y
+
+			line.path[1][1] = points[0] - 50; // p1x
+			line.path[1][2] = points[1] - 50; // p1y
+
+			line.path[1][3] = points[2]; // p2x 
+			line.path[1][4] = points[3]; // p2y
+	
 			line.name = "curve";
 			c.add(line);
-			c.renderAll();
+
 			
         });
 		
@@ -850,29 +859,34 @@ function DesignPlaybookViewModel () {
     });
 	
 	function makeCurveLine(p0x, p0y, p1x = p0x - 50, p1y = p0y - 50, p2x = p0x, p2y = p0y) {
-		var l = new fabric.Path('M ' 
-			+ p0x + ' ' + p0y 
-			+ ' Q '
-			+ p1x + ', '
-			+ p1y + ', '
-			+ p2x + ', '
-			+ p2y
-			, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true,  selectable: true});
+		var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
+				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true,  selectable: false});
+
+		l.path[0][1] = p0x; //p1x
+		l.path[0][2] = p0y; //p0y
+
+		l.path[1][1] = p1x; // p1x
+		l.path[1][2] = p1y; // p1y
+
+		l.path[1][3] = p2x; // p2x 
+		l.path[1][4] = p2y; // p2y
 
 		l.name = "curve";
 		
-		l.circle0 = makeCurvePoint(l.path[1][1], l.path[1][2], null, l, null)
-		l.circle0.name = "p1";
-		c.add(l.circle0);
+		p1 = makeCurvePoint(l.path[1][1], l.path[1][2], null, l, null)
+		p1.name = "p1";
+		c.add(p1);
 
-		l.circle1 = makeCurveCircle(l.path[0][1], l.path[0][2], l, l.circle0, null);
-		l.circle1.name = "p0";
-		c.add(l.circle1);
+		p0 = makeCurveCircle(l.path[0][1], l.path[0][2], l, p1, null);
+		p0.name = "p0";
+		c.add(p0);
 
-		l.circle2 = makeCurveCircle(l.path[1][3], l.path[1][4], null, l.circle0, l);
-		l.circle2.name = "p2";
-		c.add(l.circle2);
-		c.renderAll();
+		p2 = makeCurveCircle(l.path[1][3], l.path[1][4], null, p1, l);
+		p2.name = "p2";
+		c.add(p2);
+		l.circle0 = p0;
+		l.circle1 = p1;
+		l.circle2 = p2;
 		return l;
 	}
 	
@@ -923,13 +937,7 @@ function DesignPlaybookViewModel () {
 	}
     return c;
   }
-	var p0xr;
-	var p0yr;
-	var p1xr;
-	var p1yr;
-	var p2xr;
-	var p2yr;
-  
+
   function onObjectSelected(e) {
     var activeObject = e.target;
 	
@@ -939,7 +947,7 @@ function DesignPlaybookViewModel () {
         duration: 200,
         onChange: c.renderAll.bind(c),
       });
-    } 
+    }
   }
 
   function onBeforeSelectionCleared(e) {
@@ -956,13 +964,6 @@ function DesignPlaybookViewModel () {
         onChange: c.renderAll.bind(c),
       });
     }
-    else if (activeObject.name == "curve") {
-		var p = c.getPointer(e.e);
-		// c.remove(activeObject)
-		// l = makeCurveLine(p.x - p0xr,p.y - p0yr,p.x - p1xr,p.y - p1yr,p.x + p2xr,p.y + p2yr)
-		// c.add(l)
-		// c.renderAll.bind(c)
-	}
   }
 
   function onObjectMoving(e) {
@@ -996,40 +997,10 @@ function DesignPlaybookViewModel () {
 	} 
 	else if (e.target.name == "curve") {
 		var l = e.target;
-		var p = c.getPointer(e.e);
-		// console.log(p.x + ' ' + p.y)
-		// c.remove(l)
-		// c.remove(l.circle0)
-		// c.remove(l.circle1)
-		// c.remove(l.circle2)
-		// l = makeCurveLine(l.path[0][1],l.path[0][2],l.path[1][1],l.path[1][2],l.path[1][3],l.path[1][4])
-		// l = makeCurveLine(l.path[0][1] - p0xr,l.path[0][2] - p0yr,l.path[1][1] - p1xr,l.path[1][2] - p1yr,l.path[1][3] - p2xr,l.path[1][4] - p2yr)
-		// l = makeCurveLine(p.x - p0xr,p.y - p0yr,p.x - p1xr,p.y - p1yr,p.x - p2xr,p.y - p2yr)
-		// l.circle0.left = l.path[0][1]
-		// l.circle0.top = l.path[0][2]
-		// l.circle1.left = l.path[1][3]
-		// l.circle1.top = l.path[1][4]
-		// l.circle2.left = l.path[1][1]
-		// l.circle2.top = l.path[1][2]
-		// c.add(l)
-		// c.onmouseup = function() {
-			// l = makeCurveLine(l.path[0][1],l.path[0][2],l.path[1][1],l.path[1][2],l.path[1][3],l.path[1][4])
-			// c.add(l)
-			// c.renderAll.bind(c)
-		// }
-		// var objs = canvas.getObjects().map(function(o) {
-			// return o.set('active', true); //return objects that you want to select
-		// });
-
-		//create group
-		var group = new fabric.Group(
-			[
-				l, l.circle0, l.circle1, l.circle2
-			]);
-
-		c._activeObject = null;
-		group.setCoords();
-		c.setActiveGroup(group).renderAll();
+		l.circle0.setLeft(l.path[0][1]);
+		console.log(l.circle0.name);
+		l.circle0.setTop(l.path[0][2]);
+		c.renderAll();
 	}
   }
 }

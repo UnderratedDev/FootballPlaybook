@@ -8,7 +8,16 @@
     }
 	// $data = json_decode($posted_data);
     
-	// mysqli_select_db ($db, "Playbook") or die(mysqli_error);
+	mysqli_select_db ($db, "PlaybookDatabase") or die(mysqli_error);
+    
+    $result    = mysqli_query ($db, "SELECT * FROM PlayFull");
+    $resultArr = array(); 
+    while ($row = mysqli_fetch_assoc($result))
+        array_push($resultArr, $row);
+    $j_Result = json_encode ($resultArr);
+    
+    echo $j_Result;
+    
 	// mysqli_query ($db, "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, UpdateDate) VALUES ('playname', 'playstring', 'Yudhvir', null)");
     // mysqli_query ($db, "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, UpdateDate) VALUES ('playname', 'playstring', 'Yudhvir', null)");
     /*

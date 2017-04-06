@@ -1,0 +1,28 @@
+DROP TABLE PlayFull;
+DROP SEQUENCE PlayID_seq;
+
+CREATE TABLE PlayFull (
+    PlayID     NUMBER  (10)  NOT NULL,
+    PlayName   VARCHAR (255) NOT NULL,
+    PlayString VARCHAR (255) NOT NULL,
+    CreatedBy  VARCHAR (255) NOT NULL,
+    UpdateDate DATE
+);
+
+ALTER TABLE PlayFull ADD (
+  CONSTRAINT PlayID_pk PRIMARY KEY (PlayID));
+
+CREATE SEQUENCE PlayID_seq START WITH 1;
+
+CREATE OR REPLACE TRIGGER PlayID_bir 
+BEFORE INSERT ON PlayFull 
+FOR EACH ROW
+
+BEGIN
+  SELECT PlayID_seq.NEXTVAL
+  INTO   :new.PlayID
+  FROM   dual;
+END;
+/
+
+SELECT * FROM PlayFull;

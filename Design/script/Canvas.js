@@ -552,8 +552,6 @@ function DesignPlaybookViewModel () {
 			p1.animate('opacity', '0', {
                 duration: 200,
                 onChange: c.renderAll.bind(c),
-
-
             });
             c.deactivateAll().renderAll();
             line.circle0.setCoords();
@@ -782,8 +780,13 @@ function DesignPlaybookViewModel () {
             ctrlDown = false;
     });
 	
-	function deleteCurveLine() {
-		
+	function deleteCurveLine(line) {
+		// console.log(line.name)
+		c.remove(line.circle0);
+		c.remove(line.circle1);
+		c.remove(line.circle2);
+		c.remove(line);
+        c.deactivateAll().renderAll();
 	}
     function selectableLineCircles() {
         objs = c.getObjects();
@@ -995,8 +998,14 @@ function DesignPlaybookViewModel () {
       });
     }
     if (activeObject.name == "p0" || activeObject.name == "p1" || activeObject.name == "p2") {
-        console.log(activeObject.name);
-        deleteCurveLine(activeObject.line2);
+        var l;
+        if(activeObject.line2.name == "curve")
+            l = activeObject.line2;
+        else if (activeObject.line1)
+            l = activeObject.line1;
+        else if (activeObject.line3)
+            l = activeObject.line3;
+        deleteCurveLine(l);
     }
   }
 

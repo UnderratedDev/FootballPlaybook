@@ -342,21 +342,21 @@ self.defensePremiumArray = ko.observableArray ();
 	));
 	
 	$('#defensePlaysCarousel').on('slid.bs.carousel', function(){
+		var i = $('#defensePlaysCarousel .item.active').index(); // or: $('.item:visible').index();
 		for (j = 0; j < self.defensePremiumArray().length; j++) {
-			self.offensePremiumArray()[j].classActive = false;
+			self.defensePremiumArray()[j].classActive = false;
 		}
-		var i = $('.item.active').index(); // or: $('.item:visible').index();
 		self.defensePremiumArray()[i].classActive = true;
-		$('.caption').removeClass('active').eq(i).addClass('active');
+		$('#defensePlaysCarousel.item').removeClass('active').eq(i).addClass('active');
 	});
 	
 	$('#offensePlaysCarousel').on('slid.bs.carousel', function(){
+		var i = $('#offensePlaysCarousel .item.active').index(); // or: $('.item:visible').index();
 		for (j = 0; j < self.offensePremiumArray().length; j++) {
 			self.offensePremiumArray()[j].classActive = false;
 		}
-		var i = $('.item.active').index(); // or: $('.item:visible').index();
 		self.offensePremiumArray()[i].classActive = true;
-		$('.caption').removeClass('active').eq(i).addClass('active');
+		$('#offensePlaysCarousel.item').removeClass('active').eq(i).addClass('active');
 	});
 	
 	$('#loadPlay').click(function() {

@@ -4,10 +4,11 @@ use Playbook;
 DROP TABLE IF EXISTS PlayFull;
 
 CREATE TABLE IF NOT EXISTS PlayFull (
-    PlayID     INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    PlayName   VARCHAR (255) NOT NULL,
-    PlayString VARCHAR (255) NOT NULL,
-    CreatedBy  VARCHAR (255) NOT NULL,
+    PlayID    	 INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    PlayName   	 VARCHAR (255)  NOT NULL,
+    PlayString 	 VARCHAR (255)  NOT NULL,
+    CreatedBy  	 VARCHAR (255)  NOT NULL,
+	CanvasString VARCHAR (1023) NOT NULL,
     UpdateDate DATE
 );
 

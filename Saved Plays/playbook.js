@@ -37,7 +37,20 @@ $(function () {
             self.name      (item.PlayName);
             self.imageLink (item.imgUrl);
         };
+		
+		self.duplicatePlay = function () {
+			var tblRow = new TableRow (self.name (), null, self.imagePath (), self.desc ());
+			//mysqli_query ($db, "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, UpdateDate) VALUES ('"+self.name+"', '"+self.desc+"', 'Yudhvir', null)");
+			self.TableRows.push (tblRow);
+			self.selectPlay (tblRow);
+        };
         
+		/*
+		self.duplicatePlay = function (item) {
+			var tblRow = new TableRow ("test", null, "./Tesla.jpg", "desc");
+			self.TableRows.push (tblRow);
+			self.selectPlay (tblRow);
+		}; */
         
         $.ajax({
 			type : 'POST',
@@ -48,8 +61,6 @@ $(function () {
                 // Query with have from certain user so owner not required.
                 for (let i = 0; i < objArr.length; ++i)
                     self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].updateDate, "./Tesla.jpg", objArr[i].PlayString));
-                console.log (objArr);
-                console.log (self.TableRows());
                 self.selectPlay (self.TableRows()[0]);
                 // console.log (obj);
                 /*

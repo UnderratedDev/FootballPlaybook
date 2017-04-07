@@ -1,3 +1,12 @@
+function FormationItem(file, name, img, classActive = false) {
+	var self = this;
+	
+	self.xml         = file;
+	self.playname    = name;
+	self.thumbnail   = img;
+	self.classActive = observable(classActive);
+}
+
 function DesignPlaybookViewModel () {
     var self = this;
     var c = new fabric.Canvas("canvas");
@@ -15,15 +24,8 @@ function DesignPlaybookViewModel () {
     'object:moving': onObjectMoving,
     'before:selection:cleared': onBeforeSelectionCleared,
     });
-    
-    function FormationItem(file, name, img, classActive = false) {
-		this.xml         = file;
-		this.playname    = name;
-		this.thumbnail   = img;
-		this.classActive = ko.observable (classActive);
-	}
-
-	self.defensePremiumArray = ko.observableArray ();
+  
+self.defensePremiumArray = ko.observableArray ();
 	self.defenseStandardArray = ko.observableArray ();
 	self.offensePremiumArray = ko.observableArray ();
 	self.offenseStandardArray = ko.observableArray ();
@@ -338,7 +340,30 @@ function DesignPlaybookViewModel () {
 		,"PRO FORM"
 		,"icons/football/offense/proForm.png"
 	));
-    
+	
+	$('#defensePlaysCarousel').on('slid.bs.carousel', function(){
+		var i = $('.item.active').index(); // or: $('.item:visible').index();
+		self.defensePremiumArray()[i - 1].classActive = false;
+		self.defensePremiumArray()[i].classActive = true;
+		$('.caption').removeClass('active').eq(i).addClass('active');
+	});
+	
+	$('#offensePlaysCarousel').on('slid.bs.carousel', function(){
+		var i = $('.item.active').index(); // or: $('.item:visible').index();
+		self.offensePremiumArray()[i - 1].classActive = false;
+		self.offensePremiumArray()[i].classActive = true;
+		$('.caption').removeClass('active').eq(i).addClass('active');
+	});
+	
+	$('#loadPlay').click(function() {
+		var dItem, oItem;
+		ko.utils.arrayForEach(self.defensePremiumArray(), function(item) {
+			if(item.classActive == true)
+				dItem = item;
+		});
+		console.log(dItem);
+	})
+	
     setupBackground ();
     
     $("#loadPlay").click (function () {

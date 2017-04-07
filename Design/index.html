@@ -178,15 +178,20 @@
             <button class = "btn" id = "eggBtn">
                 <img id = "eg" src = "img/team/egg.png" class = "shapeBtn" />
             </button>
+<!-- <<<<<<< Updated upstream -->
             <input type="button" value = "undo" id = "undo"/>
             <input type="button" value = "redo" id = "redo"/>
             <label><input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid</label>
             <label><input type = "checkbox" value = "CLCVisible" id ="CLCVisibleCheck" checked="checked"/>Curve Line Handles Visibility</label>
+<!-- ======= -->
+            <input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid<br>
+<!-- >>>>>>> Stashed changes -->
         </div>
     </div>
     <!-- div contains play info -->
     <div class="col-xs-12 collapse" id="pinfo">
-        play info text here.
+        <input type="text" id="playName" placeholder="playName" />
+        <input type="text" id="playString" placeholder="playString" />
     </div>
     <!-- div contains canvas -->
     <div class="col-xs-12" id = "canvasWrapper">

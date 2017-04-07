@@ -20,7 +20,7 @@ function DesignPlaybookViewModel () {
 		this.xml         = file;
 		this.playname    = name;
 		this.thumbnail   = img;
-		this.classActive = classActive;
+		this.classActive = ko.observable (classActive);
 	}
 
 	self.defensePremiumArray = ko.observableArray ();
@@ -255,13 +255,6 @@ function DesignPlaybookViewModel () {
 	console.log (self.defensePremiumArray());
 	
 	
-	//Defense Standard 
-	self.defenseStandardArray.push (new FormationItem(
-		"xml/none.xml"
-		,"NONE"
-		,"icons/football/defense/noneDef.png"
-		,true
-	));
 	self.defenseStandardArray.push (new FormationItem (
 		"xml/football/defense/4_3_normal.xml"
 		,"4-3"
@@ -347,6 +340,26 @@ function DesignPlaybookViewModel () {
 	));
     
     setupBackground ();
+    
+    $("#loadPlay").click (function () {
+        var dItem, oItem;
+        ko.utils.arrayForEach (self.defenseStandardArray(), function(item) {
+            console.log (item);
+            if (item.classActive) {
+                dItem = item;
+            }
+        });
+        
+        ko.utils.arrayForEach (self.offenseStandardArray(), function(item) {
+            console.log (item);
+            if (item.classActive) {
+                dItem = item;
+            }
+        }); 
+            
+        console.log (dItem);
+        console.log (oItem);
+    });
     
     function generateGrid () {
         for (let i = 0; i < (943 / grid); ++i)
@@ -692,7 +705,13 @@ function DesignPlaybookViewModel () {
            
            console.log (canJSON);
            
-           var dataSend = {"posted_data" : canJSON};
+           name    = $("#playName").val ();
+           playStr = $("#playString").val ();
+           
+           console.log (name);
+           console.log (playStr);
+           
+           var dataSend = { "posted_data" : canJSON, "playName" : name, "playStr" : playStr };
            
            console.log (dataSend);
            

@@ -342,15 +342,19 @@ self.defensePremiumArray = ko.observableArray ();
 	));
 	
 	$('#defensePlaysCarousel').on('slid.bs.carousel', function(){
+		for (j = 0; j < self.defensePremiumArray().length; j++) {
+			self.offensePremiumArray()[j].classActive = false;
+		}
 		var i = $('.item.active').index(); // or: $('.item:visible').index();
-		self.defensePremiumArray()[i - 1].classActive = false;
 		self.defensePremiumArray()[i].classActive = true;
 		$('.caption').removeClass('active').eq(i).addClass('active');
 	});
 	
 	$('#offensePlaysCarousel').on('slid.bs.carousel', function(){
+		for (j = 0; j < self.offensePremiumArray().length; j++) {
+			self.offensePremiumArray()[j].classActive = false;
+		}
 		var i = $('.item.active').index(); // or: $('.item:visible').index();
-		self.offensePremiumArray()[i - 1].classActive = false;
 		self.offensePremiumArray()[i].classActive = true;
 		$('.caption').removeClass('active').eq(i).addClass('active');
 	});
@@ -361,11 +365,19 @@ self.defensePremiumArray = ko.observableArray ();
 			if(item.classActive == true)
 				dItem = item;
 		});
+		
+		ko.utils.arrayForEach (self.offensePremiumArray(), function(item) {
+            // console.log (item);
+            if (item.classActive) {
+                oItem = item;
+            }
+        }); 
 		console.log(dItem);
+		console.log(oItem);
 	})
 	
     setupBackground ();
-    
+   /*  
     $("#loadPlay").click (function () {
         var dItem, oItem;
         ko.utils.arrayForEach (self.defenseStandardArray(), function(item) {
@@ -385,7 +397,7 @@ self.defensePremiumArray = ko.observableArray ();
         console.log (dItem);
         console.log (oItem);
     });
-    
+     */
     function generateGrid () {
         for (let i = 0; i < (943 / grid); ++i)
             c.add(new fabric.Line([ i * grid, 0, i * grid, 943], { stroke: '#ccc', selectable: false, name :'gridLine'}));

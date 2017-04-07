@@ -25,7 +25,6 @@ function DesignPlaybookViewModel () {
     'before:selection:cleared': onBeforeSelectionCleared,
     });
 
-
 	self.defensePremiumArray = ko.observableArray ();
 	self.defenseStandardArray = ko.observableArray ();
 	self.offensePremiumArray = ko.observableArray ();

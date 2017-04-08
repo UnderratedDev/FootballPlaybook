@@ -1,6 +1,15 @@
 #canvas {
     border: 5px solid;
 }
+
+#canvasWrapper {
+	min-height: 504;
+}
+
+div {
+	border: 1px dashed red
+}
+
 body {
   -webkit-user-select: none;
      -moz-user-select: -moz-none;
@@ -23,9 +32,6 @@ button {
     width: 2.2em;
     height: 2.2em;
 }
-.glyphicon {
-    font-size: 2em;
-}
 .blue {
     color: #95ccff;
 }
@@ -37,4 +43,11 @@ button {
 }
 .white {
     color: white;
+}
+.red {
+    color: red;
+}
+
+.border {
+	border: 1px solid black;
 }

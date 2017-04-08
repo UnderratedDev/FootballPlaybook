@@ -1,45 +1,28 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/Cleanup.css" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- JQUERY -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- TETHER FOR BOOTSTRAP -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+	<!-- BOOTSTRAP -->
+    <script src="js/bootstrap.min.js"></script>
+	<!-- KNOCKOUT -->
     <script src="http://knockoutjs.com/downloads/knockout-3.4.2.js"></script>
-    <script src = "./script/fabric.js"></script>
-    <script src = "./script/jscolor.min.js"></script>
-    <script type="text/javascript" src="script/Canvas.js"></script>
-    <style>
-      img {
-        display:block;
-        margin-left:auto;
-        margin-right:auto;
-        max-height:200px;
-        width:auto;
-      }
-      /*
-        Carousel Reference
-        https://www.w3schools.com/bootstrap/bootstrap_ref_js_carousel.asp
-      */
-      
-      #play-navigation {
-        display:block;
-        margin-left:auto;
-        margin-right:auto;
-      }
-      
-      
-      /*Hides slide indicators (dots) */
-      .carousel-indicators li { visibility: hidden; }
-      
-        .carousel-playname {
-            text-align: center;
-        }
-     </style>
+	<!-- FABRIC -->
+    <script src = "js/fabric.js"></script>
+	<!-- COLOUR PICKER LIBRARY FOR BOOTSTRAP -->
+	<script src = "js/bootstrap-colorpicker.min.js"></script>
+	<!-- OUR SCRIPT -->
+    <script type="text/javascript" src="js/Canvas.js"></script>
+	<!-- STYLES -->
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/bootstrap-colorpicker.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/Cleanup.css" />
 </head>
-<div class="container">
-  <h2>Modal Example</h2>
+<div class="container-fluid text-center">
   <!-- Trigger the modal with a button -->
   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">New Play</button>
 	
@@ -116,8 +99,6 @@
     </div><!--modal-dialog end-->
   </div><!--modal end-->
   
-</div>
-<div class="container-fluid text-center">
     <!-- div contains buttons -->
     <div class="col-xs-12 lgreen">
         <div class="col-xs-4">
@@ -129,27 +110,6 @@
             </button>
             <button class="btn" id = "clearCanvasBtn">
                 Clear
-            </button>
-        </div>
-        <!-- div contains colours -->
-        <div class="col-xs-3">
-            <button class="btn" id = "yellowBtn">
-                <span class="glyphicon glyphicon-tint yellow"></span>
-            </button>
-            <button class="btn" id = "whiteBtn">
-                <span class="glyphicon glyphicon-tint white"></span>
-            </button>
-            <button class="btn" id = "grayBtn">
-                <span class="glyphicon glyphicon-tint gray"></span>
-            </button>
-            <button class="btn" id = "blueBtn">
-                <span class="glyphicon glyphicon-tint blue"></span>
-            </button>
-            <button class="btn" id = "redBtn">
-                <span class="glyphicon glyphicon-tint" style="color:red"></span>
-            </button>
-            <button class="glyphicon glyphicon-tint jscolor {valueElement:null, styleElement:'ColourPalleteBtn', onFineChange:'update(this)'}"
-                    id = "ColourPalleteBtn" value="#ffffff">
             </button>
         </div>
         <!-- div contains shapes -->
@@ -188,11 +148,34 @@
     <div class="col-xs-12 collapse" id="pinfo">
         play info text here.
     </div>
-    <!-- div contains canvas -->
-    <div class="col-xs-12" id = "canvasWrapper">
-        <!-- canvas size -->
-        <canvas id="canvas" width="943" height="504"></canvas>
-    </div>
+	<div class="row">
+		<!-- div contains canvas -->
+		<div class="col-xl-9" id = "canvasWrapper">
+			<!-- canvas size -->
+			<canvas id="canvas"></canvas>
+		</div>
+		<!-- div contains colours -->
+		<div class="col-xl-1" id = "coloursDiv">
+			<button class="btn colorbtn" id = "yellowBtn">
+				<span class="fa fa-tint fa-2x yellow"></span>
+			</button>
+			<button class="btn colorbtn" id = "whiteBtn">
+				<span class="fa fa-tint fa-2x white"></span>
+			</button>
+			<button class="btn colorbtn" id = "grayBtn">
+				<span class="fa fa-tint fa-2x gray"></span>
+			</button>
+			<button class="btn colorbtn" id = "blueBtn">
+				<span class="fa fa-tint fa-2x blue"></span>
+			</button>
+			<button class="btn colorbtn" id = "redBtn">
+				<span class="fa fa-tint fa-2x red"></span>
+			</button>
+			<button class="btn colorpicker-component colorbtn" id = "customBtn">
+				<span class="fa fa-tint fa-2x" id = "ColourPalleteBtn" value="#ffffff"></span>
+			</button>
+		</div>
+	</div>
     <!-- div contains saved image -->
     <div class="col-xs-12 collapse" id="canvasPNGImg">
         Generated PNG:

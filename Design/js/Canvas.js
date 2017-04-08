@@ -7,6 +7,8 @@ function DesignPlaybookViewModel () {
 	var clcVisible = true;
     var grid = 45;
     var canvasWrapper = document.getElementById('canvasWrapper');
+	c.setWidth(canvasWrapper.clientWidth);
+	c.setHeight(canvasWrapper.clientHeight);
     var copiedObjects = new Array ();
     self.colour = ko.observable ("#ffffff");
     
@@ -177,6 +179,8 @@ function DesignPlaybookViewModel () {
         var img = new Image();
         img.onload = function() {
            c.setBackgroundImage(img.src, c.renderAll.bind(c), {
+				width: c.width,
+				height: c.height,
                 originX: 'left',
                 originY: 'top',
                 left: 0,
@@ -186,8 +190,13 @@ function DesignPlaybookViewModel () {
         img.src = "img/footballField.png"
         if (snapToGrid)
             snapObjectsToGrid ();
-       
     };
+	
+	$(window).resize(function () {
+		setupBackground ();
+		c.setWidth(canvasWrapper.clientWidth);
+		c.setHeight(canvasWrapper.clientHeight);
+	});
     
     function FormationItem(file, name, img, classActive = false) {
 		this.xml = file;
@@ -349,10 +358,10 @@ function DesignPlaybookViewModel () {
     setupBackground ();
     
     function generateGrid () {
-        for (let i = 0; i < (943 / grid); ++i)
-            c.add(new fabric.Line([ i * grid, 0, i * grid, 943], { stroke: '#ccc', selectable: false, name :'gridLine'}));
-        for (let i = 0; i < (504 / grid); ++i)
-            c.add(new fabric.Line([ 0, i * grid, 943, i * grid], { stroke: '#ccc', selectable: false, name :'gridLine' }))
+        for (let i = 0; i < (c.width / grid); ++i)
+            c.add(new fabric.Line([ i * grid, 0, i * grid, c.width], { stroke: '#ccc', selectable: false, name :'gridLine'}));
+        for (let i = 0; i < (c.height / grid); ++i)
+            c.add(new fabric.Line([ 0, i * grid, c.width, i * grid], { stroke: '#ccc', selectable: false, name :'gridLine' }))
     }
     
     function snapObjectsToGrid () {
@@ -402,22 +411,54 @@ function DesignPlaybookViewModel () {
 
     $('#yellowBtn').click (function () {
         self.updateColour("#f1f827");
+		$('.colorbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#yellowBtn').addClass('border');
     });
     
     $('#whiteBtn').click (function () {
         self.updateColour("#ffffff");
+		$('.colorbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#whiteBtn').addClass('border');
     });
     
     $('#grayBtn').click (function () {
         self.updateColour("#424242");
+		$('.colorbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#grayBtn').addClass('border');
     });
     
     $('#blueBtn').click (function () {
         self.updateColour("#95ccff");
+		$('.colorbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#blueBtn').addClass('border');
     });
     
     $('#redBtn').click (function () {
         self.updateColour("#ff0000");
+		$('.colorbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#redBtn').addClass('border');
+    });
+	
+	$(function() {
+        $('#customBtn').colorpicker().on('changeColor', function(e){
+			$('#ColourPalleteBtn')[0].style.color = e.color.toString('rgba');
+			self.updateColour(e.color.toString('rgba'));
+			$('.colorbtn').each(function(index){
+				$(this).removeClass('border');
+			});
+			$('#customBtn').addClass('border');
+		});
+		
     });
     
     self.updateColour = function(colour) {
@@ -1090,13 +1131,10 @@ function DesignPlaybookViewModel () {
   }
 }
 
+
 var model;
 
 $(document).ready (function () {
     model = new DesignPlaybookViewModel ();
     ko.applyBindings (model);
 });
-
-function update (jscolor) {
-    model.updateColour (jscolor.toHEXString());
-}

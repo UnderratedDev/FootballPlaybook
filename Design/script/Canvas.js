@@ -533,7 +533,8 @@ self.defensePremiumArray = ko.observableArray ();
               stroke: self.colour (),
               originX: 'center',
               originY: 'center',
-              selectable: false
+              selectable: false,
+              perPixelTargetFind: true
           });
           c.add (line);
         });
@@ -627,7 +628,8 @@ self.defensePremiumArray = ko.observableArray ();
                strokeWidth : 5,
                left   : e.e.offsetX - 20,
                top    : e.e.offsetY - 20,
-               selectable: false
+               selectable: false,
+               perPixelTargetFind: true
             }));
         });
     });
@@ -645,7 +647,8 @@ self.defensePremiumArray = ko.observableArray ();
                             fontSize: 53,
                             textAlign: 'center',
                             fill: self.colour (),
-                            selectable: false
+                            selectable: false,
+                            perPixelTargetFind: true
                             });
             c.add(cross);
             cross.setCoords();
@@ -668,7 +671,8 @@ self.defensePremiumArray = ko.observableArray ();
                top    : e.e.offsetY - 25,
                width: 40,
                height: 40,
-               selectable: false
+               selectable: false,
+               perPixelTargetFind: true
             }));
             c.add(rect);
         });
@@ -693,6 +697,7 @@ self.defensePremiumArray = ko.observableArray ();
 					left   : e.e.offsetX - 20,
 					top    : e.e.offsetY - 25,
 					angle: 0,
+                    perPixelTargetFind: true
 				}));
         });
     });
@@ -720,6 +725,7 @@ self.defensePremiumArray = ko.observableArray ();
                     padding: 10,
                     cornersize: 10,
                     selectable : false,
+                    perPixelTargetFind: true
                 });
                 //image.scale(getRandomNum(0.1, 0.25)).setCoords();
                 c.add(image);
@@ -990,7 +996,7 @@ self.defensePremiumArray = ko.observableArray ();
 	function makeCurveLine(p0x, p0y, p1x = p0x - 50, p1y = p0y - 50, p2x = p0x, p2y = p0y) {
 		var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
 				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
-                    ,  selectable: false, hasControls: false, hasBorders: false});
+                    ,  selectable: true, hasControls: false, hasBorders: false});
 
 		l.path[0][1] = p0x; //p1x
 		l.path[0][2] = p0y; //p0y
@@ -1056,7 +1062,8 @@ self.defensePremiumArray = ko.observableArray ();
       radius: rad,
       fill: '#fff',
       stroke: '#666',
-        selectable: false
+      selectable: true,
+      perPixelTargetFind: true
     });
 
     c.hasBorders = c.hasControls = false;

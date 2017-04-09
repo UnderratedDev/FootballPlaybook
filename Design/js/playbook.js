@@ -149,7 +149,8 @@ $(function () {
                 var objArr = jQuery.parseJSON(response);
                 for (let i = 0; i < objArr.length; ++i)
                     self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].PlayString, objArr[i].CreateDate, objArr[i].CanvasObj, objArr[i].PlayID));
-                self.selectPlay (self.TableRows()[0]);
+                if (self.TableRows ().length > 0)
+                    self.selectPlay (self.TableRows()[0]);
 				}
 			});	
     }

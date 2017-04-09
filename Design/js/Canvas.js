@@ -1,8 +1,17 @@
+function FormationItem(file, name, img, classActive = false) {
+	var self = this;
+	
+	self.xml         = file;
+	self.playname    = name;
+	self.thumbnail   = img;
+	self.classActive = observable(classActive);
+}
+
 function DesignPlaybookViewModel () {
     var self = this;
     var c = new fabric.Canvas("canvas");
     var ctx = c.getContext("2d");
-    var line, isDown;
+    var line, cline, isDown, isCDown;
     var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = snapToGrid = selection = ctrlDown = false;
 	var clcVisible = true;
     var canvasWrapper = document.getElementById('canvasWrapper');
@@ -18,15 +27,8 @@ function DesignPlaybookViewModel () {
     'object:moving': onObjectMoving,
     'before:selection:cleared': onBeforeSelectionCleared,
     });
-    
-    function FormationItem(file, name, img, classActive = false) {
-		this.xml         = file;
-		this.playname    = name;
-		this.thumbnail   = img;
-		this.classActive = classActive;
-	}
-
-	self.defensePremiumArray = ko.observableArray ();
+  
+self.defensePremiumArray = ko.observableArray ();
 	self.defenseStandardArray = ko.observableArray ();
 	self.offensePremiumArray = ko.observableArray ();
 	self.offenseStandardArray = ko.observableArray ();
@@ -271,13 +273,6 @@ function DesignPlaybookViewModel () {
 	console.log (self.defensePremiumArray());
 	
 	
-	//Defense Standard 
-	self.defenseStandardArray.push (new FormationItem(
-		"xml/none.xml"
-		,"NONE"
-		,"icons/football/defense/noneDef.png"
-		,true
-	));
 	self.defenseStandardArray.push (new FormationItem (
 		"xml/football/defense/4_3_normal.xml"
 		,"4-3"
@@ -361,9 +356,65 @@ function DesignPlaybookViewModel () {
 		,"PRO FORM"
 		,"icons/football/offense/proForm.png"
 	));
-    
+	
+	$('#defensePlaysCarousel').on('slid.bs.carousel', function(){
+		var i = $('#defensePlaysCarousel .item.active').index(); // or: $('.item:visible').index();
+		for (j = 0; j < self.defensePremiumArray().length; j++) {
+			self.defensePremiumArray()[j].classActive = false;
+		}
+        console.log (i);
+		self.defensePremiumArray()[i].classActive = true;
+		$('#defensePlaysCarousel.item').removeClass('active').eq(i).addClass('active');
+	});
+	
+	$('#offensePlaysCarousel').on('slid.bs.carousel', function(){
+		var i = $('#offensePlaysCarousel .item.active').index(); // or: $('.item:visible').index();
+		for (j = 0; j < self.offensePremiumArray().length; j++) {
+			self.offensePremiumArray()[j].classActive = false;
+		}
+		self.offensePremiumArray()[i].classActive = true;
+		$('#offensePlaysCarousel.item').removeClass('active').eq(i).addClass('active');
+	});
+	
+	$('#loadPlay').click(function() {
+		var dItem, oItem;
+		ko.utils.arrayForEach(self.defensePremiumArray(), function(item) {
+			if(item.classActive == true)
+				dItem = item;
+		});
+		
+		ko.utils.arrayForEach (self.offensePremiumArray(), function(item) {
+            // console.log (item);
+            if (item.classActive) {
+                oItem = item;
+            }
+        });
+		console.log(dItem);
+		console.log(oItem);
+	})
+	
     setupBackground ();
-    
+   /*  
+    $("#loadPlay").click (function () {
+        var dItem, oItem;
+        ko.utils.arrayForEach (self.defenseStandardArray(), function(item) {
+            console.log (item);
+            if (item.classActive) {
+                dItem = item;
+            }
+        });
+        
+        ko.utils.arrayForEach (self.offenseStandardArray(), function(item) {
+            console.log (item);
+            if (item.classActive) {
+                dItem = item;
+            }
+        }); 
+            
+        console.log (dItem);
+        console.log (oItem);
+    });
+     */
     function generateGrid () {
         for (let i = 0; i < (c.width / grid); ++i)
             c.add(new fabric.Line([ i * grid, 0, i * grid, c.width], { stroke: '#ccc', selectable: false, name :'gridLine'}));
@@ -539,7 +590,8 @@ function DesignPlaybookViewModel () {
               stroke: self.colour (),
               originX: 'center',
               originY: 'center',
-              selectable: false
+              selectable: false,
+              perPixelTargetFind: true
           });
           c.add (line);
         });
@@ -575,14 +627,16 @@ function DesignPlaybookViewModel () {
 		c.on ('mouse:down', function (o) {
             if (clDraw)
 				return;
-			isDown   = true;
+			isCDown = true;
         	pointer = c.getPointer(o.e);
 
-			line = makeCurveLine(pointer.x, pointer.y);
-			p1 = line.circle1;
-			p2 = line.circle2;
-			c.add(line);
+			cline = makeCurveLine(pointer.x, pointer.y);
+			p1 = cline.circle1;
+			p2 = cline.circle2;
+			c.add(cline);
 
+            cline.setCoords();
+            
 			clDraw = true;
         });
 		
@@ -590,7 +644,7 @@ function DesignPlaybookViewModel () {
             clDraw = false;
 		    if (clDraw)
                 return;
-            if (!isDown)
+            if (!isCDown)
                 return;
             var pointer = c.getPointer(o.e);
             line.path[1][3] = pointer.x;
@@ -607,17 +661,17 @@ function DesignPlaybookViewModel () {
         c.on('mouse:up', function(o){
             if (clDraw)
                 return;
-            isDown = false;
+            isCDown = false;
 			c.deactivateAll().renderAll();
 			p1.animate('opacity', '0', {
                 duration: 200,
                 onChange: c.renderAll.bind(c),
             });
             c.deactivateAll().renderAll();
-            line.circle0.setCoords();
-            line.circle1.setCoords();
-            line.circle2.setCoords();
-            line.setCoords();
+            cline.circle0.setCoords();
+            cline.circle1.setCoords();
+            cline.circle2.setCoords();
+            cline.setCoords();
             // clDraw = true;
         });
     });
@@ -638,7 +692,8 @@ function DesignPlaybookViewModel () {
                radius : c.width/47.3,
                fill: 'rgba(0,0,0,0)',
                stroke : self.colour (),
-               strokeWidth : c.width/189.2,
+               perPixelTargetFind: true,
+               strokeWidth : c.width / 189.2,
                left   : e.e.offsetX - c.width/47.3,
                top    : e.e.offsetY - c.width/47.3,
                selectable: false
@@ -663,7 +718,8 @@ function DesignPlaybookViewModel () {
                             fontSize: c.width/20,
                             textAlign: 'center',
                             fill: self.colour (),
-                            selectable: false
+                            selectable: false,
+                            perPixelTargetFind: true
                             });
             c.add(cross);
             cross.setCoords();
@@ -685,6 +741,7 @@ function DesignPlaybookViewModel () {
             var rect  = (new fabric.Rect ({
                fill: 'rgba(0,0,0,0)',
                stroke : self.colour (),
+               perPixelTargetFind: true,
                strokeWidth : c.width/189.2,
                left   : e.e.offsetX - c.width/37.84,
                top    : e.e.offsetY - c.width/37.84,
@@ -719,6 +776,7 @@ function DesignPlaybookViewModel () {
 					left   : e.e.offsetX - c.width/37.84,
 					top    : e.e.offsetY - c.width/37.84,
 					angle: 0,
+                    perPixelTargetFind: true
 				}));
         });
     });
@@ -750,6 +808,7 @@ function DesignPlaybookViewModel () {
                     padding: c.width/94.6,
                     cornersize: c.width/94.6,
                     selectable : false,
+                    perPixelTargetFind: true
                 });
                 //image.scale(getRandomNum(0.1, 0.25)).setCoords();
                 c.add(image);
@@ -772,7 +831,13 @@ function DesignPlaybookViewModel () {
            
            console.log (canJSON);
            
-           var dataSend = {"posted_data" : canJSON};
+           name    = $("#playName").val ();
+           playStr = $("#playString").val ();
+           
+           console.log (name);
+           console.log (playStr);
+           
+           var dataSend = { "posted_data" : canJSON, "playName" : name, "playStr" : playStr };
            
            console.log (dataSend);
            
@@ -1012,9 +1077,12 @@ function DesignPlaybookViewModel () {
     });
 	
 	function makeCurveLine(p0x, p0y, p1x = p0x - 50, p1y = p0y - 50, p2x = p0x, p2y = p0y) {
-		var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
-				, { fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
-                    ,  selectable: false, hasControls: false, hasBorders: false});
+		/*var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
+				,{ fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
+                    ,selectable: false, hasControls: false, hasBorders: false}); */
+        var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
+				,{ fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
+                    ,selectable: true, hasBorders: false});
 
 		l.path[0][1] = p0x; //p1x
 		l.path[0][2] = p0y; //p0y
@@ -1053,7 +1121,7 @@ function DesignPlaybookViewModel () {
       radius: rad,
       fill: '#fff',
       stroke: '#666',
-        selectable: false
+      selectable: false
     });
 
     c.hasBorders = c.hasControls = false;
@@ -1080,7 +1148,8 @@ function DesignPlaybookViewModel () {
       radius: rad,
       fill: '#fff',
       stroke: '#666',
-        selectable: false
+      selectable: true,
+      perPixelTargetFind: true
     });
 
     c.hasBorders = c.hasControls = false;

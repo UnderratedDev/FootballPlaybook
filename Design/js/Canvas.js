@@ -227,7 +227,7 @@ function DesignPlaybookViewModel () {
 		c.setWidth(canvasWrapper.clientWidth);
 		c.setHeight((c.width)/1.87);
 		grid = c.width/21.0222;
-		if (snapToGrid){
+		if (snapToGrid) {
 			noSnapObjectsToGrid();
 			snapToGrid = true;
 			snapObjectsToGrid();
@@ -437,7 +437,7 @@ function DesignPlaybookViewModel () {
                             top : jsonArr[i]['y'],
                             originX : 'center',
                             originY : 'center',
-                            fontFamily: 'Arial', 
+                            fontFamily: 'Arial',
                             fontSize: (c.width / 20),
                             textAlign: 'center',
                             fill: self.colour (),
@@ -469,7 +469,7 @@ function DesignPlaybookViewModel () {
     }
     
     if (sessionStorage.length > 0) {
-        editCanvasId = sessionStorage.getItem('id');
+        editCanvasId   = sessionStorage.getItem('id');
         editCanvasItem = sessionStorage.getItem('canvas');
         console.log (editCanvasItem);
         loadCanvasFromJSONRow (editCanvasItem);
@@ -934,22 +934,26 @@ function DesignPlaybookViewModel () {
     });
     
     $("#canvasPng").click (function() {
-        var dataURL, checkSnap;
+        var dataURL, checkSnap, canJSON;
+        console.log (snapToGrid);
         if (snapToGrid) {
             noSnapObjectsToGrid ();
-            dataURL = c.toDataURL();
+            dataURL    = c.toDataURL();
+            canJSON = JSON.stringify (c);
             snapToGrid = true;
             snapObjectsToGrid ();
-        } else
+        } else {
            dataURL = c.toDataURL();
+           canJSON = JSON.stringify (c);
+        }
            document.getElementById('canvasImgSaved').src = dataURL;
            
            
-           var canJSON = JSON.stringify (c);
+           // var canJSON = JSON.stringify (c);
            // var canJSON = c.toDatalessObject();
-           console.log (canJSON);
+           // console.log (canJSON);
            
-           name    = $("#playName").val ();
+           name    = $("#playName").val   ();
            playStr = $("#playString").val ();
            
            console.log (name);

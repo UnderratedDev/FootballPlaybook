@@ -15,6 +15,7 @@
         $canvasJSON  = $_POST['canvasObj'];
         $playStr     = mysqli_real_escape_string($db, $playStr);
         $playName    = mysqli_real_escape_string($db, $playName);
+        // Replace 'Yudhvir' with username when integrating with playbook backend
         $values = "('" . $playName . "', '" . $playStr. "', 'Yudhvir', '" . $canvasJSON . "','1000-01-01 00:00:00')";
         
         // echo "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, CanvasObj, CreateDate) VALUES " . $values;
@@ -30,6 +31,7 @@
     }
     
     if (!empty ($_POST['getData']) && $_POST['getData'] == 1) {
+        // Add WHERE CreatedBy = 'Yudhvir' with username when integrating with playbook backend
         $result = mysqli_query ($db, "SELECT * FROM playfull");
         $resultArr = array ();
         while ($row = mysqli_fetch_assoc ($result))

@@ -4,15 +4,19 @@
 	$posted_data;
 	$playName;
 	$playStr;
+    $playId;
     
     if (!empty($_POST['posted_data']) && !empty($_POST['playName']) && !empty($_POST['playStr'])) {
         $posted_data = $_POST['posted_data'];
         $playName    = $_POST['playName'];
         $playStr     = $_POST['playStr'];
-        $playId      = $_POST['id'];
+        if (!empty ($_POST['id'])) {
+            $playId      = $_POST['id'];
+            $playId      = mysqli_real_escape_string($db, $playId);
+        }
         $playStr     = mysqli_real_escape_string($db, $playStr);
         $playName    = mysqli_real_escape_string($db, $playName);
-        $playId      = mysqli_real_escape_string($db, $playId);
+        
         if (!empty ($_POST['id'])) {
             mysqli_query ($db, "UPDATE PlayFull SET CanvasObj = '" . $posted_data . "', PlayName = '" . $playName 
                                 . "', playString = '" . $playStr . "' WHERE PlayID = '" . $playId . "'") or die (mysqli_error($db));

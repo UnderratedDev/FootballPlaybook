@@ -712,25 +712,28 @@ function DesignPlaybookViewModel () {
             if (clDraw)
 				return;
 			isCDown = true;
-        	pointer = c.getPointer(o.e);
-
-			cline = makeCurveLine(pointer.x, pointer.y);
-			p1 = cline.circle1;
-			p2 = cline.circle2;
-			c.add(cline);
-
-            cline.setCoords();
-            
+        	
+			cline = null;
 			clDraw = true;
         });
 		
 		c.on ('mouse:move', function(o) {
-            clDraw = false;
-		    if (clDraw)
+            // clDraw = false;
+		    if (!clDraw)
                 return;
             if (!isCDown)
                 return;
-            var pointer = c.getPointer(o.e);
+			pointer = c.getPointer(o.e);
+			if (cline == null) {
+				console.log(cline);
+				cline = makeCurveLine(pointer.x, pointer.y);
+				p1 = cline.circle1;
+				p2 = cline.circle2;
+				c.add(cline);
+				hideLineCircles();
+				}
+			
+			var pointer = c.getPointer(o.e);
             cline.path[1][3] = pointer.x;
             cline.path[1][4] = pointer.y;
 			p2.setLeft(pointer.x - 12);
@@ -751,7 +754,7 @@ function DesignPlaybookViewModel () {
         });
 
         c.on('mouse:up', function(o){
-            if (clDraw)
+            if (!clDraw)
                 return;
             isCDown = false;
 			c.deactivateAll().renderAll();
@@ -760,10 +763,13 @@ function DesignPlaybookViewModel () {
                 onChange: c.renderAll.bind(c),
             });
             c.deactivateAll().renderAll();
-            cline.circle0.setCoords();
-            cline.circle1.setCoords();
-            cline.circle2.setCoords();
-            cline.setCoords();
+			if (cline != null) {
+				cline.circle0.setCoords();
+				cline.circle1.setCoords();
+				cline.circle2.setCoords();
+				cline.setCoords();
+			}
+			clDraw = false;
             // clDraw = true;
         });
     });

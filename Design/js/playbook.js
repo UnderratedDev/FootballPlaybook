@@ -40,11 +40,6 @@ $(function () {
         self.ctrlDown      = false;
         self.shiftDown     = false;
         self.dupe          = false;
-        /*
-        self.selectPlay = function (item) {   
-            alert ("hey");
-        }; */
-        
         document.addEventListener('keyup', function(e) {
             if (e.keyCode != 17) 
                 self.ctrlDown  = false;
@@ -71,18 +66,7 @@ $(function () {
         });
         
         self.selectPlay = function (item) {
-			// console.log (item);
-			// ko.utils.arrayForEach(self.TableRows (), function(obj) {
-				//obj.selectRow (false);
-			// }); 
             if (self.ctrlDown) {
-                // self.selectedPlays.push (item);
-                // ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
-                   // ko.utils.arrayForEach(self.TableRows (), function (obj_) {
-                     //   if (obj.id == obj_.id)
-                       //     obj_.selectRow (obj_.selectRow() ? false : true);
-                    // });
-                // });
                 if (item.selectRow()) {
                     item.selectRow (false);
                     self.selectedPlays.remove (item);
@@ -112,11 +96,9 @@ $(function () {
                 }
             }
             
-			// item.selectRow (true);
             self.desc      (item.PlayString);
             self.name      (item.PlayName);
             showImage      (item.canvasObj);
-            // console.log    (self.selected);
             self.selected  = item;
         };
 		
@@ -134,8 +116,6 @@ $(function () {
                             data : dataSend,
                             success : function (response) {
                                 var objArr = jQuery.parseJSON(response);
-                                // console.log (objArr);
-                                // console.log (objArr['PlayID']);
                                 tblRow = new TableRow (obj_.PlayName, obj_.PlayString, obj_.DateCreated, obj_.canvasObj, objArr['PlayID']);
                                 self.TableRows.push (tblRow);
                                 self.selectPlay     (tblRow);

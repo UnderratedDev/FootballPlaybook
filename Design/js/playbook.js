@@ -67,6 +67,18 @@ $(function () {
                 self.shiftDown = false;
         });
         
+        self.editPlaybook = function () {
+            if (self.selectedPlays ().length > 1)
+                alert ('Too many rows selected');
+            else if (self.selectedPlays ().length == 0)
+                alert ('Please select a row');
+            else {
+                sessionStorage.setItem('id', self.selectedPlays()[0].id);
+                sessionStorage.setItem('canvas', self.selectedPlays()[0].canvasObj);
+                window.location = "index.html";
+            }
+        }
+        
         self.nameSort = function () {
             if (self.nameSortType) {
                 self.TableRows.sort (function (left, right) {

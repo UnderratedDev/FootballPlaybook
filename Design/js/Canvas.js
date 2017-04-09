@@ -21,6 +21,9 @@ function DesignPlaybookViewModel () {
 	console.log(grid);
     var copiedObjects = new Array ();
     self.colour = ko.observable ("#ffffff");
+    var editCanvas = false;
+    var editCanvasId;
+    var editCanvasItem;
     
     c.on({
     'object:selected': onObjectSelected,
@@ -28,7 +31,7 @@ function DesignPlaybookViewModel () {
     'before:selection:cleared': onBeforeSelectionCleared,
     });
   
-self.defensePremiumArray = ko.observableArray ();
+    self.defensePremiumArray = ko.observableArray ();
 	self.defenseStandardArray = ko.observableArray ();
 	self.offensePremiumArray = ko.observableArray ();
 	self.offenseStandardArray = ko.observableArray ();
@@ -358,7 +361,7 @@ self.defensePremiumArray = ko.observableArray ();
 	));
 	
 	$('#defensePlaysCarousel').on('slid.bs.carousel', function(){
-		var i = $('#defensePlaysCarousel .item.active').index(); // or: $('.item:visible').index();
+		var i = $('#defensePlaysCarousel .active').index(); // or: $('.item:visible').index();
 		for (j = 0; j < self.defensePremiumArray().length; j++) {
 			self.defensePremiumArray()[j].classActive = false;
 		}
@@ -368,7 +371,7 @@ self.defensePremiumArray = ko.observableArray ();
 	});
 	
 	$('#offensePlaysCarousel').on('slid.bs.carousel', function(){
-		var i = $('#offensePlaysCarousel .item.active').index(); // or: $('.item:visible').index();
+		var i = $('#offensePlaysCarousel .active').index(); // or: $('.item:visible').index();
 		for (j = 0; j < self.offensePremiumArray().length; j++) {
 			self.offensePremiumArray()[j].classActive = false;
 		}
@@ -391,7 +394,26 @@ self.defensePremiumArray = ko.observableArray ();
         });
 		console.log(dItem);
 		console.log(oItem);
-	})
+	});
+    
+    function loadCanvasFromJSONRow (canvasObj) {
+        c.clear ();
+        c.loadFromJSON(canvasObj, c.renderAll.bind(c), function(o, object) {
+            // fabric.log(o, object);
+        });
+        c.forEachObject(function(object){ 
+           object.selectable = false; 
+        });
+    }
+    
+    if (sessionStorage.length > 0) {
+        editCanvasId = sessionStorage.getItem('id');
+        editCanvasItem = sessionStorage.getItem('canvas');
+        console.log (editCanvasItem);
+        loadCanvasFromJSONRow (editCanvasItem);
+        sessionStorage.clear ();
+        editCanvas = true;
+    }
 	
     setupBackground ();
    /*  
@@ -850,6 +872,7 @@ self.defensePremiumArray = ko.observableArray ();
            dataURL = c.toDataURL();
            document.getElementById('canvasImgSaved').src = dataURL;
            
+           
            var canJSON = JSON.stringify (c);
            // var canJSON = c.toDatalessObject();
            console.log (canJSON);
@@ -859,19 +882,33 @@ self.defensePremiumArray = ko.observableArray ();
            
            console.log (name);
            console.log (playStr);
-           
-           var dataSend = { "posted_data" : canJSON, "playName" : name, "playStr" : playStr };
-           
-           console.log (dataSend);
-           
-           $.ajax({
-			type : 'POST',
-			url  : 'designBackend.php',
-			data : dataSend,
-			success : function (response) {
-                console.log (response);
-				}
-			});	
+           if (editCanvas) {
+               var dataSend = { "posted_data" : canJSON, "playName" : name, "playStr" : playStr, "id" : editCanvasId };
+               
+               console.log (dataSend);
+               
+               $.ajax({
+                type : 'POST',
+                url  : 'designBackend.php',
+                data : dataSend,
+                success : function (response) {
+                    console.log (response);
+                    }
+                });	
+           } else {
+               var dataSend = { "posted_data" : canJSON, "playName" : name, "playStr" : playStr };
+               
+               console.log (dataSend);
+               
+               $.ajax({
+                type : 'POST',
+                url  : 'designBackend.php',
+                data : dataSend,
+                success : function (response) {
+                    console.log (response);
+                    }
+                });	
+           }
            
     /*
         c.isDrawingMode = false;
@@ -1075,8 +1112,8 @@ self.defensePremiumArray = ko.observableArray ();
           ++count;
       }
       var group = new fabric.Group(objs, {
-          originX: 'center',
-          originY: 'center'
+          originX: c.width / 2,// 'center',
+          originY: c.height / 2//  'center'
       });
       c.setActiveGroup(group.setCoords()).renderAll();
     }
@@ -1094,6 +1131,7 @@ self.defensePremiumArray = ko.observableArray ();
                 for (let i = 0; i < objs.length; ++i)
                     if (c.item (i).name != "gridLine")
                         groupObjs.push(c.item (i));
+                // c.setActiveGroup(new fabric.Group(groupObjs, {originX: c.width / 2,originY: c.height / 2})).renderAll();
                 c.setActiveGroup(new fabric.Group(groupObjs)).renderAll();
             }
         }
@@ -1269,3 +1307,7 @@ $(document).ready (function () {
     model = new DesignPlaybookViewModel ();
     ko.applyBindings (model);
 });
+
+function update (jscolor) {
+    model.updateColour (jscolor.toHEXString());
+}

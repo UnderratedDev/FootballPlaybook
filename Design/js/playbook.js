@@ -65,9 +65,20 @@ $(function () {
                 self.shiftDown = false;
         });
         
-
+        // use doc.save for "name".pdf
         self.allPlaysPDF = function () {
-            
+            var doc = new jsPDF ();
+            img  = new Image();
+            page = 0;
+            ko.utils.arrayForEach(self.TableRows (), function (obj) {
+                img.src = canvas.toDataURL('JPEG');
+                doc.text (15, 25, obj.PlayName);
+                doc.addImage (img.src, 'JPEG', 15, 40, 180, 160);
+                doc.text (15, 200, obj.PlayString);
+                if (++page != self.TableRows().length)
+                    doc.addPage ();
+            });
+            doc.save ("testA.pdf");
         };
         
         // black and white option needed also

@@ -1,7 +1,4 @@
-div {
-	border: solid 1px;
-	border-style:hidden;
-}
+
 
 body {
 	background: url("../img/main_bg.jpg") no-repeat center #e7e7e7;
@@ -16,6 +13,10 @@ body {
     border: 5px solid;
 }
 
+#toolbar {
+	overflow: hidden;
+}
+
 #mainWrapper{
 	max-width:1060px;
 	min-height:600px;
@@ -27,12 +28,10 @@ body {
 #header{
 	width:1060px;
 	height:200px;
-	float:left;
 }
 #googleAd{
 	width:468px;
 	height:60px;
-	float:right;
 
 }
 
@@ -41,7 +40,6 @@ body {
 	width:200px;
 	height:32px;
 	padding-top:5px;
-	float:right;
 	text-align:right;
 	margin-right:100px;
 	

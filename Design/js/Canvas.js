@@ -702,8 +702,8 @@ function DesignPlaybookViewModel () {
         });
 		
 		c.on ('mouse:move', function(o) {
-            clDraw = false;
-		    if (clDraw)
+            // clDraw = false;
+		    if (!clDraw)
                 return;
             if (!isCDown)
                 return;
@@ -728,7 +728,7 @@ function DesignPlaybookViewModel () {
         });
 
         c.on('mouse:up', function(o){
-            if (clDraw)
+            if (!clDraw)
                 return;
             isCDown = false;
 			c.deactivateAll().renderAll();
@@ -741,6 +741,7 @@ function DesignPlaybookViewModel () {
             cline.circle1.setCoords();
             cline.circle2.setCoords();
             cline.setCoords();
+			clDraw = false;
             // clDraw = true;
         });
     });

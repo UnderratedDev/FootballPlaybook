@@ -58,10 +58,11 @@ $(function () {
 			data : "",
 			success : function (response) {
                 var objArr = jQuery.parseJSON(response);
+                console.log (objArr);
                 // Query with have from certain user so owner not required.
-                for (let i = 0; i < objArr.length; ++i)
-                    self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].updateDate, "./Tesla.jpg", objArr[i].PlayString));
-                self.selectPlay (self.TableRows()[0]);
+                // for (let i = 0; i < objArr.length; ++i)
+                    // self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].updateDate, "./Tesla.jpg", objArr[i].PlayString));
+                // self.selectPlay (self.TableRows()[0]);
                 // console.log (obj);
                 /*
                 for (var key in response) {

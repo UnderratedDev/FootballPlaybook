@@ -23,6 +23,97 @@ body {
 	overflow:hidden;
 }
 
+#header{
+	width:1060px;
+	height:200px;
+	float:left;
+}
+#googleAd{
+	width:468px;
+	height:60px;
+	float:right;
+
+}
+
+#status {
+	font-weight: bold;
+	width:200px;
+	height:32px;
+	padding-top:5px;
+	float:right;
+	text-align:right;
+	margin-right:100px;
+	
+}
+
+#facebook {
+	width:350px;
+	margin-left:10px;
+	height:32px;
+	float:left;
+}
+
+
+#header-subnav{
+	margin-top:25px;
+	width:640px;
+	text-align:right;
+	height:60px;
+	float:left;
+}
+#header-subnav A{
+	color:#000;
+	text-decoration:underline;
+}
+#header-navigation{
+	margin-top:20px; 
+	margin-left:10px;
+	float:left;
+}
+
+#nav-contain{
+	height:51px;
+	width:625px;
+	background:url('../img/nav-bg.png') repeat-x;
+	float:left;
+}
+.nav-item{
+	color:#BABABA;
+	height:30px;
+	font-size:18px;
+	font-weight:bold;
+	float:left;
+	padding:14px 23px 7px 23px;
+	display:block;
+}
+.nav-item:hover{
+	
+	text-decoration:underline;
+	display:block;
+}
+.nav-selected{
+
+	text-decoration:underline;
+	color:#384E81;
+	display:block;
+}
+#fb-root{
+	float:left;
+	width:480px;
+	background-color:blue;
+}
+#fb-iframe{
+	margin-left:200px;
+}
+
+#logo{
+	margin-top:30px;
+	margin-left:30px;
+	height:140px;
+	width:300px;
+	float:left;
+}
+
 button {
     background-color: Transparent;
     background-repeat: no-repeat;

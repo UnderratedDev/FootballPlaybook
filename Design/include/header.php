@@ -2,35 +2,6 @@
 
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-<title>Football PlayBook Online</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta name="keywords" content="football, playbook, design, coaching, plays, diagram, software, application, chalkboard, offense, defense, football playbook, play designer, online playbook, online" />
-<meta name="description" content="Easy to use application to design your plays, share them with your team, create and print your playbook. " />
-<script type="text/javascript" src="include/swfobject.js"></script>
-<!--<script type="text/javascript">
-				swfobject.registerObject("designer", "10.0.0", "expressInstall.swf");
-				swfobject.registerObject("playbook", "10.0.0", "expressInstall.swf");
-</script>-->
-<script type="text/javascript" src="include/rightClick.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" ></script>
-<script type="text/javascript" src="http://glazierclinics.com/jscripts/footballplaybookonline_ads_driver.js"></script>
-
-
-	<link href="style.css" rel="stylesheet" type="text/css" />
-
-	<link rel="stylesheet" type="text/css" href="carousel.css" />
-	<link rel="stylesheet" type="text/css" href="scripts/qstyle.css" />
-		
-	
-
-
-</head>
 <body onload="RightClick.init();">
 <div id='wrapper-main'>
 	

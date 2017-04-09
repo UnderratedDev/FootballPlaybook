@@ -121,7 +121,7 @@ $(function () {
                 if (++page != self.TableRows().length)
                     doc.addPage ();
             });
-            doc.save ("testA.pdf");
+            doc.save ("allPlays.pdf");
         };
         
         // black and white option needed also
@@ -139,18 +139,7 @@ $(function () {
                 if (++page != self.selectedPlays().length)
                     doc.addPage ();
             });
-            /*
-            var img;
-            ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
-                canvas.clear ();
-                canvas.loadFromJSON(obj.canvasObj, canvas.renderAll.bind(canvas), function(o, object) {
-                 // fabric.log(o, object);
-                });
-                
-                img = canvas.toDataURL('JPEG');
-                doc.add (img, 'JPEG', 15, 40, 180, 160);
-            }); */
-            doc.save('test.pdf')
+            doc.save('selectedPlays.pdf')
         };
         
         self.selectPlay = function (item) {

@@ -26,11 +26,34 @@ function DesignPlaybookViewModel () {
     var editCanvasId;
     var editCanvasItem;
     
+    fabric.isTouchSupported = true;
+    
+    console.log (fabric.isTouchSupported);
+    
+    document.addEventListener('touchstart', function(){
+        console.log('touchstart', arguments);
+    }, false);
+    document.addEventListener('touchmove', function(){
+        console.log('touchmove', arguments);
+    }, false);
+    document.addEventListener('touchend', function(){
+        console.log('touchend', arguments);
+    }, false);
+    
+    // document.body.innerHTML = 'ontouchstart' in document;
+        
+    
     c.on({
         'object:selected': onObjectSelected,
         'object:moving': onObjectMoving,
         'before:selection:cleared': onBeforeSelectionCleared,
     });
+    
+    function longpressFunc() {
+        console.log ("he");
+        // var text = document.createTextNode(' Gesture ');
+        // info.insertBefore(text, info.firstChild);
+     };
   
     self.defensePremiumArray = ko.observableArray ();
 	self.defenseStandardArray = ko.observableArray ();
@@ -1191,11 +1214,11 @@ function DesignPlaybookViewModel () {
 		/*var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
 				,{ fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
                     ,selectable: false, hasControls: false, hasBorders: false}); */
-        var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0');
-        l.set ({ fill: 'rgba(0,0,0,0)', stroke: self.colour (), strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
+        var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0', { fill: 'rgba(0,0,0,0)', stroke: self.colour (), strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
                     ,selectable: true, hasBorders: false, shadow: 'rgba(0,0,0,1) 5px 5px 7px'});
 
 		l.path[0][1] = p0x; //p1x
+        
 		l.path[0][2] = p0y; //p0y
 
 		l.path[1][1] = p1x; // p1x
@@ -1208,6 +1231,7 @@ function DesignPlaybookViewModel () {
 		
 		p1 = makeCurvePoint(l.path[1][1], l.path[1][2], null, l, null);
 		p1.name = "p1";
+        
 		c.add(p1);
 
 		p0 = makeCurveCircle(l.path[0][1], l.path[0][2], l, p1, null);
@@ -1253,7 +1277,7 @@ function DesignPlaybookViewModel () {
 
   function makeCurvePoint(left, top, line1, line2, line3) {
     var rad = 14; // radius of p1 circle (skewing circle)
-	var c = new fabric.Circle({
+	var circ = new fabric.Circle({
       left: left - rad,
       top: top - rad,
       strokeWidth: 8,
@@ -1261,18 +1285,32 @@ function DesignPlaybookViewModel () {
       fill: '#fff',
       stroke: '#666',
       selectable: true,
-      perPixelTargetFind: true
+      perPixelTargetFind: true,
+      shadow: 'rgba(0,0,0,1) 5px 5px 7px'
     });
 
-    c.hasBorders = c.hasControls = false;
-
-    c.line1 = line1;
-    c.line2 = line2;
-    c.line3 = line3;
-	c.setLine2 = function(l) {
+    circ.hasBorders = c.hasControls = false;
+    
+    circ.line1 = line1;
+    circ.line2 = line2;
+    circ.line3 = line3;
+	circ.setLine2 = function(l) {
 		this.line2 = l;
 	}
-    return c;
+    
+    /*
+    circ.line1.set ({
+        shadow: 'rgba(0,0,0,1) 5px 5px 7px'
+    });
+    
+    c.line2.set ({
+        shadow: 'rgba(0,0,0,1) 5px 5px 7px'
+    });
+    c.line3.set ({
+        shadow: 'rgba(0,0,0,1) 5px 5px 7px'
+    }); */
+    
+    return circ;
   }
 
   function onObjectSelected(e) {

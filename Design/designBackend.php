@@ -24,8 +24,22 @@
         $def = file_get_contents ($_POST['defence'], FILE_USE_INCLUDE_PATH);
         $xml = simplexml_load_string($def);
         $json = json_encode($xml);
-        // $array = json_decode($json, TRUE);
-        echo $json;
+        $array = json_decode($json, TRUE);
+        $jsonResult = array ();        
+        foreach ($array as $play)
+            foreach ($play['Player'] as $player)
+               array_push ($jsonResult, array ("x" => $player['X'], "y" => $player['Y'], "type" => $player['Type']));
+        
+        echo json_encode ($jsonResult);
+        /*
+        foreach ($array as $value) {
+            foreach ($value as $key) {
+                array_push ($jsonResult, $key);
+                // array_push ($jsonResult, $value);
+                // array_push ($jsonResult, array ("x" => $key['X'], "y" => $key['Y'], "type" => $key['Type']));
+            }
+        } */
+        // echo json_encode ($jsonResult);
         // $arr = file_get_contents ($_POST['offence'], FILE_USE_INCLUDE_PATH)
     }
 	// $data = json_decode($posted_data);

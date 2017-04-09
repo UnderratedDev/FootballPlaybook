@@ -11,6 +11,7 @@ function DesignPlaybookViewModel () {
     var self = this;
     var c = new fabric.Canvas("canvas");
     var ctx = c.getContext("2d");
+    // c.objectCaching = false
     var line, cline, isDown, isCDown;
     var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = snapToGrid = selection = ctrlDown = false;
 	var clcVisible = true;
@@ -18,7 +19,7 @@ function DesignPlaybookViewModel () {
 	c.setWidth(canvasWrapper.clientWidth);
 	c.setHeight((c.width)/1.87);
     var grid = grid = c.width/21.0222;
-	console.log(grid);
+	// console.log(grid);
     var copiedObjects = new Array ();
     self.colour = ko.observable ("#ffffff");
     var editCanvas = false;
@@ -401,7 +402,33 @@ function DesignPlaybookViewModel () {
             url  : 'designBackend.php',
             data : dataSend,
             success : function (response) {
-                console.log (response);
+                c.clear ();
+                setupBackground ();
+                var jsonArr = jQuery.parseJSON (response);
+                console.log (jsonArr);
+                for (let i = 0; i < jsonArr.length; ++i) {
+                    console.log (jsonArr[i]);
+                    if (jsonArr[i]['type'] == 'X') {
+                        xmlcross  = new fabric.Text('X', { 
+                            left: jsonArr[i]['x'], 
+                            top : jsonArr[i]['y'],
+                            fontFamily: 'Arial', 
+                            fontSize: (c.width / 20),
+                            textAlign: 'center',
+                            fill: self.colour (),
+                            selectable: false,
+                            perPixelTargetFind: true
+                        });
+                        console.log (xmlcross);
+                        c.add (xmlcross);
+                        // c.bringToFront(xmlcross)
+                        // c.add(cross).renderAll().setActiveObject (cross);
+                        xmlcross.setCoords();
+                    }
+                }
+                // c.renderAll.bind(c)();
+                c.renderAll ();
+                // console.log (response);
             }
         });
 	});

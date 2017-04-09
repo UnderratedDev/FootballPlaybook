@@ -36,8 +36,9 @@
 				Print to PDF
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="pdfdrop">
-				<a class="dropdown-item" data-bind = "click : allPlaysPDF" href="#">All Plays</a>
-				<a class="dropdown-item" data-bind = "click : selectedPlaysPDF" href="#">Selected Plays</a>
+				<a class="dropdown-item" data-bind = "click : allPlaysPDF" href="#" data-toggle="modal" data-target="#myModal">All Plays</a>
+				<a class="dropdown-item" data-bind = "click : selectedPlaysPDF" href="#" data-toggle="modal" data-target="#myModal">Selected Plays</a>
+				<!---->
 			  </div>
 			</div>
 		</div>
@@ -77,6 +78,36 @@
 				<button type="submit" class="btn btn-primary">Update</button>
 			</form>
 		</div>
+	</div>
+	<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	  <div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4>Print to PDF</h4>
+ 			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="playsPerPage">Plays per Page</label>
+					<select class="form-control" id="playsPerPage">
+					  <option>1</option>
+					  <option>2</option>
+					  <option>4</option>
+					  <option>6</option>
+					</select>
+				</div>
+				<div class="form-check">
+					<label class="form-check-label">
+					  <input type="checkbox" class="form-check-input">
+					  Print in Black and White
+					</label>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="printToPDF">Continue</button>
+			</div>
+		</div>
+	  </div>
 	</div>
 </div>
 </body>

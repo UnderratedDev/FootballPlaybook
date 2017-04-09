@@ -10,7 +10,7 @@
         $playStr     = $_POST['playStr'];
         // echo $posted_data . $playName . $playStr;
         
-        $check = mysqli_query ($db, "SELECT * FROM PlayFull WHERE PlayName == " $playName);
+        $check = mysqli_query ($db, "SELECT * FROM PlayFull WHERE PlayName == " . $playName);
         $count = $check -> num_rows;
         
         if ($count > 0) {
@@ -23,6 +23,13 @@
         
         
         echo $playName . " " . $playStr;
+    } else if (!empty($_POST['defence']) && !empty($_POST['offence'])) {
+        $def = file_get_contents ($_POST['defence'], FILE_USE_INCLUDE_PATH)
+        $xml = simplexml_load_string($def);
+        $json = json_encode($xml);
+        $array = json_decode($json, TRUE);
+        echo $array;
+        // $arr = file_get_contents ($_POST['offence'], FILE_USE_INCLUDE_PATH)
     }
 	// $data = json_decode($posted_data);
     

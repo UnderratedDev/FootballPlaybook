@@ -14,10 +14,11 @@ function DesignPlaybookViewModel () {
     var line, cline, isDown, isCDown;
     var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = snapToGrid = selection = ctrlDown = false;
 	var clcVisible = true;
-    var grid = 45;
     var canvasWrapper = document.getElementById('canvasWrapper');
-	c.setWidth(canvasWrapper.clientWidth);
-	c.setHeight(canvasWrapper.clientHeight);
+	c.setWidth(canvasWrapper.clientWidth-15);
+	c.setHeight((c.width)/1.87);
+    var grid = (c.width/c.height)*24.1;
+	console.log(grid);
     var copiedObjects = new Array ();
     self.colour = ko.observable ("#ffffff");
     
@@ -196,8 +197,14 @@ self.defensePremiumArray = ko.observableArray ();
 	
 	$(window).resize(function () {
 		setupBackground ();
-		c.setWidth(canvasWrapper.clientWidth);
-		c.setHeight(canvasWrapper.clientHeight);
+		c.setWidth(canvasWrapper.clientWidth-15);
+		c.setHeight((c.width)/1.87);
+		grid = c.width/21.0222;
+		if (snapToGrid){
+			noSnapObjectsToGrid();
+			snapToGrid = true;
+			snapObjectsToGrid();
+		}
 	});
     
     function FormationItem(file, name, img, classActive = false) {
@@ -355,6 +362,7 @@ self.defensePremiumArray = ko.observableArray ();
 		for (j = 0; j < self.defensePremiumArray().length; j++) {
 			self.defensePremiumArray()[j].classActive = false;
 		}
+        console.log (i);
 		self.defensePremiumArray()[i].classActive = true;
 		$('#defensePlaysCarousel.item').removeClass('active').eq(i).addClass('active');
 	});
@@ -380,7 +388,7 @@ self.defensePremiumArray = ko.observableArray ();
             if (item.classActive) {
                 oItem = item;
             }
-        }); 
+        });
 		console.log(dItem);
 		console.log(oItem);
 	})
@@ -547,6 +555,10 @@ self.defensePremiumArray = ko.observableArray ();
     });
     
     $('#selectBtn').click (function () {
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#selectBtn').addClass('border');
         c.defaultCursor = 'default';
         lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = true;
         selectCanvasObjects (true);
@@ -558,6 +570,10 @@ self.defensePremiumArray = ko.observableArray ();
     });
     
     $('#lineBtn').click (function () {
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#lineBtn').addClass('border');
         c.off('mouse:down');
         xDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
         lineDraw = false;
@@ -569,7 +585,7 @@ self.defensePremiumArray = ko.observableArray ();
           var pointer = c.getPointer(o.e);
           var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
           line = new fabric.Line(points, {
-              strokeWidth: 5,
+              strokeWidth: c.width/189.2,
               fill: self.colour (),
               stroke: self.colour (),
               originX: 'center',
@@ -600,6 +616,10 @@ self.defensePremiumArray = ko.observableArray ();
         var pointer;
         var points;
 		var p1, p2;
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#cLineBtn').addClass('border');
         // c.defaultCursor = 'default';
         c.defaultCursor = 'crosshair';
         lineDraw = xDraw = cDraw = rDraw = tDraw = egg = true;
@@ -627,6 +647,7 @@ self.defensePremiumArray = ko.observableArray ();
             if (!isCDown)
                 return;
             var pointer = c.getPointer(o.e);
+// <<<<<<< HEAD
             cline.path[1][3] = pointer.x;
             cline.path[1][4] = pointer.y;
 			p2.setLeft(pointer.x - 12);
@@ -635,6 +656,16 @@ self.defensePremiumArray = ko.observableArray ();
             cline.path[1][2] = pointer.y - 50;
 			p1.setLeft(cline.path[1][1] - 12);
 			p1.setTop(cline.path[1][2] - 12);
+// =======
+            line.path[1][3] = pointer.x;
+            line.path[1][4] = pointer.y;
+			p2.setLeft(pointer.x - c.width/78.83333);
+			p2.setTop(pointer.y - c.width/78.83333);
+			line.path[1][1] = pointer.x - c.width/9.46;
+            line.path[1][2] = pointer.y - c.width/18.92;
+			p1.setLeft(line.path[1][1] - c.width/78.83333);
+			p1.setTop(line.path[1][2] - c.width/78.83333);
+// >>>>>>> tablePage
 			c.renderAll();
         });
 
@@ -657,6 +688,10 @@ self.defensePremiumArray = ko.observableArray ();
     });
     
     $('#circleBtn').click (function () {
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#circleBtn').addClass('border');
         c.off('mouse:down');
         c.defaultCursor = 'crosshair';
         lineDraw = xDraw = clDraw = rDraw = tDraw = egg = true;
@@ -665,19 +700,30 @@ self.defensePremiumArray = ko.observableArray ();
             if (cDraw)
                 return;
             c.add (new fabric.Circle ({
-               radius : 20,
+               radius : c.width/47.3,
                fill: 'rgba(0,0,0,0)',
                stroke : self.colour (),
+// <<<<<<< HEAD
                strokeWidth : 5,
                left   : e.e.offsetX - 20,
                top    : e.e.offsetY - 20,
                selectable: false,
-               perPixelTargetFind: true
+               perPixelTargetFind: true,
+// =======
+               strokeWidth : c.width / 189.2,
+               left   : e.e.offsetX - c.width/47.3,
+               top    : e.e.offsetY - c.width/47.3,
+               selectable: false
+// >>>>>>> tablePage
             }));
         });
     });
     
     $('#crossBtn').click (function () {
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#crossBtn').addClass('border');
         c.off('mouse:down');
         lineDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
         xDraw    = false;
@@ -685,9 +731,9 @@ self.defensePremiumArray = ko.observableArray ();
         c.on ('mouse:down', function (e) {
             if (xDraw)
                 return;
-            var cross  = new fabric.Text('X', { left: e.e.offsetX - 10, top : e.e.offsetY - 25,
+            var cross  = new fabric.Text('X', { left: e.e.offsetX - c.width/94.6, top : e.e.offsetY - c.width/37.84,
                             fontFamily: 'Arial', 
-                            fontSize: 53,
+                            fontSize: c.width/20,
                             textAlign: 'center',
                             fill: self.colour (),
                             selectable: false,
@@ -699,6 +745,10 @@ self.defensePremiumArray = ko.observableArray ();
     });
     
     $('#rectBtn').click (function () {
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#rectBtn').addClass('border');
         c.off('mouse:down');
         lineDraw = cDraw = clDraw = xDraw = tDraw = egg = true;
         rDraw    = false;
@@ -709,19 +759,32 @@ self.defensePremiumArray = ko.observableArray ();
             var rect  = (new fabric.Rect ({
                fill: 'rgba(0,0,0,0)',
                stroke : self.colour (),
+// <<<<<<< HEAD
                strokeWidth : 5,
                left   : e.e.offsetX - 25,
                top    : e.e.offsetY - 25,
                width: 40,
                height: 40,
                selectable: false,
-               perPixelTargetFind: true
+               perPixelTargetFind: true,
+// =======
+               strokeWidth : c.width/189.2,
+               left   : e.e.offsetX - c.width/37.84,
+               top    : e.e.offsetY - c.width/37.84,
+               width: c.width/23.65,
+               height: c.width/23.65,
+               selectable: false
+// >>>>>>> tablePage
             }));
             c.add(rect);
         });
     });
     
     $('#triangleBtn').click (function () {
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#triangleBtn').addClass('border');
         c.off('mouse:down');
         lineDraw = cDraw = clDraw = xDraw = rDraw = egg = true;
         tDraw = false;
@@ -731,14 +794,14 @@ self.defensePremiumArray = ko.observableArray ();
                 return;
             c.add(new fabric.Triangle(
 				{
-					width: 40,
-					height: 40,
+					width: c.width/23.65,
+					height: c.width/23.65,
 					selectable: false,
 					fill: 'rgba(0,0,0,0)',
 					stroke: self.colour (),
-					strokeWidth: 5,
-					left   : e.e.offsetX - 20,
-					top    : e.e.offsetY - 25,
+					strokeWidth: c.width/189.2,
+					left   : e.e.offsetX - c.width/37.84,
+					top    : e.e.offsetY - c.width/37.84,
 					angle: 0,
                     perPixelTargetFind: true
 				}));
@@ -746,6 +809,10 @@ self.defensePremiumArray = ko.observableArray ();
     });
     
     $('#eggBtn').click (function () {
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#eggBtn').addClass('border');
         c.off('mouse:down');
         lineDraw = cDraw = clDraw = xDraw = rDraw = tDraw = true;
         egg = false;
@@ -760,13 +827,13 @@ self.defensePremiumArray = ko.observableArray ();
 
                 var image = new fabric.Image(imgObj);
                 image.set({
-                    left   : e.e.offsetX - 20,
-                    top    : e.e.offsetY - 25,
-                    width  : 96,
-                    height : 54,
-                    angle: 20,
-                    padding: 10,
-                    cornersize: 10,
+                    left   : e.e.offsetX - c.width/47.3,
+                    top    : e.e.offsetY - c.width/37.84,
+                    width  : c.width/9.8541666,
+                    height : c.width/17.518519,
+                    angle: c.width/47.3,
+                    padding: c.width/94.6,
+                    cornersize: c.width/94.6,
                     selectable : false,
                     perPixelTargetFind: true
                 });

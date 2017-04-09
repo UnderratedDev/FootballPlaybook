@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/Cleanup.css" />
 </head>
-<div class="container-fluid text-center">
+<div class="container text-center">
   <!-- Trigger the modal with a button -->
   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">New Play</button>
 	
@@ -43,7 +43,7 @@
 			
 				  <!-- Wrapper for slides -->
 				  <div class="carousel-inner" data-bind = " foreach : {data: defensePremiumArray, as: 'defense' }" role="listbox">
-					<div class="item" data-bind="css : { active:  defense.classActive}">					
+					<div class="carousel-item" data-bind="css : { active:  defense.classActive}">					
 					  <img class="modalImg" data-bind="attr : {src: defense.thumbnail}" alt="3-4">
 					  <div>
 						<h4 class="carousel-playname" data-bind="text: defense.playname"></h4>
@@ -52,12 +52,12 @@
 				  </div>
 					
 				  <!-- Left and right controls -->
-				  <a class="left carousel-control" href="#defensePlaysCarousel" role="button" data-slide="prev">
-					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				  <a class="carousel-item-left carousel-control-left" href="#defensePlaysCarousel" role="button" data-slide="prev">
+					<span class="fa fa-chevron-left fa-lg" aria-hidden="true"></span>
 					<span class="sr-only">Previous</span>
 				  </a>
-				  <a class="right carousel-control" href="#defensePlaysCarousel" role="button" data-slide="next">
-					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				  <a class="carousel-item-right carousel-control-right" href="#defensePlaysCarousel" role="button" data-slide="next">
+					<span class="fa fa-chevron-right fa-lg" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				  </a>
 				</div>
@@ -70,8 +70,8 @@
 				  
 				  <!-- Wrapper for slides -->
 				  <div class="carousel-inner" data-bind = " foreach : {data: offensePremiumArray, as: 'offense' }" role="listbox">
-					<div class="item" data-bind="css : { active:  offense.classActive}">
-					  <img class="modalImg" data-bind="attr : {src: offense.thumbnail}" alt="Blank">
+					<div class="carousel-item" data-bind="css : { active:  offense.classActive}">
+					  <img class="modalImg" data-bind="attr : { src: offense.thumbnail }" alt="Blank">
 					  <div>
 						<h4 class="carousel-playname" data-bind="text: offense.playname"></h4>
 					  </div>
@@ -79,12 +79,12 @@
 				  </div>
 
 				  <!-- Left and right controls -->
-				  <a class="left carousel-control" href="#offensePlaysCarousel" role="button" data-slide="prev">
-					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				  <a class="carousel-item-left carousel-control" href="#offensePlaysCarousel" role="button" data-slide="prev">
+					<span class="fa fa-chevron-left fa-lg" aria-hidden="true"></span>
 					<span class="sr-only">Previous</span>
 				  </a>
-				  <a class="right carousel-control" href="#offensePlaysCarousel" role="button" data-slide="next">
-					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				  <a class="carousel-item-right carousel-control" href="#offensePlaysCarousel" role="button" data-slide="next">
+					<span class="fa fa-chevron-right fa-lg" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				  </a>
 				</div>
@@ -100,8 +100,8 @@
   </div><!--modal end-->
   
     <!-- div contains buttons -->
-    <div class="col-xs-12 lgreen">
-        <div class="col-xs-4">
+    <div class="col-xl-12 lgreen">
+        <div class="col-xl-4">
             <button class="btn" data-toggle="collapse" data-target="#pinfo">
                 Play info
             </button>
@@ -113,34 +113,39 @@
             </button>
         </div>
         <!-- div contains shapes -->
-        <div class="col-xs-5">
-            <button class="btn" id = "selectBtn">
+        <div class="col-xl-12">
+            <button class="btn toolbtn" id = "selectBtn">
                 <img id="cursor" src="img/cursor.png" class="shapebtn" />
             </button>
-            <button class="btn" id = "lineBtn">
+            <button class="btn toolbtn" id = "lineBtn">
                 <img id="line" src="img/line_black.png" class="shapebtn" />
             </button>
-            <button class="btn" id = "cLineBtn">
+            <button class="btn toolbtn" id = "cLineBtn">
                 <img id="cline" src="img/cline_black.png" class="shapebtn" />
             </button>
-            <button class="btn" id="circleBtn">
+            <button class="btn toolbtn" id="circleBtn">
                 <img id="o" src="img/o_black.png" class="shapebtn" />
             </button>
-            <button class="btn" id="crossBtn">
+            <button class="btn toolbtn" id="crossBtn">
                 <img id="x" src="img/x_black.png" class="shapebtn" />
             </button>
-            <button class="btn" id="rectBtn">
+            <button class="btn toolbtn" id="rectBtn">
                 <img id="sq" src="img/square.png" class="shapebtn" />
             </button>
-            <button class="btn" id="triangleBtn">
+            <button class="btn toolbtn" id="triangleBtn">
                 <img id="tr" src="img/triangle.png" class="shapebtn" />
             </button>
-            <button class = "btn" id = "eggBtn">
+            <button class = "btn toolbtn" id = "eggBtn">
                 <img id = "eg" src = "img/team/egg.png" class = "shapeBtn" />
             </button>
+<!-- <<<<<<< HEAD -->
 <!-- <<<<<<< Updated upstream -->
             <input type="button" value = "undo" id = "undo"/>
             <input type="button" value = "redo" id = "redo"/>
+<!-- ======= -->
+            <button class="toolbtn" id = "undo">undo</button>
+            <button class="toolbtn" value = "redo" id = "redo">redo</button>
+<!-- >>>>>>> tablePage -->
             <label><input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid</label>
             <label><input type = "checkbox" value = "CLCVisible" id ="CLCVisibleCheck" checked="checked"/>Curve Line Handles Visibility</label>
 <!-- ======= -->
@@ -155,7 +160,7 @@
     </div>
 	<div class="row">
 		<!-- div contains canvas -->
-		<div class="col-xl-9" id = "canvasWrapper">
+		<div class="col-xl-11" id = "canvasWrapper">
 			<!-- canvas size -->
 			<canvas id="canvas"></canvas>
 		</div>

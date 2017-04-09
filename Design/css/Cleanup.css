@@ -2,10 +2,6 @@
     border: 5px solid;
 }
 
-#canvasWrapper {
-	min-height: 504;
-}
-
 div {
 	border: 1px dashed red
 }
@@ -24,6 +20,10 @@ button {
     overflow: hidden;
     outline: none;
 }
+
+#coloursDiv{
+	background-color: #009900;
+}
 .lgreen {
     background-color: #009900;
     color: white;
@@ -31,6 +31,15 @@ button {
 .shapebtn {
     width: 2.2em;
     height: 2.2em;
+}
+.toolbtn{
+	background-image: url("../img/button1.png");
+	background-size: 100% 100%;
+}
+
+.colorbtn{
+	background-image: url("../img/button1.png");
+	background-size: 100% 100%;
 }
 .blue {
     color: #95ccff;
@@ -49,5 +58,6 @@ button {
 }
 
 .border {
-	border: 1px solid black;
+	background-image: url("../img/button2red.png");
+	background-size: 100% 100%;
 }

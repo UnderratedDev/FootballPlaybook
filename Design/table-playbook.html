@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jsPDF-1.3.2/dist/jspdf.debug.js"></script>
 <!-- STYLES -->
 <link rel="stylesheet" href="playbookstyles.css">
 </head>
@@ -35,8 +36,8 @@
 				Print to PDF
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="pdfdrop">
-				<a class="dropdown-item" href="#">All Plays</a>
-				<a class="dropdown-item" href="#">Selected Plays</a>
+				<a class="dropdown-item" data-bind = "click : allPlaysPDF" href="#">All Plays</a>
+				<a class="dropdown-item" data-bind = "click : selectedPlaysPDF" href="#">Selected Plays</a>
 			  </div>
 			</div>
 		</div>

@@ -65,6 +65,40 @@ $(function () {
                 self.shiftDown = false;
         });
         
+
+        self.allPlaysPDF = function () {
+            
+        };
+        
+        // black and white option needed also
+        self.selectedPlaysPDF = function () {
+            var doc = new jsPDF ();
+            img  = new Image();
+            page = 0;
+            // doc.text(35, 25, 'Paranyan loves jsPDF');
+            ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
+                img.src = canvas.toDataURL('JPEG');
+                doc.text (15, 25, obj.PlayName);
+                // parameter 5, 6 are width, height doc.add (img, 'JPEG', 15, 40, 180, 160);
+                doc.addImage (img.src, 'JPEG', 15, 40, 180, 160);
+                doc.text (15, 200, obj.PlayString);
+                if (++page != self.selectedPlays().length)
+                    doc.addPage ();
+            });
+            /*
+            var img;
+            ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
+                canvas.clear ();
+                canvas.loadFromJSON(obj.canvasObj, canvas.renderAll.bind(canvas), function(o, object) {
+                 // fabric.log(o, object);
+                });
+                
+                img = canvas.toDataURL('JPEG');
+                doc.add (img, 'JPEG', 15, 40, 180, 160);
+            }); */
+            doc.save('test.pdf')
+        };
+        
         self.selectPlay = function (item) {
             if (self.ctrlDown) {
                 if (item.selectRow()) {
@@ -87,7 +121,7 @@ $(function () {
                     // ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
                         
                     // });
-                    self.selectedPlays.removeAll ();
+                    self.selectedPlays.removeAll();
                     item.selectRow (true);
                     self.selectedPlays.push (item);
                 } else {
@@ -99,10 +133,10 @@ $(function () {
             self.desc      (item.PlayString);
             self.name      (item.PlayName);
             showImage      (item.canvasObj);
-            self.selected  = item;
+            self.selected = item;
         };
 		
-		self.duplicatePlay = function () {
+		self.duplicatePlay = function () {  
             self.dupe = true;
             ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
                     ko.utils.arrayForEach(self.TableRows (), function (obj_) {

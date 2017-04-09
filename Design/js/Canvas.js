@@ -27,9 +27,9 @@ function DesignPlaybookViewModel () {
     var editCanvasItem;
     
     c.on({
-    'object:selected': onObjectSelected,
-    'object:moving': onObjectMoving,
-    'before:selection:cleared': onBeforeSelectionCleared,
+        'object:selected': onObjectSelected,
+        'object:moving': onObjectMoving,
+        'before:selection:cleared': onBeforeSelectionCleared,
     });
   
     self.defensePremiumArray = ko.observableArray ();
@@ -412,6 +412,8 @@ function DesignPlaybookViewModel () {
                         xmlcross  = new fabric.Text('X', { 
                             left: jsonArr[i]['x'], 
                             top : jsonArr[i]['y'],
+                            originX : 'center',
+                            originY : 'center',
                             fontFamily: 'Arial', 
                             fontSize: (c.width / 20),
                             textAlign: 'center',
@@ -1149,8 +1151,8 @@ function DesignPlaybookViewModel () {
           ++count;
       }
       var group = new fabric.Group(objs, {
-          originX: c.width / 2,// 'center',
-          originY: c.height / 2//  'center'
+          originX: 'center', // c.width / 2,// 'center',
+          originY: 'center' // c.height / 2//  'center'
       });
       c.setActiveGroup(group.setCoords()).renderAll();
     }

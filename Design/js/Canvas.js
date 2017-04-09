@@ -734,18 +734,22 @@ function DesignPlaybookViewModel () {
 				}
 			
 			var pointer = c.getPointer(o.e);
-            cline.path[1][3] = pointer.x;
+			c.remove(cline.circle0)
+			c.remove(cline.circle1)
+			c.remove(cline.circle2)
+			cline = makeCurveLine(cline.path[0][1], cline.path[0][2], cline.path[1][1], cline.path[1][2], pointer.x, pointer.y);
+            /* cline.path[1][3] = pointer.x;
             cline.path[1][4] = pointer.y;
 			p2.setLeft(pointer.x - 12);
 			p2.setTop(pointer.y - 12);
 			cline.path[1][1] = pointer.x - 100;
             cline.path[1][2] = pointer.y - 50;
 			p1.setLeft(cline.path[1][1] - 12);
-			p1.setTop(cline.path[1][2] - 12);
+			p1.setTop(cline.path[1][2] - 12); */
             // line.path[1][3] = pointer.x;
             // line.path[1][4] = pointer.y;
-			p2.setLeft(pointer.x - c.width/78.83333);
-			p2.setTop(pointer.y - c.width/78.83333);
+			/* p2.setLeft(pointer.x - c.width/78.83333);
+			p2.setTop(pointer.y - c.width/78.83333); */
 			// line.path[1][1] = pointer.x - c.width/9.46;
             // line.path[1][2] = pointer.y - c.width/18.92;
 			// p1.setLeft(line.path[1][1] - c.width/78.83333);
@@ -1223,18 +1227,22 @@ function DesignPlaybookViewModel () {
 		/*var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
 				,{ fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
                     ,selectable: false, hasControls: false, hasBorders: false}); */
-        var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0', { fill: 'rgba(0,0,0,0)', stroke: self.colour (), strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
+        // var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0', { fill: 'rgba(0,0,0,0)', stroke: self.colour (), strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
+                    // ,selectable: true, hasBorders: false, shadow: 'rgba(0,0,0,1) 5px 5px 7px'}); 
+					
+		var l = new fabric.Path('M ' + p0x + ' '  + p0y + ' Q ' + p1x + ', ' + p1y + ', ' + p2x + ', ' + p2y,
+			{ fill: 'rgba(0,0,0,0)', stroke: self.colour (), strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
                     ,selectable: true, hasBorders: false, shadow: 'rgba(0,0,0,1) 5px 5px 7px'});
 
-		l.path[0][1] = p0x; //p1x
+		// l.path[0][1] = p0x; //p1x
         
-		l.path[0][2] = p0y; //p0y
+		// l.path[0][2] = p0y; //p0y
 
-		l.path[1][1] = p1x; // p1x
-		l.path[1][2] = p1y; // p1y
+		// l.path[1][1] = p1x; // p1x
+		// l.path[1][2] = p1y; // p1y
 
-		l.path[1][3] = p2x; // p2x 
-		l.path[1][4] = p2y; // p2y
+		// l.path[1][3] = p2x; // p2x 
+		// l.path[1][4] = p2y; // p2y
 
 		l.name = "curve";
 		

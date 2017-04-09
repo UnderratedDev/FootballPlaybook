@@ -129,6 +129,15 @@ button {
 .toolbtn{
 	background-image: url("../img/button1.png");
 	background-size: 100% 100%;
+	font-size: 3vmin;
+	font-weight: bolder;
+}
+
+#toolbar {
+	padding: 5px 0px;
+}
+
+.shape{
 	font-size: 2vmin;
 }
 

@@ -100,7 +100,7 @@
 				  <!-- Wrapper for slides -->
 				  <div class="carousel-inner" data-bind = " foreach : {data: offensePremiumArray, as: 'offense' }" role="listbox">
 					<div class="carousel-item" data-bind="css : { active:  offense.classActive}">
-					  <img class="modalImg" data-bind="attr : { src: offense.thumbnail }" alt="Blank">
+					  <img class="modalImg" data-bind="attr : {src: offense.thumbnail}" alt="Blank">
 					  <div>
 						<h4 class="carousel-playname" data-bind="text: offense.playname"></h4>
 					  </div>
@@ -139,50 +139,42 @@
         </div>
 	</div>
         <!-- div contains shapes -->
-        <div class="col-xl-12">
-            <button class="btn toolbtn" id = "selectBtn">
-                <img id="cursor" src="img/cursor.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id = "lineBtn">
-                <img id="line" src="img/line_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id = "cLineBtn">
-                <img id="cline" src="img/cline_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="circleBtn">
-                <img id="o" src="img/o_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="crossBtn">
-                <img id="x" src="img/x_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="rectBtn">
-                <img id="sq" src="img/square.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="triangleBtn">
-                <img id="tr" src="img/triangle.png" class="shapebtn" />
-            </button>
-            <button class = "btn toolbtn" id = "eggBtn">
-                <img id = "eg" src = "img/team/egg.png" class = "shapeBtn" />
-            </button>
-<!-- <<<<<<< HEAD -->
-<!-- <<<<<<< Updated upstream -->
-            <input type="button" value = "undo" id = "undo"/>
-            <input type="button" value = "redo" id = "redo"/>
-<!-- ======= -->
-            <button class="toolbtn" id = "undo">undo</button>
-            <button class="toolbtn" value = "redo" id = "redo">redo</button>
-<!-- >>>>>>> tablePage -->
-            <label><input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid</label>
-            <label><input type = "checkbox" value = "CLCVisible" id ="CLCVisibleCheck" checked="checked"/>Curve Line Handles Visibility</label>
-<!-- ======= -->
-            <input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid<br>
-<!-- >>>>>>> Stashed changes -->
-        </div>
-    </div>
-    <!-- div contains play info
-    <div class="col-xs-12 collapse" id="pinfo">
-        <input type="text" id="playName" placeholder="playName" />
-    </div> -->
+	<div class="row">
+		<div class="col-xl-12" id="toolbar">
+			<button class="btn toolbtn shape" id = "selectBtn">
+				<img id="cursor" src="img/cursor.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn shape" id = "lineBtn">
+				<img id="line" src="img/line_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn shape" id = "cLineBtn">
+				<img id="cline" src="img/cline_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn shape" id="circleBtn">
+				<img id="o" src="img/o_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn shape" id="crossBtn">
+				<img id="x" src="img/x_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn shape" id="rectBtn">
+				<img id="sq" src="img/square.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn shape" id="triangleBtn">
+				<img id="tr" src="img/triangle.png" class="shapebtn" />
+			</button>
+			<button class = "btn toolbtn shape" id = "eggBtn">
+				<img id = "eg" src = "img/team/egg.png" class = "shapeBtn" />
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xl-12">
+			<button class="toolbtn" id = "undo">undo</button>
+			<button class="toolbtn" value = "redo" id = "redo">redo</button>
+			<label><input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid</label>
+			<label><input type = "checkbox" value = "CLCVisible" id ="CLCVisibleCheck" checked="checked"/>Curve Line Handles Visibility</label>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-xl-12" id="toolbar">
 			<button class="btn toolbtn" id = "selectBtn">
@@ -255,7 +247,13 @@
                 <input type="text" id="playName" placeholder="playName" />
 			</div>
 		</div>
-		<div class="col-xl-6">
+		<div class="col-xl-3">
+			<div class="form-group">
+				<label for="pinfo">Play Name</label>
+				<input type="text" class="form-control" id="pinfo" rows="3"></input>
+			</div>
+		</div>
+		<div class="col-xl-2">
             <button class="btn toolbtn" data-toggle="collapse" data-target="#canvasPNGImg" id = "canvasPng">
                 Save
             </button>

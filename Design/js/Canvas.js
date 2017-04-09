@@ -863,7 +863,6 @@ function DesignPlaybookViewModel () {
                perPixelTargetFind: true,
                shadow: 'rgba(0,0,0,1) 5px 5px 7px',
                selectable: false
-// >>>>>>> tablePage
             }));
             c.add(rect);
         });

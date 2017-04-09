@@ -40,6 +40,8 @@ $(function () {
         self.ctrlDown      = false;
         self.shiftDown     = false;
         self.dupe          = false;
+        self.nameSortType  = false;
+        self.dateSortType  = false;
         document.addEventListener('keyup', function(e) {
             if (e.keyCode != 17) 
                 self.ctrlDown  = false;
@@ -64,6 +66,35 @@ $(function () {
             if (e.keycode == 16)
                 self.shiftDown = false;
         });
+        
+        self.nameSort = function () {
+            if (self.nameSortType) {
+                self.TableRows.sort (function (left, right) {
+                    return left.PlayName.localeCompare(right.PlayName) * -1;
+                });
+                self.nameSortType = false;
+            } else {
+                self.TableRows.sort (function (left, right) {
+                    console.log (left.PlayName);
+                    return left.PlayName.localeCompare(right.PlayName);
+                });
+                self.nameSortType = true;
+            }
+        };
+        
+        self.dateSort = function () {
+            if (self.dateSortType) {
+                self.TableRows.sort (function (left, right) {
+                    return left.dateCreated == right.dateCreated ? 0 : left.dateCreated < right.dateCreated;
+                });
+                self.dateSortType = false;
+            } else {
+                self.TableRows.sort (function (left, right) {
+                     return left.dateCreated == right.dateCreated ? 0 : left.dateCreated > right.dateCreated;
+                });
+                self.dateSortType = true;
+            }
+        };
         
         // use doc.save for "name".pdf
         self.allPlaysPDF = function () {

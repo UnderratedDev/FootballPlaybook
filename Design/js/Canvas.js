@@ -651,7 +651,8 @@ function DesignPlaybookViewModel () {
               originX: 'center',
               originY: 'center',
               selectable: false,
-              perPixelTargetFind: true
+              perPixelTargetFind: true,
+              shadow: 'rgba(0,0,0,1) 5px 5px 7px'
           });
           c.add (line);
         });
@@ -761,16 +762,19 @@ function DesignPlaybookViewModel () {
                fill: 'rgba(0,0,0,0)',
                stroke : self.colour (),
 // <<<<<<< HEAD
+/*
                strokeWidth : 5,
                left   : e.e.offsetX - 20,
                top    : e.e.offsetY - 20,
                selectable: false,
-               perPixelTargetFind: true,
+               perPixelTargetFind: true, */
 // =======
                strokeWidth : c.width / 189.2,
                left   : e.e.offsetX - c.width/47.3,
                top    : e.e.offsetY - c.width/47.3,
-               selectable: false
+               selectable: false,
+               perPixelTargetFind: true,
+               shadow: 'rgba(0,0,0,1) 5px 5px 7px'
 // >>>>>>> tablePage
             }));
         });
@@ -794,7 +798,8 @@ function DesignPlaybookViewModel () {
                             textAlign: 'center',
                             fill: self.colour (),
                             selectable: false,
-                            perPixelTargetFind: true
+                            perPixelTargetFind: true,
+                            shadow: 'rgba(0,0,0,1) 5px 5px 7px'
                             });
             c.add(cross);
             cross.setCoords();
@@ -817,19 +822,23 @@ function DesignPlaybookViewModel () {
                fill: 'rgba(0,0,0,0)',
                stroke : self.colour (),
 // <<<<<<< HEAD
+/*
                strokeWidth : 5,
                left   : e.e.offsetX - 25,
                top    : e.e.offsetY - 25,
                width: 40,
                height: 40,
                selectable: false,
-               perPixelTargetFind: true,
+               perPixelTargetFind: true, */
 // =======
+
                strokeWidth : c.width/189.2,
                left   : e.e.offsetX - c.width/37.84,
                top    : e.e.offsetY - c.width/37.84,
                width: c.width/23.65,
                height: c.width/23.65,
+               perPixelTargetFind: true,
+               shadow: 'rgba(0,0,0,1) 5px 5px 7px',
                selectable: false
 // >>>>>>> tablePage
             }));
@@ -860,7 +869,8 @@ function DesignPlaybookViewModel () {
 					left   : e.e.offsetX - c.width/37.84,
 					top    : e.e.offsetY - c.width/37.84,
 					angle: 0,
-                    perPixelTargetFind: true
+                    perPixelTargetFind: true,
+                    shadow: 'rgba(0,0,0,1) 5px 5px 7px'
 				}));
         });
     });
@@ -892,7 +902,8 @@ function DesignPlaybookViewModel () {
                     padding: c.width/94.6,
                     cornersize: c.width/94.6,
                     selectable : false,
-                    perPixelTargetFind: true
+                    perPixelTargetFind: true,
+                    shadow: 'rgba(0,0,0,1) 5px 5px 7px'
                 });
                 //image.scale(getRandomNum(0.1, 0.25)).setCoords();
                 c.add(image);
@@ -1180,9 +1191,9 @@ function DesignPlaybookViewModel () {
 		/*var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
 				,{ fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
                     ,selectable: false, hasControls: false, hasBorders: false}); */
-        var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0'
-				,{ fill: '', stroke: 'white', strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
-                    ,selectable: true, hasBorders: false});
+        var l = new fabric.Path('M 65 0' + ' Q 100, 100, 200, 0');
+        l.set ({ fill: 'rgba(0,0,0,0)', stroke: self.colour (), strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
+                    ,selectable: true, hasBorders: false, shadow: 'rgba(0,0,0,1) 5px 5px 7px'});
 
 		l.path[0][1] = p0x; //p1x
 		l.path[0][2] = p0y; //p0y
@@ -1221,7 +1232,8 @@ function DesignPlaybookViewModel () {
       radius: rad,
       fill: '#fff',
       stroke: '#666',
-      selectable: false
+      selectable: false,
+      shadow: 'rgba(0,0,0,1) 5px 5px 7px'
     });
 
     c.hasBorders = c.hasControls = false;

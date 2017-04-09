@@ -32,42 +32,98 @@ $(function () {
     function PlaybookViewModel () {
         var self = this;
 		
-        self.desc      = ko.observable ();
-        self.name      = ko.observable ();
-        self.TableRows = ko.observableArray ();
+        self.desc          = ko.observable ();
+        self.name          = ko.observable ();
+        self.TableRows     = ko.observableArray ();
         self.selected;
+        self.selectedPlays = ko.observableArray();
+        self.ctrlDown      = false;
+        self.shiftDown     = false;
+        self.dupe          = false;
         /*
         self.selectPlay = function (item) {   
             alert ("hey");
         }; */
+        
+        document.addEventListener('keyup', function(e) {
+            if (e.keyCode != 17) 
+                self.ctrlDown  = false;
+            if (e.keycode != 16)
+                self.shiftDown = false;
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 17) {
+                self.ctrlDown  = true;
+            } else
+                self.ctrlDown  = false;
+            if (e.keycode == 16) {
+                self.shiftDown = true;
+            } else
+                self.shiftDown = false;
+        });
+        
+        document.addEventListener('keyup', function(e) {
+            if (e.keyCode == 17)
+                self.ctrlDown  = false;
+            if (e.keycode == 16)
+                self.shiftDown = false;
+        });
         
         self.selectPlay = function (item) {
 			console.log (item);
 			ko.utils.arrayForEach(self.TableRows (), function(obj) {
 				obj.selectRow (false);
 			});
-			item.selectRow (true);
+            if (self.ctrlDown) {
+                self.selectedPlays.push (item);
+                ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
+                    ko.utils.arrayForEach(self.TableRows (), function (obj_) {
+                        if (obj.id == obj_.id)
+                            obj_.selectRow (obj_.selectRow() ? false : true);
+                    });
+                });
+            } else {
+                if (!self.dupe) {
+                    self.selectedPlays.removeAll ();
+                    item.selectRow (true);
+                    self.selectedPlays.push (item);
+                } else {
+                    item.selectRow (true);
+                    self.selectedPlays.push (item);
+                }
+            }
+            
+			// item.selectRow (true);
             self.desc      (item.Desc);
             self.name      (item.PlayName);
             showImage      (item.canvasObj);
-            console.log    (self.selected);
+            // console.log    (self.selected);
             self.selected  = item;
         };
 		
 		self.duplicatePlay = function () {
-			tblRow = new TableRow (self.selected.PlayName, self.selected.PlayString, self.selected.DateCreated, self.selected.canvasObj);
-            self.TableRows.push (tblRow);
-			self.selectPlay (tblRow);
-            var dataSend = { "name" : tblRow.PlayName, "playString" : tblRow.PlayString, "canvasObj" : tblRow.canvasObj };
-            console.log (dataSend);
-            $.ajax({
-			type : 'POST',
-			url  : 'playbookbackend.php',
-			data : dataSend,
-			success : function (response) {
-                console.log (response);
-				}
-			});	
+            self.dupe = true;
+            ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
+                    ko.utils.arrayForEach(self.TableRows (), function (obj_) {
+                        if (obj.id == obj_.id) {
+                            obj_.selectRow (obj_.selectRow() ? false : true);
+                            console.log (self.selectedPlays ());    
+                            tblRow = new TableRow (obj_.PlayName, obj_.PlayString, obj_.DateCreated, obj_.canvasObj);
+                            self.TableRows.push (tblRow);
+                            self.selectPlay     (tblRow);
+                            var dataSend = { "name" : tblRow.PlayName, "playString" : tblRow.PlayString, "canvasObj" : tblRow.canvasObj };
+                            $.ajax({
+                            type : 'POST',
+                            url  : 'playbookbackend.php',
+                            data : dataSend,
+                            success : function (response) {
+                                console.log (response);
+                                }
+                            });
+                        }
+                    });
+                });
         };
         
         self.deletePlay = function () {

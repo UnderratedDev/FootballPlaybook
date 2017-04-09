@@ -176,8 +176,12 @@ button {
 	background-size: 100% 100%;
 }
 
-#pinfo{
+#playString{
     resize: none;
 	border: 1px solid black;
 }
 
+#playName{
+    resize: none;
+	border: 1px solid black;
+}

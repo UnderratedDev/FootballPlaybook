@@ -4,9 +4,9 @@
 <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
 <!-- KNOCKOUT -->
 <script src = "http://knockoutjs.com/downloads/knockout-3.4.2.js" ></script>
-<script src = "../Design/js/fabric.js"></script>
+<script src = "js/fabric.js"></script>
 <!-- SCRIPT -->
-<script src = "./playbook.js" defer="defer"></script>
+<script src = "js/playbook.js" defer="defer"></script>
 <!-- BOOTSTRAP -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
@@ -24,10 +24,10 @@
 				Play
 			  </button>
 			  <div class="dropdown-menu" aria-labelledby="playdrop">
-				<a class="dropdown-item" href="#">New</a>
+				<a class="dropdown-item" href="index.html">New</a>
 				<a class="dropdown-item" href="#">Edit</a>
-				<button class="dropdown-item" data-bind = "click : duplicatePlay" href="#">Duplicate</button>
-				<a class="dropdown-item" href="#">Delete</a>
+				<button class="dropdown-item" data-bind = "click : duplicatePlay">Duplicate</button>
+				<a class="dropdown-item" data-bind = "click : deletePlay">Delete</a>
 			  </div>
 			</div>
 			<div class="btn-group">
@@ -57,9 +57,9 @@
 		<div class="col-8" id="playInfo">
 			<h3>Play Information</h3>
 			<form id="playform">
-				<div class="form-group row">
+				<div class="form-group row" id ="canvasWrapper" >
 				<!-- <img data-bind="attr:{src: imagePath}" id="playimg /> -->
-                <canvas id = 'c' width = '800' height = '800'></canvas>
+                    <canvas id = 'canvas' width = '800' height = '800'></canvas>
 				</div>
 				<div class="form-group row">
 					<label for="name-input" class="col-2 col-form-label-sm">Name</label>
@@ -71,12 +71,6 @@
 					<label for="desc-input" class="col-2 col-form-label-sm">Description</label>
 					<div class="col-10">
 						<textarea data-bind = "textInput: desc" class="form-control form-control-sm" id="desc-input" rows="3"></textarea>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="img-input" class="col-2 col-form-label-sm">Img-URL</label>
-					<div class="col-10">
-						<input data-bind = "textInput: imageLink" class="form-control form-control-sm" type="text" id="img-input" />
 					</div>
 				</div>
 				<button type="submit" class="btn btn-primary">Update</button>

@@ -413,8 +413,7 @@ self.defensePremiumArray = ko.observableArray ();
             
         console.log (dItem);
         console.log (oItem);
-    });
-     */
+    }); */
     function generateGrid () {
         for (let i = 0; i < (c.width / grid); ++i)
             c.add(new fabric.Line([ i * grid, 0, i * grid, c.width], { stroke: '#ccc', selectable: false, name :'gridLine'}));
@@ -640,14 +639,13 @@ self.defensePremiumArray = ko.observableArray ();
 			clDraw = true;
         });
 		
-		c.on ('mouse:move', function(o){
+		c.on ('mouse:move', function(o) {
             clDraw = false;
 		    if (clDraw)
                 return;
             if (!isCDown)
                 return;
             var pointer = c.getPointer(o.e);
-// <<<<<<< HEAD
             cline.path[1][3] = pointer.x;
             cline.path[1][4] = pointer.y;
 			p2.setLeft(pointer.x - 12);
@@ -656,16 +654,14 @@ self.defensePremiumArray = ko.observableArray ();
             cline.path[1][2] = pointer.y - 50;
 			p1.setLeft(cline.path[1][1] - 12);
 			p1.setTop(cline.path[1][2] - 12);
-// =======
-            line.path[1][3] = pointer.x;
-            line.path[1][4] = pointer.y;
+            // line.path[1][3] = pointer.x;
+            // line.path[1][4] = pointer.y;
 			p2.setLeft(pointer.x - c.width/78.83333);
 			p2.setTop(pointer.y - c.width/78.83333);
-			line.path[1][1] = pointer.x - c.width/9.46;
-            line.path[1][2] = pointer.y - c.width/18.92;
-			p1.setLeft(line.path[1][1] - c.width/78.83333);
-			p1.setTop(line.path[1][2] - c.width/78.83333);
-// >>>>>>> tablePage
+			// line.path[1][1] = pointer.x - c.width/9.46;
+            // line.path[1][2] = pointer.y - c.width/18.92;
+			// p1.setLeft(line.path[1][1] - c.width/78.83333);
+			// p1.setTop(line.path[1][2] - c.width/78.83333);
 			c.renderAll();
         });
 
@@ -851,11 +847,11 @@ self.defensePremiumArray = ko.observableArray ();
             snapToGrid = true;
             snapObjectsToGrid ();
         } else
-            dataURL = c.toDataURL();
+           dataURL = c.toDataURL();
            document.getElementById('canvasImgSaved').src = dataURL;
            
            var canJSON = JSON.stringify (c);
-           
+           // var canJSON = c.toDatalessObject();
            console.log (canJSON);
            
            name    = $("#playName").val ();

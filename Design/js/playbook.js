@@ -1,0 +1,101 @@
+$(function () {
+    var canvas = new fabric.Canvas("canvas");
+    canvas.deactivateAll();
+    canvas.selection = false;
+    var canvasWrapper = document.getElementById('canvasWrapper');
+    var ctx    = canvas.getContext("2d");
+    var TableRow = function (playName, playString, dateCreated, canvasObj, id) {
+			this.selectRow 	 = ko.observable (false);
+            this.PlayName    = playName;
+            this.PlayString  = playString;
+            this.DateCreated = dateCreated;
+            this.canvasObj   = canvasObj;
+            this.id          = id;
+            showImage (canvasObj);
+            // this.DateUpdated = dateUpdated;
+            
+            // document.getElementById('playimg').src = this.imgUrl;
+    }
+    
+    function showImage (canvasObj) {
+        canvas.clear ();
+        canvas.loadFromJSON(canvasObj, canvas.renderAll.bind(canvas), function(o, object) {
+            // fabric.log(o, object);
+        });
+        canvas.deactivateAll();
+        canvas.selection = false;
+        canvas.forEachObject(function(object){ 
+           object.selectable = false; 
+        });
+    }
+
+    function PlaybookViewModel () {
+        var self = this;
+		
+        self.desc      = ko.observable ();
+        self.name      = ko.observable ();
+        self.TableRows = ko.observableArray ();
+        self.selected;
+        /*
+        self.selectPlay = function (item) {   
+            alert ("hey");
+        }; */
+        
+        self.selectPlay = function (item) {
+			console.log (item);
+			ko.utils.arrayForEach(self.TableRows (), function(obj) {
+				obj.selectRow (false);
+			});
+			item.selectRow (true);
+            self.desc      (item.Desc);
+            self.name      (item.PlayName);
+            showImage      (item.canvasObj);
+            console.log    (self.selected);
+            self.selected  = item;
+        };
+		
+		self.duplicatePlay = function () {
+			tblRow = new TableRow (self.selected.PlayName, self.selected.PlayString, self.selected.DateCreated, self.selected.canvasObj);
+            self.TableRows.push (tblRow);
+			self.selectPlay (tblRow);
+            var dataSend = { "name" : tblRow.PlayName, "playString" : tblRow.PlayString, "canvasObj" : tblRow.canvasObj };
+            console.log (dataSend);
+            $.ajax({
+			type : 'POST',
+			url  : 'playbookbackend.php',
+			data : dataSend,
+			success : function (response) {
+                console.log (response);
+				}
+			});	
+        };
+        
+        self.deletePlay = function () {
+            self.TableRows.remove (self.selected);
+            var deleteSend = { "deleteId" : self.selected.id };
+            $.ajax({
+			type : 'POST',
+			url  : 'playbookbackend.php',
+			data : deleteSend,
+			success : function (response) {
+                console.log (response);
+				}
+			});
+        }
+        
+        var dataRet = { "getData" : 1 };
+        
+        $.ajax({
+			type : 'POST',
+			url  : 'playbookbackend.php',
+			data : dataRet,
+			success : function (response) {
+                var objArr = jQuery.parseJSON(response);
+                for (let i = 0; i < objArr.length; ++i)
+                    self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].PlayString, objArr[i].CreateDate, objArr[i].CanvasObj, objArr[i].PlayID));
+                self.selectPlay (self.TableRows()[0]);
+				}
+			});	
+    }
+    ko.applyBindings (new PlaybookViewModel ());
+});

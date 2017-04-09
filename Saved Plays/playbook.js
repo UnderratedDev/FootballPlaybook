@@ -1,16 +1,20 @@
 $(function () {
-
-    var TableRow = function (playName, dateCreated, imgUrl, desc) {
+    var canvas = new fabric.Canvas("c");
+    var ctx    = canvas.getContext("2d");
+    // var canvas = new fabric.Canvas('canvas');
+    var TableRow = function (playName, playString, dateCreated, canvasObj) {
 			this.selectRow 	 = ko.observable (false);
             this.PlayName    = playName;
             this.DateCreated = dateCreated;
-            this.imgUrl      = imgUrl;
-            this.Desc        = desc;
-         /* PlayID    
-            PlayName  
-            PlayString
-            CreatedBy 
-            UpdateDate */
+            this.canvasObj   = canvasObj;
+            console.log (canvasObj);
+            canvas.loadFromJSON(canvasObj);
+            // this.DateUpdated = dateUpdated;
+            this.imgUrl      = canvas.toDataURL('png');
+            if(!window.localStorage){alert("This function is not supported by your browser."); return;}
+            // to PNG
+            window.open(canvas.toDataURL('png'));
+            // document.getElementById('playimg').src = this.imgUrl;
     }
 
     function PlaybookViewModel () {
@@ -57,12 +61,13 @@ $(function () {
 			url  : 'playbookbackend.php',
 			data : "",
 			success : function (response) {
+                // console.log (response);
                 var objArr = jQuery.parseJSON(response);
-                console.log (objArr);
+                // console.log (objArr);
                 // Query with have from certain user so owner not required.
-                // for (let i = 0; i < objArr.length; ++i)
-                    // self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].updateDate, "./Tesla.jpg", objArr[i].PlayString));
-                // self.selectPlay (self.TableRows()[0]);
+                for (let i = 0; i < objArr.length; ++i)
+                    self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].PlayString, objArr[i].CreateDate, objArr[i].CanvasObj));
+                self.selectPlay (self.TableRows()[0]);
                 // console.log (obj);
                 /*
                 for (var key in response) {

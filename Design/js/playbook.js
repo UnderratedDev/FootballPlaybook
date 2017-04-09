@@ -89,7 +89,6 @@ $(function () {
                     item.selectRow (true);
                     self.selectedPlays.push (item);
                 } else {
-                    item.selectRow (true);
                     self.selectedPlays.push (item);
                 }
             }
@@ -107,11 +106,11 @@ $(function () {
             ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
                     ko.utils.arrayForEach(self.TableRows (), function (obj_) {
                         if (obj.id == obj_.id) {
-                            obj_.selectRow (obj_.selectRow() ? false : true);
                             console.log (self.selectedPlays ());    
                             tblRow = new TableRow (obj_.PlayName, obj_.PlayString, obj_.DateCreated, obj_.canvasObj);
                             self.TableRows.push (tblRow);
                             self.selectPlay     (tblRow);
+                            self.TableRows()[self.TableRows().length - 1].selectRow (true);
                             var dataSend = { "name" : tblRow.PlayName, "playString" : tblRow.PlayString, "canvasObj" : tblRow.canvasObj };
                             $.ajax({
                             type : 'POST',
@@ -127,16 +126,22 @@ $(function () {
         };
         
         self.deletePlay = function () {
-            self.TableRows.remove (self.selected);
-            var deleteSend = { "deleteId" : self.selected.id };
-            $.ajax({
-			type : 'POST',
-			url  : 'playbookbackend.php',
-			data : deleteSend,
-			success : function (response) {
-                console.log (response);
-				}
-			});
+            ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
+                    ko.utils.arrayForEach(self.TableRows (), function (obj_) {
+                        self.TableRows.remove (obj);
+                        var deleteSend = { "deleteId" : obj.id };
+                        $.ajax({
+                        type : 'POST',
+                        url  : 'playbookbackend.php',
+                        data : deleteSend,
+                        success : function (response) {
+                            console.log (response);
+                            }
+                        });
+                    });
+            });
+            
+            
         }
         
         var dataRet = { "getData" : 1 };

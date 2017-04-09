@@ -195,7 +195,7 @@ function DesignPlaybookViewModel () {
 	
 	$(window).resize(function () {
 		setupBackground ();
-		c.setWidth(canvasWrapper.clientWidth-30);
+		c.setWidth(canvasWrapper.clientWidth-15);
 		c.setHeight((c.width)/1.87);
 		grid = c.width/21.0222;
 		if (snapToGrid){

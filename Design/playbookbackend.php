@@ -17,9 +17,16 @@
         $playName    = mysqli_real_escape_string($db, $playName);
         $values = "('" . $playName . "', '" . $playStr. "', 'Yudhvir', '" . $canvasJSON . "','1000-01-01 00:00:00')";
         
-        echo "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, CanvasObj, CreateDate) VALUES " . $values;
+        // echo "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, CanvasObj, CreateDate) VALUES " . $values;
         
         mysqli_query ($db, "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, CanvasObj, CreateDate) VALUES " . $values) or die (mysqli_error($db));
+        
+        $id = $db->insert_id;
+        
+        $result = mysqli_query ($db, "SELECT * FROM PlayFull WHERE PlayID = " . $id) or die (mysqli_error($db));
+        $row = mysqli_fetch_assoc ($result);
+        
+        echo json_encode ($row);
     }
     
     if (!empty ($_POST['getData']) && $_POST['getData'] == 1) {

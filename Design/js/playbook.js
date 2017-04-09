@@ -71,25 +71,43 @@ $(function () {
         });
         
         self.selectPlay = function (item) {
-			console.log (item);
-			ko.utils.arrayForEach(self.TableRows (), function(obj) {
-				obj.selectRow (false);
-			});
+			// console.log (item);
+			// ko.utils.arrayForEach(self.TableRows (), function(obj) {
+				//obj.selectRow (false);
+			// }); 
             if (self.ctrlDown) {
-                self.selectedPlays.push (item);
+                // self.selectedPlays.push (item);
+                // ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
+                   // ko.utils.arrayForEach(self.TableRows (), function (obj_) {
+                     //   if (obj.id == obj_.id)
+                       //     obj_.selectRow (obj_.selectRow() ? false : true);
+                    // });
+                // });
+                if (item.selectRow())
+                    item.selectRow (false);
+                else {
+                    self.selectedPlays.push (item);
+                    item.selectRow (true);
+                }
+                /*
                 ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
-                    ko.utils.arrayForEach(self.TableRows (), function (obj_) {
-                        if (obj.id == obj_.id)
-                            obj_.selectRow (obj_.selectRow() ? false : true);
-                    });
-                });
+                    if (obj.id == item.id)
+                        obj.selectRow (false);
+                }); */
             } else {
                 if (!self.dupe) {
+                    ko.utils.arrayForEach(self.TableRows (), function (obj) {
+                        obj.selectRow (false);
+                    });
+                    // ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
+                        
+                    // });
                     self.selectedPlays.removeAll ();
                     item.selectRow (true);
                     self.selectedPlays.push (item);
                 } else {
                     self.selectedPlays.push (item);
+                    item.selectRow (true);
                 }
             }
             
@@ -107,38 +125,39 @@ $(function () {
                     ko.utils.arrayForEach(self.TableRows (), function (obj_) {
                         if (obj.id == obj_.id) {
                             console.log (self.selectedPlays ());    
-                            tblRow = new TableRow (obj_.PlayName, obj_.PlayString, obj_.DateCreated, obj_.canvasObj);
-                            self.TableRows.push (tblRow);
-                            self.selectPlay     (tblRow);
-                            self.TableRows()[self.TableRows().length - 1].selectRow (true);
-                            var dataSend = { "name" : tblRow.PlayName, "playString" : tblRow.PlayString, "canvasObj" : tblRow.canvasObj };
+                            
+                            var dataSend = { "name" : obj.PlayName, "playString" : obj.PlayString, "canvasObj" : obj.canvasObj };
                             $.ajax({
                             type : 'POST',
                             url  : 'playbookbackend.php',
                             data : dataSend,
                             success : function (response) {
-                                console.log (response);
+                                var objArr = jQuery.parseJSON(response);
+                                // console.log (objArr);
+                                // console.log (objArr['PlayID']);
+                                tblRow = new TableRow (obj_.PlayName, obj_.PlayString, obj_.DateCreated, obj_.canvasObj, objArr['PlayID']);
+                                self.TableRows.push (tblRow);
+                                self.selectPlay     (tblRow);
                                 }
                             });
                         }
                     });
                 });
+            self.dupe = false;
         };
         
         self.deletePlay = function () {
             ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
-                    ko.utils.arrayForEach(self.TableRows (), function (obj_) {
-                        self.TableRows.remove (obj);
-                        var deleteSend = { "deleteId" : obj.id };
-                        $.ajax({
-                        type : 'POST',
-                        url  : 'playbookbackend.php',
-                        data : deleteSend,
-                        success : function (response) {
-                            console.log (response);
-                            }
-                        });
-                    });
+                var deleteSend = { "deleteId" : obj.id };
+                $.ajax({
+                type : 'POST',
+                url  : 'playbookbackend.php',
+                data : deleteSend,
+                success : function (response) {
+                    self.TableRows.remove (obj);
+                    self.selectedPlays.remove (obj)
+                    }
+                });
             });
             
             

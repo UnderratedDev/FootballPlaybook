@@ -1351,7 +1351,6 @@ function DesignPlaybookViewModel () {
   }
 }
 
-
 var model;
 
 $(document).ready (function () {

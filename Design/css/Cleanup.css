@@ -1,5 +1,6 @@
 div {
-	border: 1px dashed red
+	border: solid 1px;
+	border-style:hidden;
 }
 
 body {
@@ -161,5 +162,10 @@ button {
 .border {
 	background-image: url("../img/button2red.png");
 	background-size: 100% 100%;
+}
+
+#pinfo{
+    resize: none;
+	border: 1px solid black;
 }
 

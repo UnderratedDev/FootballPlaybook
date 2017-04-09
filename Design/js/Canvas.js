@@ -8,7 +8,7 @@ function DesignPlaybookViewModel () {
     var canvasWrapper = document.getElementById('canvasWrapper');
 	c.setWidth(canvasWrapper.clientWidth);
 	c.setHeight((c.width)/1.87);
-    var grid = (c.width/c.height)*24.1;
+    var grid = grid = c.width/21.0222;
 	console.log(grid);
     var copiedObjects = new Array ();
     self.colour = ko.observable ("#ffffff");

@@ -83,9 +83,10 @@ $(function () {
                        //     obj_.selectRow (obj_.selectRow() ? false : true);
                     // });
                 // });
-                if (item.selectRow())
+                if (item.selectRow()) {
                     item.selectRow (false);
-                else {
+                    self.selectedPlays.remove (item);
+                } else {
                     self.selectedPlays.push (item);
                     item.selectRow (true);
                 }
@@ -112,7 +113,7 @@ $(function () {
             }
             
 			// item.selectRow (true);
-            self.desc      (item.Desc);
+            self.desc      (item.PlayString);
             self.name      (item.PlayName);
             showImage      (item.canvasObj);
             // console.log    (self.selected);

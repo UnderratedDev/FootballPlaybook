@@ -3,6 +3,11 @@
 body {
 	background: url("../img/main_bg.jpg") no-repeat center #e7e7e7;
 	background-position:top center;
+	-webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 #canvasWrapper {

@@ -393,7 +393,17 @@ function DesignPlaybookViewModel () {
             }
         });
 		console.log(dItem);
+		console.log(dItem.xml);
 		console.log(oItem);
+        dataSend = { "defence" : dItem.xml, "offence" : oItem.xml };
+        $.ajax({
+            type : 'POST',
+            url  : 'designBackend.php',
+            data : dataSend,
+            success : function (response) {
+                console.log (response);
+            }
+        });
 	});
     
     function loadCanvasFromJSONRow (canvasObj) {

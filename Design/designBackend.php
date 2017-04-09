@@ -24,8 +24,8 @@
         $def = file_get_contents ($_POST['defence'], FILE_USE_INCLUDE_PATH);
         $xml = simplexml_load_string($def);
         $json = json_encode($xml);
-        $array = json_decode($json, TRUE);
-        echo $array;
+        // $array = json_decode($json, TRUE);
+        echo $json;
         // $arr = file_get_contents ($_POST['offence'], FILE_USE_INCLUDE_PATH)
     }
 	// $data = json_decode($posted_data);

@@ -6,7 +6,7 @@ function DesignPlaybookViewModel () {
     var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = snapToGrid = selection = ctrlDown = false;
 	var clcVisible = true;
     var canvasWrapper = document.getElementById('canvasWrapper');
-	c.setWidth(canvasWrapper.clientWidth-15);
+	c.setWidth(canvasWrapper.clientWidth);
 	c.setHeight((c.width)/1.87);
     var grid = (c.width/c.height)*24.1;
 	console.log(grid);
@@ -195,7 +195,7 @@ function DesignPlaybookViewModel () {
 	
 	$(window).resize(function () {
 		setupBackground ();
-		c.setWidth(canvasWrapper.clientWidth-15);
+		c.setWidth(canvasWrapper.clientWidth);
 		c.setHeight((c.width)/1.87);
 		grid = c.width/21.0222;
 		if (snapToGrid){

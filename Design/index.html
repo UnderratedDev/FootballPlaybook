@@ -1,3 +1,8 @@
+<?php
+include("include/header.php");
+//include_once("adverts.php");
+
+?>
 <html>
 <head>
     <meta charset="utf-8">
@@ -22,9 +27,8 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/Cleanup.css" />
 </head>
-<div class="container text-center">
-  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">New Play</button>
+<div class="container text-center" id="mainWrapper">
+	<div class="container">
 	
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
@@ -100,62 +104,60 @@
   </div><!--modal end-->
   
     <!-- div contains buttons -->
-    <div class="col-xl-12 lgreen">
-        <div class="col-xl-4">
-            <button class="btn" data-toggle="collapse" data-target="#pinfo">
-                Play info
-            </button>
-            <button class="btn" data-toggle="collapse" data-target="#canvasPNGImg" id = "canvasPng">
-                Save
-            </button>
-            <button class="btn" id = "clearCanvasBtn">
+	<div class="row">
+        <div class="col-xl-12">
+		  <!-- Trigger the modal with a button -->
+		  <button class="btn toolbtn" data-toggle="modal" data-target="#myModal">New Play</button>
+            <button class="btn toolbtn" id = "clearCanvasBtn">
                 Clear
             </button>
         </div>
+	</div>
         <!-- div contains shapes -->
-        <div class="col-xl-12">
-            <button class="btn toolbtn" id = "selectBtn">
-                <img id="cursor" src="img/cursor.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id = "lineBtn">
-                <img id="line" src="img/line_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id = "cLineBtn">
-                <img id="cline" src="img/cline_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="circleBtn">
-                <img id="o" src="img/o_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="crossBtn">
-                <img id="x" src="img/x_black.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="rectBtn">
-                <img id="sq" src="img/square.png" class="shapebtn" />
-            </button>
-            <button class="btn toolbtn" id="triangleBtn">
-                <img id="tr" src="img/triangle.png" class="shapebtn" />
-            </button>
-            <button class = "btn toolbtn" id = "eggBtn">
-                <img id = "eg" src = "img/team/egg.png" class = "shapeBtn" />
-            </button>
-            <button class="toolbtn" id = "undo">undo</button>
-            <button class="toolbtn" value = "redo" id = "redo">redo</button>
-            <label><input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid</label>
-            <label><input type = "checkbox" value = "CLCVisible" id ="CLCVisibleCheck" checked="checked"/>Curve Line Handles Visibility</label>
-        </div>
-    </div>
-    <!-- div contains play info -->
-    <div class="col-xs-12 collapse" id="pinfo">
-        play info text here.
-    </div>
+	<div class="row">
+		<div class="col-xl-12">
+			<button class="btn toolbtn" id = "selectBtn">
+				<img id="cursor" src="img/cursor.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn" id = "lineBtn">
+				<img id="line" src="img/line_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn" id = "cLineBtn">
+				<img id="cline" src="img/cline_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn" id="circleBtn">
+				<img id="o" src="img/o_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn" id="crossBtn">
+				<img id="x" src="img/x_black.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn" id="rectBtn">
+				<img id="sq" src="img/square.png" class="shapebtn" />
+			</button>
+			<button class="btn toolbtn" id="triangleBtn">
+				<img id="tr" src="img/triangle.png" class="shapebtn" />
+			</button>
+			<button class = "btn toolbtn" id = "eggBtn">
+				<img id = "eg" src = "img/team/egg.png" class = "shapeBtn" />
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xl-12">
+			<button class="toolbtn" id = "undo">undo</button>
+			<button class="toolbtn" value = "redo" id = "redo">redo</button>
+			<label><input type = "checkbox" value = "SnapGrid" id = "SnapGridCheck"/>Snap To Grid</label>
+			<label><input type = "checkbox" value = "CLCVisible" id ="CLCVisibleCheck" checked="checked"/>Curve Line Handles Visibility</label>
+		</div>
+	</div>
 	<div class="row">
 		<!-- div contains canvas -->
-		<div class="col-xl-11" id = "canvasWrapper">
+		<div class="col-xl-11 col-lg-11 col-md-11 col-sm-12 col-xs-12" id = "canvasWrapper">
 			<!-- canvas size -->
 			<canvas id="canvas"></canvas>
 		</div>
 		<!-- div contains colours -->
-		<div class="col-xl-1" id = "coloursDiv">
+		<div class="col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12" id = "coloursDiv">
 			<button class="btn colorbtn" id = "yellowBtn">
 				<span class="fa fa-tint fa-2x yellow"></span>
 			</button>
@@ -176,6 +178,19 @@
 			</button>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-xl-6">
+			<div class="form-group">
+				<label for="pinfo">Play Info</label>
+				<textarea class="form-control" id="pinfo" rows="3"></textarea>
+			</div>
+		</div>
+		<div class="col-xl-6">
+            <button class="btn" data-toggle="collapse" data-target="#canvasPNGImg" id = "canvasPng">
+                Save
+            </button>
+		</div>
+	</div>
     <!-- div contains saved image -->
     <div class="col-xs-12 collapse" id="canvasPNGImg">
         Generated PNG:
@@ -184,6 +199,7 @@
         </div>
         <br/> *Click save again to collapse
     </div>
+	</div>
 </div>
 
 </html>

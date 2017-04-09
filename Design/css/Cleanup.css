@@ -1,17 +1,28 @@
-#canvas {
-    border: 5px solid;
-}
-
 div {
 	border: 1px dashed red
 }
 
 body {
-  -webkit-user-select: none;
-     -moz-user-select: -moz-none;
-      -ms-user-select: none;
-          user-select: none;
+	background: url("../img/main_bg.jpg") no-repeat center #e7e7e7;
+	background-position:top center;
 }
+
+#canvasWrapper {
+	padding:0px;
+}
+
+#canvas {
+    border: 5px solid;
+}
+
+#mainWrapper{
+	max-width:1060px;
+	min-height:600px;
+	margin:0 auto;
+	background:url('../img/content_bg.jpg') no-repeat center top #e7e7e7;
+	overflow:hidden;
+}
+
 button {
     background-color: Transparent;
     background-repeat: no-repeat;
@@ -21,13 +32,6 @@ button {
     outline: none;
 }
 
-#coloursDiv{
-	background-color: #009900;
-}
-.lgreen {
-    background-color: #009900;
-    color: white;
-}
 .shapebtn {
     width: 2.2em;
     height: 2.2em;
@@ -35,11 +39,17 @@ button {
 .toolbtn{
 	background-image: url("../img/button1.png");
 	background-size: 100% 100%;
+	font-size: 2vmin;
 }
 
 .colorbtn{
 	background-image: url("../img/button1.png");
 	background-size: 100% 100%;
+	font-size: 2vmin;
+	
+}
+.colorbtn:focus{
+	outline: none;
 }
 .blue {
     color: #95ccff;
@@ -61,3 +71,4 @@ button {
 	background-image: url("../img/button2red.png");
 	background-size: 100% 100%;
 }
+

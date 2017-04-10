@@ -87,7 +87,7 @@ $(function () {
                 self.nameSortType = false;
             } else {
                 self.TableRows.sort (function (left, right) {
-                    console.log (left.PlayName);
+                    // console.log (left.PlayName);
                     return left.PlayName.localeCompare(right.PlayName);
                 });
                 self.nameSortType = true;
@@ -184,7 +184,7 @@ $(function () {
             ko.utils.arrayForEach(self.selectedPlays (), function (obj) {
                     ko.utils.arrayForEach(self.TableRows (), function (obj_) {
                         if (obj.id == obj_.id) {
-                            console.log (self.selectedPlays ());    
+                            // console.log (self.selectedPlays ());    
                             
                             var dataSend = { "name" : obj.PlayName, "playString" : obj.PlayString, "canvasObj" : obj.canvasObj };
                             $.ajax({
@@ -228,7 +228,7 @@ $(function () {
 			url  : 'playbookbackend.php',
 			data : dataRet,
 			success : function (response) {
-				console.log (response);
+				// console.log (response);
                 var objArr = jQuery.parseJSON(response);
                 for (let i = 0; i < objArr.length; ++i)
                     self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].PlayString, objArr[i].CreateDate, objArr[i].CanvasObj, objArr[i].PlayID));

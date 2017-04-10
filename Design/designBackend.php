@@ -21,7 +21,8 @@
             mysqli_query ($db, "UPDATE PlayFull SET CanvasObj = '" . $posted_data . "', PlayName = '" . $playName 
                                 . "', playString = '" . $playStr . "' WHERE PlayID = '" . $playId . "'") or die (mysqli_error($db));
         } else {  
-            $values = "('" . $playName . "', '" . $playStr. "', 'Yudhvir', '" . $posted_data . "','1000-01-01 00:00:00')";
+            $dateTime = date("Y-m-d H:i:s");
+            $values = "('" . $playName . "', '" . $playStr. "', 'Yudhvir', '" . $posted_data . "','" . $dateTime . "')";
             mysqli_query ($db, "INSERT INTO PlayFull (PlayName, PlayString, CreatedBy, CanvasObj, CreateDate) VALUES " . $values) or die (mysqli_error($db));
         }
     } else if (!empty($_POST['defence']) && !empty($_POST['offence'])) {
@@ -45,6 +46,12 @@
                    array_push ($jsonResult, array ("x" => $player['X'], "y" => $player['Y'], "type" => $player['Type']));
         }
         echo json_encode ($jsonResult);
+    
+        // $result    = mysqli_query ($db, "SELECT * FROM PlayFull");
+        // $resultArr = array(); 
+        // while ($row = mysqli_fetch_assoc($result))
+           // array_push($resultArr, $row);
+        // $j_Result = json_encode ($resultArr);
         /*
         foreach ($array as $value) {
             foreach ($value as $key) {
@@ -57,14 +64,6 @@
         // $arr = file_get_contents ($_POST['offence'], FILE_USE_INCLUDE_PATH)
     }
 	// $data = json_decode($posted_data);
-    
-	mysqli_select_db ($db, "PlaybookDatabase") or die(mysqli_error($db));
-    
-    $result    = mysqli_query ($db, "SELECT * FROM PlayFull");
-    $resultArr = array(); 
-    while ($row = mysqli_fetch_assoc($result))
-        array_push($resultArr, $row);
-    $j_Result = json_encode ($resultArr);
     
     // echo $j_Result;
     

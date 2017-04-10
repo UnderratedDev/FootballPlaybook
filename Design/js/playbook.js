@@ -4,6 +4,14 @@ $(function () {
     canvas.selection = false;
     var canvasWrapper = document.getElementById('canvasWrapper');
     var ctx    = canvas.getContext("2d");
+	canvas.setWidth(canvasWrapper.clientWidth);
+	canvas.setHeight((canvas.width)/1.87);
+		
+	$(window).resize(function () {
+		canvas.setWidth(canvasWrapper.clientWidth);
+		canvas.setHeight((canvas.width)/1.87);
+	});
+	
     var TableRow = function (playName, playString, dateCreated, canvasObj, id) {
 			this.selectRow 	 = ko.observable (false);
             this.PlayName    = playName;
@@ -16,17 +24,19 @@ $(function () {
             
             // document.getElementById('playimg').src = this.imgUrl;
     }
-    
+	
     function showImage (canvasObj) {
         canvas.clear ();
         canvas.loadFromJSON(canvasObj, canvas.renderAll.bind(canvas), function(o, object) {
-            // fabric.log(o, object);
+			
         });
         canvas.deactivateAll();
         canvas.selection = false;
         canvas.forEachObject(function(object){ 
            object.selectable = false; 
         });
+		canvas.setWidth(canvasWrapper.clientWidth);
+		canvas.setHeight((canvas.width)/1.87);
     }
 
     function PlaybookViewModel () {

@@ -1,0 +1,191 @@
+body {
+	background: url("../img/main_bg.jpg") no-repeat center #e7e7e7;
+	background-position:top center;
+}
+
+#mainWrapper{
+	max-width:1060px;
+	min-height:600px;
+	margin:0 auto;
+	background:url('../img/content_bg.jpg') no-repeat center top #e7e7e7;
+	overflow:hidden;
+}
+
+#header{
+	width:1060px;
+	height:200px;
+}
+#googleAd{
+	width:468px;
+	height:60px;
+
+}
+
+#status {
+	font-weight: bold;
+	width:200px;
+	height:32px;
+	padding-top:5px;
+	text-align:right;
+	margin-right:100px;
+	
+}
+
+#facebook {
+	width:350px;
+	margin-left:10px;
+	height:32px;
+	float:left;
+}
+
+
+#header-subnav{
+	margin-top:25px;
+	width:640px;
+	text-align:right;
+	height:60px;
+	float:left;
+}
+#header-subnav A{
+	color:#000;
+	text-decoration:underline;
+}
+#header-navigation{
+	margin-top:20px; 
+	margin-left:10px;
+	float:left;
+}
+
+#nav-contain{
+	height:51px;
+	width:625px;
+	background:url('../img/nav-bg.png') repeat-x;
+	float:left;
+}
+.nav-item{
+	color:#BABABA;
+	height:30px;
+	font-size:18px;
+	font-weight:bold;
+	float:left;
+	padding:14px 23px 7px 23px;
+	display:block;
+}
+.nav-item:hover{
+	
+	text-decoration:underline;
+	display:block;
+}
+.nav-selected{
+
+	text-decoration:underline;
+	color:#384E81;
+	display:block;
+}
+#fb-root{
+	float:left;
+	width:480px;
+	background-color:blue;
+}
+#fb-iframe{
+	margin-left:200px;
+}
+
+#logo{
+	margin-top:30px;
+	margin-left:30px;
+	height:140px;
+	width:300px;
+	float:left;
+}
+
+#htmlContent {
+	border: black solid 1px;
+	margin-bottom: 50px;
+	height: 600px;
+	width: 800px;
+}
+
+#container {
+	width: 800px;
+	height: 600px;
+	margin:auto;
+}
+
+#playbookHeader {
+	text-align: left;
+	background-color: #e0e0e0;
+	height: 5%;
+	border-bottom: black solid 1px;
+}
+
+#playdrop {
+	background-color: #e0e0e0;
+	border: none;
+	font-weight: bold;
+	height:100%;
+	border-radius:0px;
+}
+
+#playdrop:hover {
+	background-color: white;
+}
+
+#playdrop:focus {
+	background-color: white;
+}
+
+#pdfdrop {
+	background-color: #e0e0e0;
+	border: none;
+	font-weight: bold;
+	height:100%;
+	border-radius:0px;
+}
+
+#pdfdrop:hover {
+	background-color: white;
+}
+
+#pdfdrop:focus {
+	background-color: white;
+}
+
+#playNameDate {
+	box-sizing: border-box;
+	background-color: white;
+	margin: 0px;
+	padding: 0px;
+	border-right: black solid 1px;
+	height: 95%;
+	overflow-y: scroll;
+}
+
+#playInfo {
+	background-color: white;
+	height: 95%;
+}
+
+#playinfo h3{
+	text-align: center;
+	padding-top: 5px;
+	word-spacing: 10px;
+}
+
+#tbl {
+	vertical-align: top;
+	width: 100%;
+}
+
+#tbl th{
+	padding-left: 10px;
+}
+
+#desc-input {
+	resize: none;
+}
+
+#playimg {
+	margin: auto;
+	height: 280px;
+}

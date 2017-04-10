@@ -164,6 +164,7 @@ body {
 #playInfo {
 	background-color: white;
 	height: 95%;
+	text-align: none;
 }
 
 #playinfo h3{
@@ -185,7 +186,12 @@ body {
 	resize: none;
 }
 
-#playimg {
-	margin: auto;
-	height: 280px;
+#labelText {
+	word-wrap: break-word;
+}
+
+#canvas{
+	border:1px black solid;
+	width:100%;
+	height: width/1.871;
 }

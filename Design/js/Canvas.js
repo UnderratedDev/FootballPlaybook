@@ -643,7 +643,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#selectBtn').addClass('border');
         c.defaultCursor = 'default';
-        lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = true;
+        lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = false;
         selectCanvasObjects (true);
         selectableLineCircles();
         c.off('mouse:down'); // turn off events used by curve line
@@ -708,6 +708,7 @@ function DesignPlaybookViewModel () {
         c.defaultCursor = 'crosshair';
         lineDraw = xDraw = cDraw = rDraw = tDraw = egg = true;
 		clDraw = false;
+		c.off('mouse:up');
 		c.on ('mouse:down', function (o) {
             if (clDraw)
 				return;
@@ -739,26 +740,9 @@ function DesignPlaybookViewModel () {
 			p1y = cline.path[1][2];
 			deleteCurveLine(cline);
 			cline = makeCurveLine(p0x, p0y, p1x, p1y, pointer.x, pointer.y);
-            /* cline.path[1][3] = pointer.x;
-            cline.path[1][4] = pointer.y;
-			p2.setLeft(pointer.x - 12);
-			p2.setTop(pointer.y - 12);
-			cline.path[1][1] = pointer.x - 100;
-            cline.path[1][2] = pointer.y - 50;
-			p1.setLeft(cline.path[1][1] - 12);
-			p1.setTop(cline.path[1][2] - 12); */
-            // line.path[1][3] = pointer.x;
-            // line.path[1][4] = pointer.y;
-			/* p2.setLeft(pointer.x - c.width/78.83333);
-			p2.setTop(pointer.y - c.width/78.83333); */
-			// line.path[1][1] = pointer.x - c.width/9.46;
-            // line.path[1][2] = pointer.y - c.width/18.92;
-			// p1.setLeft(line.path[1][1] - c.width/78.83333);
-			// p1.setTop(line.path[1][2] - c.width/78.83333);
 			c.renderAll();
         });
-
-        c.on('mouse:up', function(o){
+		c.on('mouse:up', function(o){
             if (!clDraw)
                 return;
             isCDown = false;
@@ -1347,6 +1331,7 @@ function DesignPlaybookViewModel () {
         onChange: c.renderAll.bind(c),
       });
     } else if (activeObject.name == "curve") {
+		
 		hideLineCircles();
 	}
     $(document).keydown(function (e) {
@@ -1385,7 +1370,6 @@ function DesignPlaybookViewModel () {
   }
 
   function onObjectMoving(e) {
-	// console.log("hello")
     var p0x;
     var p0y;
     var p1x;
@@ -1454,6 +1438,9 @@ function DesignPlaybookViewModel () {
 			});
 		}
 	} else if (e.target.name == "curve") {
+		console.log(clDraw)
+		if (clDraw) 
+			return;
 		var p = e.target;
 		cline = p;
 		p.setCoords();
@@ -1463,42 +1450,18 @@ function DesignPlaybookViewModel () {
 		p1y = cline.path[1][2];
 		p2x = cline.path[1][3];
 		p2y = cline.path[1][4];
-		// c.renderAll();
 		c.on('mouse:up', function(o){
-			showLineCircles();
 			pointer = c.getPointer(e.e);
-			// p.circle0.setLeft(p.path[0][1] + pointer.x  - offsetX - 12);
-			// p.circle0.setTop(p.path[0][2] + pointer.y  - offsetY - 12);
-			// p.circle1.setLeft(p.path[1][1] + pointer.x  - offsetX - 14);
-			// p.circle1.setTop(p.path[1][2] + pointer.y  - offsetY - 14);
-			// p.circle2.setLeft(p.path[1][3] + pointer.x  - offsetX - 12);
-			// p.circle0.setLeft(p.path[1][4] + pointer.y  - offsetY - 12);
-			// p.circle0.setLeft(p0x - 12);
-			// p.circle0.setTop(p0y- 12);
-			// p.circle1.setLeft(p1x - 14);
-			// p.circle1.setTop(p1y - 14);
-			// p.circle2.setLeft(p2x - 12);
-			// p.circle2.setTop(p2y - 12);
-			// p.circle0.setCoords();
-			// p.circle1.setCoords();
-			// p.circle2.setCoords();
-			// p.setCoords();
-			// c.renderAll();
-			// deleteCurveLine(cline);
-			// cline = makeCurveLine(p.path[0][1] + pointer.x  - offsetX, p.path[0][2] + pointer.y  - offsetY 
-				// , p.path[1][1] + pointer.x  - offsetX , p.path[1][2] + pointer.y  - offsetY
-				// , p.path[1][3] + pointer.x  - offsetX, p.path[1][4] + pointer.y  - offsetY);
+			deleteCurveLine(cline);
 			cline = makeCurveLine(p0x + pointer.x  - offsetX, p0y + pointer.y  - offsetY 
 				, p1x + pointer.x  - offsetX , p1y + pointer.y  - offsetY
 				, p2x + pointer.x  - offsetX, p2y + pointer.y  - offsetY);
-			// showLineCircles();
+			showLineCircles();
 			c.renderAll();
-			
 		});
 	}
     else if (e.target.name == "p0" || e.target.name == "p2") {
       var p = e.target;
-
       p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
       p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
       p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });

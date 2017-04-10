@@ -1438,12 +1438,10 @@ function DesignPlaybookViewModel () {
 			});
 		}
 	} else if (e.target.name == "curve") {
-		console.log(clDraw)
 		if (clDraw) 
 			return;
 		var p = e.target;
 		cline = p;
-		p.setCoords();
 		p0x = cline.path[0][1];
 		p0y = cline.path[0][2];
 		p1x = cline.path[1][1];
@@ -1457,6 +1455,7 @@ function DesignPlaybookViewModel () {
 				, p1x + pointer.x  - offsetX , p1y + pointer.y  - offsetY
 				, p2x + pointer.x  - offsetX, p2y + pointer.y  - offsetY);
 			showLineCircles();
+			selectableLineCircles();
 			c.renderAll();
 		});
 	}
@@ -1467,8 +1466,6 @@ function DesignPlaybookViewModel () {
       p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
     //  p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
 	}
-	showLineCircles();
-	selectableLineCircles();
   }
 }
 

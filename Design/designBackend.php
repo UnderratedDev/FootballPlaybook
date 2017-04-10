@@ -29,11 +29,21 @@
         $xml = simplexml_load_string($def);
         $json = json_encode($xml);
         $array = json_decode($json, TRUE);
-        $jsonResult = array ();        
-        foreach ($array as $play)
-            foreach ($play['Player'] as $player)
-               array_push ($jsonResult, array ("x" => $player['X'], "y" => $player['Y'], "type" => $player['Type']));
-        
+        $jsonResult = array ();
+        if (strcmp($_POST['defence'], 'xml/none.xml') !== 0) {
+            foreach ($array as $play)
+                foreach ($play['Player'] as $player)
+                   array_push ($jsonResult, array ("x" => $player['X'], "y" => $player['Y'], "type" => $player['Type']));
+        }
+        $off = file_get_contents ($_POST['offence'], FILE_USE_INCLUDE_PATH);
+        $xml = simplexml_load_string($off);
+        $json = json_encode($xml);
+        $array = json_decode($json, TRUE);
+        if (strcmp($_POST['offence'], 'xml/none.xml') !== 0) {
+            foreach ($array as $play)
+                foreach ($play['Player'] as $player)
+                   array_push ($jsonResult, array ("x" => $player['X'], "y" => $player['Y'], "type" => $player['Type']));
+        }
         echo json_encode ($jsonResult);
         /*
         foreach ($array as $value) {

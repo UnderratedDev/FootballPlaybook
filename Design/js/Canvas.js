@@ -427,10 +427,10 @@ function DesignPlaybookViewModel () {
             success : function (response) {
                 c.clear ();
                 setupBackground ();
+                console.log (response);
                 var jsonArr = jQuery.parseJSON (response);
                 console.log (jsonArr);
                 for (let i = 0; i < jsonArr.length; ++i) {
-                    console.log (jsonArr[i]);
                     if (jsonArr[i]['type'] == 'X') {
                         xmlcross  = new fabric.Text('X', { 
                             left: jsonArr[i]['x'], 
@@ -442,18 +442,32 @@ function DesignPlaybookViewModel () {
                             textAlign: 'center',
                             fill: self.colour (),
                             selectable: false,
-                            perPixelTargetFind: true
+                            perPixelTargetFind: true,
+                            shadow: 'rgba(0,0,0,1) 5px 5px 7px'
                         });
                         console.log (xmlcross);
                         c.add (xmlcross);
                         // c.bringToFront(xmlcross)
                         // c.add(cross).renderAll().setActiveObject (cross);
                         xmlcross.setCoords();
+                    } else if (jsonArr[i]['type'] == 'O') {
+                        console.log (jsonArr[i]);
+                        c.add (new fabric.Circle ({
+                           radius : c.width/47.3,
+                           fill: 'rgba(0,0,0,0)',
+                           originX : 'center',
+                           originY : 'center',
+                           stroke : self.colour (),
+                           strokeWidth : c.width / 189.2,
+                           left   : jsonArr[i]['x'],
+                           top    : jsonArr[i]['y'],
+                           selectable: false,
+                           perPixelTargetFind: true,
+                           shadow: 'rgba(0,0,0,1) 5px 5px 7px'
+                        }));
                     }
                 }
-                // c.renderAll.bind(c)();
                 c.renderAll ();
-                // console.log (response);
             }
         });
 	});
@@ -643,7 +657,12 @@ function DesignPlaybookViewModel () {
 		});
 		$('#selectBtn').addClass('border');
         c.defaultCursor = 'default';
+//<<<<<<< selectCurveLine
         lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = false;
+//=======
+        //lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
+        selection = false;
+//>>>>>>> master
         selectCanvasObjects (true);
         selectableLineCircles();
         c.off('mouse:down'); // turn off events used by curve line
@@ -658,7 +677,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#lineBtn').addClass('border');
         c.off('mouse:down');
-        xDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
+        xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = true;
         lineDraw = false;
         c.defaultCursor = 'default';
         c.on('mouse:down', function(o) {
@@ -770,7 +789,7 @@ function DesignPlaybookViewModel () {
 		$('#circleBtn').addClass('border');
         c.off('mouse:down');
         c.defaultCursor = 'crosshair';
-        lineDraw = xDraw = clDraw = rDraw = tDraw = egg = true;
+        lineDraw = xDraw = clDraw = rDraw = tDraw = egg = selection = true;
         cDraw    = false;
         c.on ('mouse:down', function (e) {
             if (cDraw)
@@ -804,7 +823,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#crossBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
+        lineDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = true;
         xDraw    = false;
         c.defaultCursor = 'crosshair';        
         c.on ('mouse:down', function (e) {
@@ -830,7 +849,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#rectBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = xDraw = tDraw = egg = true;
+        lineDraw = cDraw = clDraw = xDraw = tDraw = egg = selection = true;
         rDraw    = false;
         c.defaultCursor = 'crosshair';        
         c.on ('mouse:down', function (e) {
@@ -869,7 +888,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#triangleBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = xDraw = rDraw = egg = true;
+        lineDraw = cDraw = clDraw = xDraw = rDraw = egg = selection = true;
         tDraw = false;
         c.defaultCursor = 'crosshair';        
         c.on ('mouse:down', function (e) {
@@ -898,7 +917,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#eggBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = xDraw = rDraw = tDraw = true;
+        lineDraw = cDraw = clDraw = xDraw = rDraw = tDraw = selection = true;
         egg = false;
         c.defaultCursor = 'crosshair';      
         c.on ('mouse:down', function (e) {
@@ -1194,6 +1213,8 @@ function DesignPlaybookViewModel () {
         if (e.keyCode == 17) 
             ctrlDown = true;
       
+        if (selection)
+            return;
         if (ctrlDown && e.keyCode == 65) {
             if (!snapToGrid)
                 c.setActiveGroup(new fabric.Group(c.getObjects())).renderAll(); // (Select all without grid)

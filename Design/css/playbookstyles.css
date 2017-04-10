@@ -1,25 +1,6 @@
-
-
 body {
 	background: url("../img/main_bg.jpg") no-repeat center #e7e7e7;
 	background-position:top center;
-	-webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-#canvasWrapper {
-	padding:0px;
-}
-
-#canvas {
-    border: 5px solid;
-}
-
-#toolbar {
-	overflow: hidden;
 }
 
 #mainWrapper{
@@ -118,70 +99,93 @@ body {
 	float:left;
 }
 
-button {
-    background-color: Transparent;
-    background-repeat: no-repeat;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    outline: none;
+#htmlContent {
+	border: black solid 1px;
+	margin-bottom: 50px;
+	height: 600px;
+	width: 800px;
 }
 
-.shapebtn {
-    width: 2.2em;
-    height: 2.2em;
-}
-.toolbtn{
-	background-image: url("../img/button1.png");
-	background-size: 100% 100%;
-	font-size: 3vmin;
-	font-weight: bolder;
+#container {
+	width: 800px;
+	height: 600px;
+	margin:auto;
 }
 
-#toolbar {
-	padding: 5px 0px;
+#playbookHeader {
+	text-align: left;
+	background-color: #e0e0e0;
+	height: 5%;
+	border-bottom: black solid 1px;
 }
 
-.shape{
-	font-size: 2vmin;
+#playdrop {
+	background-color: #e0e0e0;
+	border: none;
+	font-weight: bold;
+	height:100%;
+	border-radius:0px;
 }
 
-.colorbtn{
-	background-image: url("../img/button1.png");
-	background-size: 100% 100%;
-	font-size: 2vmin;
-	
-}
-.colorbtn:focus{
-	outline: none;
-}
-.blue {
-    color: #95ccff;
-}
-.gray {
-    color: #424242;
-}
-.yellow {
-    color: #f1f827;
-}
-.white {
-    color: white;
-}
-.red {
-    color: red;
+#playdrop:hover {
+	background-color: white;
 }
 
-.border {
-	background-image: url("../img/button2red.png");
-	background-size: 100% 100%;
+#playdrop:focus {
+	background-color: white;
 }
 
-#playString{
-    resize: none;
-	border: 1px solid black;
+#pdfdrop {
+	background-color: #e0e0e0;
+	border: none;
+	font-weight: bold;
+	height:100%;
+	border-radius:0px;
 }
 
-#playName{
-    resize: none;
-	border: 1px solid black;
+#pdfdrop:hover {
+	background-color: white;
+}
+
+#pdfdrop:focus {
+	background-color: white;
+}
+
+#playNameDate {
+	box-sizing: border-box;
+	background-color: white;
+	margin: 0px;
+	padding: 0px;
+	border-right: black solid 1px;
+	height: 95%;
+	overflow-y: scroll;
+}
+
+#playInfo {
+	background-color: white;
+	height: 95%;
+}
+
+#playinfo h3{
+	text-align: center;
+	padding-top: 5px;
+	word-spacing: 10px;
+}
+
+#tbl {
+	vertical-align: top;
+	width: 100%;
+}
+
+#tbl th{
+	padding-left: 10px;
+}
+
+#desc-input {
+	resize: none;
+}
+
+#playimg {
+	margin: auto;
+	height: 280px;
 }

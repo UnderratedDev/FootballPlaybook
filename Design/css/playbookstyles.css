@@ -190,11 +190,6 @@ body {
 	resize: none;
 }
 
-#playimg {
-	margin: auto;
-	height: 280px;
-}
-
 #labelText {
 	word-wrap: break-word;
 }

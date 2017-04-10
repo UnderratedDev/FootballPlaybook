@@ -1,5 +1,5 @@
 <?php
-    $db = mysqli_connect ("localhost", "root", 1234) or die (mysqli_connect_error());
+    $db = mysqli_connect ("localhost", "root", 1234) or die (mysqli_connect_error($db));
 	mysqli_select_db ($db, "playbookdatabase") or die (mysqli_error($db));
     
     # $date = date('m/d/Y h:i:s a', time());

@@ -1331,17 +1331,27 @@ function DesignPlaybookViewModel () {
     
     return circ;
   }
-
+	var offsetX;
+	var offsetY;
   function onObjectSelected(e) {
     var activeObject = e.target;
+	pointer = c.getPointer(e.e);
 	
+	console.log(offsetX)
+	console.log(offsetY)
 	console.log(activeObject.name);
     if (activeObject.name == "p0" || activeObject.name == "p2") {
       activeObject.line2.animate('opacity', '1', {
         duration: 200,
         onChange: c.renderAll.bind(c),
       });
-    }
+    } else if (activeObject.name == "curve") {
+		c.on('mouse:up', function(o){
+				offsetX = pointer.x;
+				offsetY = pointer.y;
+			});
+		hideLineCircles();
+	}
     $(document).keydown(function (e) {
           if(e.which == 46) {
               if (activeObject.name == "p0" || activeObject.name == "p1" || activeObject.name == "p2") {
@@ -1359,6 +1369,7 @@ function DesignPlaybookViewModel () {
       });
 
   }
+	
 
   function onBeforeSelectionCleared(e) {
     var activeObject = e.target;
@@ -1427,13 +1438,6 @@ function DesignPlaybookViewModel () {
     else if (e.target.name == "p1") {
 		var p = e.target;
 		var rad = 14; // radius of p1 circle (skewing circle)
-		var p0x;
-		var p0y;
-		var p1x;
-		var p1y;
-		var p2x;
-		var p2y;
-		var pointer;
 		if (p.line2) {
 			p.line2.path[1][1] = p.left + rad;
 			p.line2.path[1][2] = p.top + rad;
@@ -1452,6 +1456,46 @@ function DesignPlaybookViewModel () {
 				c.renderAll();
 			});
 		}
+	} else if (e.target.name == "curve") {
+		var p = e.target;
+		cline = p;
+		p.setCoords();
+		p0x = cline.path[0][1];
+		p0y = cline.path[0][2];
+		p1x = cline.path[1][1];
+		p1y = cline.path[1][2];
+		p2x = cline.path[1][3];
+		p2y = cline.path[1][4];
+		// c.renderAll();
+		c.on('mouse:up', function(o){
+			// pointer = c.getPointer(e.e);
+			// p.circle0.setLeft(p.path[0][1] + pointer.x  - offsetX - 12);
+			// p.circle0.setTop(p.path[0][2] + pointer.y  - offsetY - 12);
+			// p.circle1.setLeft(p.path[1][1] + pointer.x  - offsetX - 14);
+			// p.circle1.setTop(p.path[1][2] + pointer.y  - offsetY - 14);
+			// p.circle2.setLeft(p.path[1][3] + pointer.x  - offsetX - 12);
+			// p.circle0.setLeft(p.path[1][4] + pointer.y  - offsetY - 12);
+			// p.circle0.setLeft(p0x - 12);
+			// p.circle0.setTop(p0y- 12);
+			// p.circle1.setLeft(p1x - 14);
+			// p.circle1.setTop(p1y - 14);
+			// p.circle2.setLeft(p2x - 12);
+			// p.circle2.setTop(p2y - 12);
+			// p.circle0.setCoords();
+			// p.circle1.setCoords();
+			// p.circle2.setCoords();
+			// p.setCoords();
+			// c.renderAll();
+			deleteCurveLine(cline);
+			// cline = makeCurveLine(p.path[0][1] + pointer.x  - offsetX, p.path[0][2] + pointer.y  - offsetY 
+				// , p.path[1][1] + pointer.x  - offsetX , p.path[1][2] + pointer.y  - offsetY
+				// , p.path[1][3] + pointer.x  - offsetX, p.path[1][4] + pointer.y  - offsetY);
+			cline = makeCurveLine(p0x + pointer.x  - offsetX, p0y + pointer.y  - offsetY 
+				, p1x + pointer.x  - offsetX , p1y + pointer.y  - offsetY
+				, p2x + pointer.x  - offsetX, p2y + pointer.y  - offsetY);
+			showLineCircles();
+			c.renderAll();
+		});
 	}
     else if (e.target.name == "p0" || e.target.name == "p2") {
       var p = e.target;

@@ -1336,7 +1336,8 @@ function DesignPlaybookViewModel () {
   function onObjectSelected(e) {
     var activeObject = e.target;
 	pointer = c.getPointer(e.e);
-	
+	offsetX = pointer.x;
+	offsetY = pointer.y;
 	console.log(offsetX)
 	console.log(offsetY)
 	console.log(activeObject.name);
@@ -1346,10 +1347,6 @@ function DesignPlaybookViewModel () {
         onChange: c.renderAll.bind(c),
       });
     } else if (activeObject.name == "curve") {
-		c.on('mouse:up', function(o){
-				offsetX = pointer.x;
-				offsetY = pointer.y;
-			});
 		hideLineCircles();
 	}
     $(document).keydown(function (e) {
@@ -1468,7 +1465,8 @@ function DesignPlaybookViewModel () {
 		p2y = cline.path[1][4];
 		// c.renderAll();
 		c.on('mouse:up', function(o){
-			// pointer = c.getPointer(e.e);
+			showLineCircles();
+			pointer = c.getPointer(e.e);
 			// p.circle0.setLeft(p.path[0][1] + pointer.x  - offsetX - 12);
 			// p.circle0.setTop(p.path[0][2] + pointer.y  - offsetY - 12);
 			// p.circle1.setLeft(p.path[1][1] + pointer.x  - offsetX - 14);
@@ -1486,15 +1484,16 @@ function DesignPlaybookViewModel () {
 			// p.circle2.setCoords();
 			// p.setCoords();
 			// c.renderAll();
-			deleteCurveLine(cline);
+			// deleteCurveLine(cline);
 			// cline = makeCurveLine(p.path[0][1] + pointer.x  - offsetX, p.path[0][2] + pointer.y  - offsetY 
 				// , p.path[1][1] + pointer.x  - offsetX , p.path[1][2] + pointer.y  - offsetY
 				// , p.path[1][3] + pointer.x  - offsetX, p.path[1][4] + pointer.y  - offsetY);
 			cline = makeCurveLine(p0x + pointer.x  - offsetX, p0y + pointer.y  - offsetY 
 				, p1x + pointer.x  - offsetX , p1y + pointer.y  - offsetY
 				, p2x + pointer.x  - offsetX, p2y + pointer.y  - offsetY);
-			showLineCircles();
+			// showLineCircles();
 			c.renderAll();
+			
 		});
 	}
     else if (e.target.name == "p0" || e.target.name == "p2") {
@@ -1505,6 +1504,7 @@ function DesignPlaybookViewModel () {
       p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
     //  p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
 	}
+	showLineCircles();
 	selectableLineCircles();
   }
 }

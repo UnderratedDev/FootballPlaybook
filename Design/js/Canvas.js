@@ -729,15 +729,16 @@ function DesignPlaybookViewModel () {
 				cline = makeCurveLine(pointer.x, pointer.y);
 				p1 = cline.circle1;
 				p2 = cline.circle2;
-				c.add(cline);
 				hideLineCircles();
-				}
+			}
 			
 			var pointer = c.getPointer(o.e);
-			c.remove(cline.circle0)
-			c.remove(cline.circle1)
-			c.remove(cline.circle2)
-			cline = makeCurveLine(cline.path[0][1], cline.path[0][2], cline.path[1][1], cline.path[1][2], pointer.x, pointer.y);
+			p0x = cline.path[0][1];
+			p0y = cline.path[0][2];
+			p1x = cline.path[1][1];
+			p1y = cline.path[1][2];
+			deleteCurveLine(cline);
+			cline = makeCurveLine(p0x, p0y, p1x, p1y, pointer.x, pointer.y);
             /* cline.path[1][3] = pointer.x;
             cline.path[1][4] = pointer.y;
 			p2.setLeft(pointer.x - 12);
@@ -1261,6 +1262,7 @@ function DesignPlaybookViewModel () {
 		l.circle0 = p0;
 		l.circle1 = p1;
 		l.circle2 = p2;
+		c.add(l);
 		return l;
 	}
 	
@@ -1375,25 +1377,81 @@ function DesignPlaybookViewModel () {
   }
 
   function onObjectMoving(e) {
-    if (e.target.name == "p0" || e.target.name == "p2") {
-      var p = e.target;
-	  var rad = 12; // radius of p0 and p2 circles (line ends circles)
-      if (p.line1) {
-        p.line1.path[0][1] = p.left + rad;
-        p.line1.path[0][2] = p.top + rad;
-      }
-      else if (p.line3) {
-        p.line3.path[1][3] = p.left + rad;
-        p.line3.path[1][4] = p.top + rad;
-	  }
+	// console.log("hello")
+    var p0x;
+    var p0y;
+    var p1x;
+    var p1y;
+    var p2x;
+    var p2y;
+	var pointer;
+	if (e.target.name == "p0" || e.target.name == "p2") {
+        var p = e.target;
+		var rad = 12; // radius of p0 and p2 circles (line ends circles)
+		pointer = c.getPointer(e.e);
+		if (p.line1) {
+			cline = p.line1 
+			p.line1.path[0][1] = p.left + rad;
+			p.line1.path[0][2] = p.top + rad;
+			p0x = p.line1.path[0][1];
+			p0y = p.line1.path[0][2];
+			p1x = p.line1.path[1][1];
+			p1y = p.line1.path[1][2];
+			p2x = p.line1.path[1][3];
+			p2y = p.line1.path[1][4];
+			c.renderAll();
+			c.on('mouse:up', function(o){
+				deleteCurveLine(cline);
+				cline = makeCurveLine(pointer.x, pointer.y, p1x, p1y, p2x, p2y);
+				c.renderAll();
+			});    
+		}
+		else if (p.line3) {       
+			p.line3.path[1][3] = p.left + rad;
+			p.line3.path[1][4] = p.top + rad;
+			cline = p.line3 
+			p0x = cline.path[0][1];
+			p0y = cline.path[0][2];
+			p1x = cline.path[1][1];
+			p1y = cline.path[1][2];
+			p2x = cline.path[1][3];
+			p2y = cline.path[1][4];
+			c.renderAll();
+			c.on('mouse:up', function(o){
+				deleteCurveLine(cline);
+				cline = makeCurveLine(p0x, p0y, p1x, p1y, pointer.x, pointer.y);
+				c.renderAll();
+			});
+		}
 	}
     else if (e.target.name == "p1") {
-      var p = e.target;
-	  var rad = 14; // radius of p1 circle (skewing circle)
-      if (p.line2) {
-        p.line2.path[1][1] = p.left + rad;
-        p.line2.path[1][2] = p.top + rad;
-	  }
+		var p = e.target;
+		var rad = 14; // radius of p1 circle (skewing circle)
+		var p0x;
+		var p0y;
+		var p1x;
+		var p1y;
+		var p2x;
+		var p2y;
+		var pointer;
+		if (p.line2) {
+			p.line2.path[1][1] = p.left + rad;
+			p.line2.path[1][2] = p.top + rad;
+			pointer = c.getPointer(e.e);
+			cline = p.line2     
+			p0x = cline.path[0][1];
+			p0y = cline.path[0][2];
+			p1x = cline.path[1][1];
+			p1y = cline.path[1][2];
+			p2x = cline.path[1][3];
+			p2y = cline.path[1][4];
+			c.renderAll();
+			c.on('mouse:up', function(){
+				deleteCurveLine(cline);
+				cline = makeCurveLine(p0x, p0y, pointer.x, pointer.y, p2x, p2y);
+				c.renderAll();
+			});
+		}
 	}
     else if (e.target.name == "p0" || e.target.name == "p2") {
       var p = e.target;
@@ -1403,6 +1461,7 @@ function DesignPlaybookViewModel () {
       p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
     //  p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
 	}
+	selectableLineCircles();
   }
 }
 

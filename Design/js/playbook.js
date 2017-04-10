@@ -239,6 +239,7 @@ $(function () {
 			url  : 'playbookbackend.php',
 			data : dataRet,
 			success : function (response) {
+				console.log (response);
                 var objArr = jQuery.parseJSON(response);
                 for (let i = 0; i < objArr.length; ++i)
                     self.TableRows.push (new TableRow (objArr[i].PlayName, objArr[i].PlayString, objArr[i].CreateDate, objArr[i].CanvasObj, objArr[i].PlayID));

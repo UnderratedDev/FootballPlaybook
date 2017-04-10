@@ -106,10 +106,9 @@ body {
 	width: 800px;
 }
 
-#container {
-	width: 800px;
-	height: 600px;
-	margin:auto;
+#playTable{
+	min-height: 700px;
+	margin-bottom: 50px;
 }
 
 #playbookHeader {
@@ -158,12 +157,14 @@ body {
 	padding: 0px;
 	border-right: black solid 1px;
 	height: 95%;
+	min-height: 550px;
 	overflow-y: scroll;
 }
 
 #playInfo {
 	background-color: white;
 	height: 95%;
+	min-height: 550px;
 	text-align: none;
 }
 

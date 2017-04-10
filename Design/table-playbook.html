@@ -12,11 +12,10 @@
     <script src="http://knockoutjs.com/downloads/knockout-3.4.2.js"></script>
 	<!-- FABRIC -->
     <script src = "js/fabric.js"></script>
-    <script src = "js/playbook.js"></script>
 	<!-- PDF SCRIPT -->
 	<script type="text/javascript" src="js/jsPDF-1.3.2/dist/jspdf.debug.js"></script>
 	<!-- OUR SCRIPT -->
-	<script type="text/javascript" src="js/playbook.js"></script>
+    <script src = "js/playbook.js" defer="defer"></script>
 	<!-- STYLES -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
@@ -25,146 +24,144 @@
 <!-- HTML -->
 <body>
 	<div class="container text-center" id="mainWrapper">
-	<div id="header">
-		<div id='logo'>
-				<a href="index.php"><img src='img/fpo_final.png' width='300px' height='140px' alt='Football Playbook Online' /></a>
-		</div>
-		<div id="header-right">
-			<div id='header-subnav'>		
-			</div><!-- subnav-->
-		
-			<div id="header-navigation">
-			
-				<div id='nav-left'></div>
-				<div id='nav-contain'>
-					<a class='nav-item' href="index.php">Home</a>
-					<a class='nav-item' href="index.html">Design</a>
-					<a class='nav-item' href="table-playbook.html">Playbooks</a>
-					<a class='nav-item' href="contact.php">Support</a>
-							
-				</div><!-- header nav contain-->
-				<div id='nav-right'></div>	
-		
-			</div> <!-- header nav-->	
-			<div id='facebook'>
-					<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2FFootballPlaybookOnline%2F&amp;width=450&amp;height=80&amp;colorscheme=light&amp;layout=standard&amp;action=like&amp;show_faces=false&amp;send=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;margin-top:5px;" allowTransparency="true"></iframe>
-			</div>
-		</div> <!-- header right -->
-	</div><!-- header-->
-	<div class="container col-10">
-		<div class= "row">
-		<div class="col-12" id="playbookHeader">
-			<div class="btn-group">
-			  <button class="btn btn-secondary btn-sm dropdown-toggle" id="playdrop" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				Play
-			  </button>
-			  <div class="dropdown-menu" aria-labelledby="playdrop">
-				<a class="dropdown-item" href="index.html">New</a>
-				<a class="dropdown-item" data-bind = "click : editPlaybook" href="#">Edit</a>
-				<button class="dropdown-item" data-bind = "click : duplicatePlay">Duplicate</button>
-				<a class="dropdown-item" data-bind = "click : deletePlay">Delete</a>
-			  </div>
-			</div>
-			<div class="btn-group">
-			  <button class="btn btn-secondary btn-sm dropdown-toggle" id="pdfdrop" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				Print to PDF
-			  </button>
-			  <div class="dropdown-menu" aria-labelledby="pdfdrop">
-				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#allModal">All Plays</a>
-				<a class="dropdown-item" href="#" data-toggle="modal" data-target="#selModal">Selected Plays</a>
-				<!---->
-			  </div>
-			</div>
-		</div>
-		</div>
-		<div class="row">
-		<div class="col-xl-4 col-lg-4 col-sm-4 col-xs-12" id="playNameDate">
-		<table class="table table-striped table-bordered table-sm">
-			<thead class="thead-inverse">
-				<th data-bind = "click : nameSort">Name</th>
-				<th data-bind = "click : dateSort">Date</th>
-			</thead>
-			<tbody data-bind = "foreach : TableRows">
-				<tr data-bind = "click : $root.selectPlay, style : {'background-color' : selectRow() ? '#FFD700' : ''}">
-					<td data-bind = "text: PlayName"></td>
-					<td data-bind = "text: DateCreated"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>
-		<div class="col-xl-8 col-lg-8 col-sm-8 col-xs-12" id="playInfo">
-			<h3>Play Information</h3>
-			<form id="playform">
-				<div class="form-group row" id ="canvasWrapper" >
-                    <canvas id = 'canvas'></canvas>
-					<img id = 'canvasImg' src="#"></img>
-				</div>
-				<div class="form-group row">
-					<label for="name-input" class="col-3 col-form-label-sm" id="labelText">Name</label>
-					<div class="col-9">
-						<input data-bind = "textInput: name" class="form-control form-control-sm" type="text" id="name-input" />
-					</div>
-				</div>
-				<div class=	"form-group row">
-					<label for="desc-input" class="col-3 col-form-label-sm" id="labelText">Description</label>
-					<div class="col-9">
-						<textarea data-bind = "textInput: desc" class="form-control form-control-sm" id="desc-input" rows="3"></textarea>
-					</div>
-				</div>
-				<button type="submit" class="btn btn-primary" id="updatebtn">Update</button>
-			</form>
-		</div>
+        <div id="header">
+            <div id='logo'>
+                    <a href="index.php"><img src='img/fpo_final.png' width='300px' height='140px' alt='Football Playbook Online' /></a>
+            </div>
+            <div id="header-right">
+                <div id='header-subnav'>		
+                </div><!-- subnav-->
+            
+                <div id="header-navigation">
+                
+                    <div id='nav-left'></div>
+                    <div id='nav-contain'>
+                        <a class='nav-item' href="index.php">Home</a>
+                        <a class='nav-item' href="index.html">Design</a>
+                        <a class='nav-item' href="table-playbook.html">Playbooks</a>
+                        <a class='nav-item' href="contact.php">Support</a>
+                                
+                    </div><!-- header nav contain-->
+                    <div id='nav-right'></div>	
+            
+                </div> <!-- header nav-->	
+                <div id='facebook'>
+                        <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2FFootballPlaybookOnline%2F&amp;width=450&amp;height=80&amp;colorscheme=light&amp;layout=standard&amp;action=like&amp;show_faces=false&amp;send=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;margin-top:5px;" allowTransparency="true"></iframe>
+                </div>
+            </div> <!-- header right -->
+        </div><!-- header-->
+        <div class="container col-10">
+            <div class= "row">
+            <div class="col-12" id="playbookHeader">
+                <div class="btn-group">
+                  <button class="btn btn-secondary btn-sm dropdown-toggle" id="playdrop" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Play
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="playdrop">
+                    <a class="dropdown-item" href="index.html">New</a>
+                    <a class="dropdown-item" data-bind = "click : editPlaybook" href="#">Edit</a>
+                    <button class="dropdown-item" data-bind = "click : duplicatePlay">Duplicate</button>
+                    <a class="dropdown-item" data-bind = "click : deletePlay">Delete</a>
+                  </div>
+                </div>
+                <div class="btn-group">
+                  <button class="btn btn-secondary btn-sm dropdown-toggle" id="pdfdrop" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Print to PDF
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="pdfdrop">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#allModal">All Plays</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#selModal">Selected Plays</a>
+                    <!---->
+                  </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-xl-4 col-lg-4 col-sm-4 col-xs-12" id="playNameDate">
+            <table class="table table-striped table-bordered table-sm">
+                <thead class="thead-inverse">
+                    <th data-bind = "click : nameSort">Name</th>
+                    <th data-bind = "click : dateSort">Date</th>
+                </thead>
+                <tbody data-bind = "foreach : TableRows">
+                    <tr data-bind = "click : $root.selectPlay, style : {'background-color' : selectRow() ? '#FFD700' : ''}">
+                        <td data-bind = "text: PlayName"></td>
+                        <td data-bind = "text: DateCreated"></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="col-xl-8 col-lg-8 col-sm-8 col-xs-12" id="playInfo">
+                <h3>Play Information</h3>
+                <form id="playform">
+                    <div class="form-group row" id ="canvasWrapper" >
+                        <canvas hidden id = 'canvas'></canvas>
+                    </div>
+                    <div class="form-group row">
+                        <label for="name-input" class="col-3 col-form-label-sm" id="labelText">Name</label>
+                        <div class="col-9">
+                            <input data-bind = "textInput: name" class="form-control form-control-sm" type="text" id="name-input" />
+                        </div>
+                    </div>
+                    <div class=	"form-group row">
+                        <label for="desc-input" class="col-3 col-form-label-sm" id="labelText">Description</label>
+                        <div class="col-9">
+                            <textarea data-bind = "textInput: desc" class="form-control form-control-sm" id="desc-input" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="updatebtn">Update</button>
+                </form>
+            </div>
+        </div>
+        <div id="allModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>All Print to PDF</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="playsPerPage">Plays per Page</label>
+                        <select class="form-control" id="playsPerPage">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>4</option>
+                          <option>6</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-bind = "click : allPlaysPDF" id="allPrintToPDF">Continue</button>
+                </div>
+            </div>
+          </div>
+        </div>
+            <div id="selModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+              <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Sel Print to PDF</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="playsPerPage">Plays per Page</label>
+                            <select class="form-control" id="playsPerPage">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>4</option>
+                              <option>6</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" data-bind = "click : selectedPlaysPDF" id="selPrintToPDF">Continue</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
 	</div>
-	<div id="allModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	  <div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4>All Print to PDF</h4>
- 			</div>
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="playsPerPage">Plays per Page</label>
-					<select class="form-control" id="playsPerPage">
-					  <option>1</option>
-					  <option>2</option>
-					  <option>4</option>
-					  <option>6</option>
-					</select>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal" data-bind = "click : allPlaysPDF" id="allPrintToPDF">Continue</button>
-			</div>
-		</div>
-	  </div>
-	</div>
-    <div id="selModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	  <div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4>Sel Print to PDF</h4>
- 			</div>
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="playsPerPage">Plays per Page</label>
-					<select class="form-control" id="playsPerPage">
-					  <option>1</option>
-					  <option>2</option>
-					  <option>4</option>
-					  <option>6</option>
-					</select>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal" data-bind = "click : selectedPlaysPDF" id="selPrintToPDF">Continue</button>
-			</div>
-		</div>
-	  </div>
-	</div>
-	</div>
-	</div>
-</div>
 </body>
 </html>

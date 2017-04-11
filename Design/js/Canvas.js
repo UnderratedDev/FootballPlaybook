@@ -12,7 +12,7 @@ function DesignPlaybookViewModel () {
     var c = new fabric.Canvas("canvas");
     var ctx = c.getContext("2d");
     // c.objectCaching = false
-    var line, cline, isDown, isCDown;
+    var line, cline, dLine, isDown, isCDown, isDDown;
     var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = textC = selection = true;
     var snapToGrid = ctrlDown = false;
 	var clcVisible = true;
@@ -660,40 +660,23 @@ function DesignPlaybookViewModel () {
     });
     
     $("#dashLine").click (function () {
-        if (!lineDraw) {
-            dashed = !dashed;
-            $('.toolbtn').each(function(index) {
-                $(this).removeClass('border');
-            });
-            
-            if (dashed) 
-                $('#dashLine').addClass('border');
-            $('#lineBtn').addClass('border');
-        }
-    });
-    
-    $('#lineBtn').click (function () {
         c.selection = false;
-		$('.toolbtn').each(function(index){
-			$(this).removeClass('border');
-		});
-		$('#lineBtn').addClass('border');
-        if (dashed) 
-            $('#dashLine').addClass('border');
-        c.off('mouse:down');
         if (!selection)
             unselectobjects ();
-        xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = true;
-        lineDraw = false;
+        xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = lineDraw = true;
+        dashed = false;
+        $('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#dashLine').addClass('border');
         c.defaultCursor = 'default';
         c.on('mouse:down', function(o) {
-            if (lineDraw)
+            if (dashed)
                 return;
-          isDown = true;
+          isDDown = true;
           var pointer = c.getPointer(o.e);
           var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
-          if (dashed) {
-              line = new fabric.Line(points, {
+              dLine = new fabric.Line(points, {
                   strokeWidth: c.width/189.2,
                   fill: self.colour (),
                   stroke: self.colour (),
@@ -704,18 +687,53 @@ function DesignPlaybookViewModel () {
                   shadow: 'rgba(0,0,0,1) 5px 5px 7px',
                   strokeDashArray: [10, 10]
               });
-          } else {
-              line = new fabric.Line(points, {
-                  strokeWidth: c.width/189.2,
-                  fill: self.colour (),
-                  stroke: self.colour (),
-                  originX: 'center',
-                  originY: 'center',
-                  selectable: false,
-                  perPixelTargetFind: true,
-                  shadow: 'rgba(0,0,0,1) 5px 5px 7px',
-              });
-          }
+          c.add (dLine);
+         });
+
+        c.on ('mouse:move', function(o){
+            if (dashed || !isDDown)
+                return;
+            var pointer = c.getPointer(o.e);
+            dLine.set({ x2: pointer.x, y2: pointer.y });
+            c.renderAll();
+        });
+
+        c.on('mouse:up', function(o){
+            if (dashed)
+                return;
+            isDDown = false;    
+            dLine.setCoords();
+        }); 
+    });
+    
+    $('#lineBtn').click (function () {
+        c.selection = false;
+		$('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#lineBtn').addClass('border');
+        c.off('mouse:down');
+        if (!selection)
+            unselectobjects ();
+        xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = dashed = true;
+        lineDraw = false;
+        c.defaultCursor = 'default';
+        c.on('mouse:down', function(o) {
+            if (lineDraw)
+                return;
+          isDown = true;
+          var pointer = c.getPointer(o.e);
+          var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
+          line = new fabric.Line(points, {
+              strokeWidth: c.width/189.2,
+              fill: self.colour (),
+              stroke: self.colour (),
+              originX: 'center',
+              originY: 'center',
+              selectable: false,
+              perPixelTargetFind: true,
+              shadow: 'rgba(0,0,0,1) 5px 5px 7px',
+          });
           c.add (line);
         });
 

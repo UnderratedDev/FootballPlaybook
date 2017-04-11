@@ -13,7 +13,8 @@ function DesignPlaybookViewModel () {
     var ctx = c.getContext("2d");
     // c.objectCaching = false
     var line, cline, isDown, isCDown;
-    var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = textC = snapToGrid = selection = ctrlDown = false;
+    var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = textC = selection = true;
+    var snapToGrid = ctrlDown = false;
 	var clcVisible = true;
     var canvasWrapper = document.getElementById('canvasWrapper');
 	c.setWidth(canvasWrapper.clientWidth);
@@ -384,6 +385,13 @@ function DesignPlaybookViewModel () {
 		,"PRO FORM"
 		,"icons/football/offense/proForm.png"
 	));
+    
+    function unselectobjects () {
+        c.selection = false;
+        c.forEachObject(function(o) {
+          o.selectable = false;
+        });
+    }
 	
 	$('#defensePlaysCarousel').on('slid.bs.carousel', function(){
 		var i = $('#defensePlaysCarousel .active').index(); // or: $('.item:visible').index();
@@ -638,14 +646,11 @@ function DesignPlaybookViewModel () {
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
+        c.selection = true;
 		$('#selectBtn').addClass('border');
         c.defaultCursor = 'default';
-//<<<<<<< selectCurveLine
         lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = true;
-//=======
-        //lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
         selection = false;
-//>>>>>>> master
         selectCanvasObjects (true);
         selectableLineCircles();
         c.off('mouse:down'); // turn off events used by curve line
@@ -655,36 +660,29 @@ function DesignPlaybookViewModel () {
     });
     
     $("#dashLine").click (function () {
-        dashed = !dashed;
-        $('.toolbtn').each(function(index) {
-			$(this).removeClass('border');
-		});
-        
-        if (dashed) 
-            $('#dashLine').addClass('border');
-        if (!lineDraw)
+        if (!lineDraw) {
+            dashed = !dashed;
+            $('.toolbtn').each(function(index) {
+                $(this).removeClass('border');
+            });
+            
+            if (dashed) 
+                $('#dashLine').addClass('border');
             $('#lineBtn').addClass('border');
-    });
-    
-    $("#arrowBtn").click (function () {
-       arrowHead = !arrowHead;
-       $('.toolbtn').each(function(index) {
-			$(this).removeClass('border');
-		});
-        if (dashed) 
-            $('#dashLine').addClass('border');
-        if (!lineDraw)
-            $('#lineBtn').addClass('border');
-        if (arrowHead)
-            $('#arrowBtn').addClass('border');
+        }
     });
     
     $('#lineBtn').click (function () {
+        c.selection = false;
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
 		$('#lineBtn').addClass('border');
+        if (dashed) 
+            $('#dashLine').addClass('border');
         c.off('mouse:down');
+        if (!selection)
+            unselectobjects ();
         xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = true;
         lineDraw = false;
         c.defaultCursor = 'default';
@@ -738,6 +736,9 @@ function DesignPlaybookViewModel () {
     });
     
     $("#textBtn").click (function () {
+        if (!selection)
+            unselectobjects ();
+        c.selection = false;
         $('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
@@ -761,92 +762,13 @@ function DesignPlaybookViewModel () {
               fill: self.colour (),
               name: 'userText'
             });
-            // textObj.set({fill: self.colour ()});
             c.add(textObj);
-                        /* c.add (
-            new fabric.Text(canText, {
-                left: e.e.offsetX - c.width/94.6, 
-                top : e.e.offsetY - c.width/37.84,
-                fontFamily: 'Arial', 
-                fontSize: c.width/20,
-                textAlign: 'center',
-                fill: self.colour (),
-                selectable: false,
-                perPixelTargetFind: true,
-                shadow: 'rgba(0,0,0,1) 5px 5px 7px'
-            })); */
         });
-        
     });
-    
-    /*
-    $('#cLineBtn').click (function () {
-        var pointer;
-        var points;
-		var p1, p2;
-		$('.toolbtn').each(function(index){
-			$(this).removeClass('border');
-		});
-		$('#cLineBtn').addClass('border');
-        // c.defaultCursor = 'default';
-        c.defaultCursor = 'crosshair';
-        lineDraw = xDraw = cDraw = rDraw = tDraw = egg = true;
-		clDraw = false;
-		c.off('mouse:up');
-		c.on ('mouse:down', function (o) {
-            if (clDraw)
-				return;
-			isCDown = true;
-        	
-			cline = null;
-			clDraw = true;
-        });
-		
-		c.on ('mouse:move', function(o) {
-            // clDraw = false;
-		    if (!clDraw)
-                return;
-            if (!isCDown)
-                return;
-			pointer = c.getPointer(o.e);
-			if (cline == null) {
-				console.log(cline);
-				cline = makeCurveLine(pointer.x, pointer.y);
-				p1 = cline.circle1;
-				p2 = cline.circle2;
-                hideLineCircles();
-			}
-			
-			var pointer = c.getPointer(o.e);
-			p0x = cline.path[0][1];
-			p0y = cline.path[0][2];
-			p1x = cline.path[1][1];
-			p1y = cline.path[1][2];
-			// deleteCurveLine(cline);
-			// cline = makeCurveLine(p0x, p0y, p1x, p1y, pointer.x, pointer.y);
-			c.renderAll();
-        });
-		c.on('mouse:up', function(o){
-            if (!clDraw)
-                return;
-            isCDown = false;
-			c.deactivateAll().renderAll();
-			p1.animate('opacity', '0', {
-                duration: 200,
-                onChange: c.renderAll.bind(c),
-            });
-            c.deactivateAll().renderAll();
-			if (cline != null) {
-				cline.circle0.setCoords();
-				cline.circle1.setCoords();
-				cline.circle2.setCoords();
-				cline.setCoords();
-			}
-			clDraw = false;
-            // clDraw = true;
-        });
-    }); */
      $('#cLineBtn').click (function () {
+         if (!selection)
+            unselectobjects ();
+         c.selection = false;
          $('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
@@ -859,6 +781,7 @@ function DesignPlaybookViewModel () {
         lineDraw = xDraw = cDraw = rDraw = tDraw = egg = textC = true;
 		clDraw = false;
 		c.on ('mouse:down', function (o) {
+        console.log (clDraw);
             if (clDraw)
 				return;
 			isCDown = true;
@@ -911,6 +834,9 @@ function DesignPlaybookViewModel () {
     });
     
     $('#circleBtn').click (function () {
+        if (!selection)
+            unselectobjects ();
+        c.selection = false;
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
@@ -946,6 +872,9 @@ function DesignPlaybookViewModel () {
     });
     
     $('#crossBtn').click (function () {
+        if (!selection)
+            unselectobjects ();
+        c.selection = false;
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
@@ -973,6 +902,9 @@ function DesignPlaybookViewModel () {
     });
     
     $('#rectBtn').click (function () {
+        if (!selection)
+            unselectobjects ();
+        c.selection = false;
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
@@ -987,17 +919,6 @@ function DesignPlaybookViewModel () {
             var rect  = (new fabric.Rect ({
                fill: 'rgba(0,0,0,0)',
                stroke : self.colour (),
-// <<<<<<< HEAD
-/*
-               strokeWidth : 5,
-               left   : e.e.offsetX - 25,
-               top    : e.e.offsetY - 25,
-               width: 40,
-               height: 40,
-               selectable: false,
-               perPixelTargetFind: true, */
-// =======
-
                strokeWidth : c.width/189.2,
                left   : e.e.offsetX - c.width/37.84,
                top    : e.e.offsetY - c.width/37.84,
@@ -1012,6 +933,9 @@ function DesignPlaybookViewModel () {
     });
     
     $('#triangleBtn').click (function () {
+        if (!selection)
+            unselectobjects ();
+        c.selection = false;
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
@@ -1041,6 +965,9 @@ function DesignPlaybookViewModel () {
     });
     
     $('#eggBtn').click (function () {
+        if (!selection)
+            unselectobjects ();
+        c.selection = false;
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
@@ -1091,11 +1018,6 @@ function DesignPlaybookViewModel () {
         }
            document.getElementById('canvasImgSaved').src = dataURL;
            
-           
-           // var canJSON = JSON.stringify (c);
-           // var canJSON = c.toDatalessObject();
-           // console.log (canJSON);
-           
            name    = $("#playName").val   ();
            playStr = $("#playString").val ();
            
@@ -1128,17 +1050,6 @@ function DesignPlaybookViewModel () {
                     }
                 });	
            }
-           
-    /*
-        c.isDrawingMode = false;
-
-        if(!window.localStorage) {
-            alert("This function is not supported by your browser."); 
-            return;
-        }
-        
-        // to PNG
-        window.open(c.toDataURL('png')); */
     });
     
     $('#clearCanvasBtn').click (function () {
@@ -1264,14 +1175,17 @@ function DesignPlaybookViewModel () {
         objs = c.getObjects();
         for (i = 0; i < objs.length; i++) {
             if (objs[i].name == 'curve') {
+                objs[i].circle0.selectable = true;
                 objs[i].circle0.animate('opacity', '1', {
                     duration: 200,
                     onChange: c.renderAll.bind(c),
                 });
+                objs[i].circle1.selectable = true;
                 objs[i].circle1.animate('opacity', '1', {
                     duration: 200,
                     onChange: c.renderAll.bind(c),
                 });
+                objs[i].circle2.selectable = true;
                 objs[i].circle2.animate('opacity', '1', {
                     duration: 200,
                     onChange: c.renderAll.bind(c),
@@ -1437,7 +1351,7 @@ function DesignPlaybookViewModel () {
       radius: rad,
       fill: '#fff',
       stroke: '#666',
-      selectable: true,
+      selectable: false,
       perPixelTargetFind: true,
       shadow: 'rgba(0,0,0,1) 5px 5px 7px'
     });

@@ -753,8 +753,8 @@ function DesignPlaybookViewModel () {
             textObj = new fabric.IText('Tap and Type', { 
               fontFamily: 'Arial', 
               fontSize: c.width/20,
-              left: e.e.offsetX - c.width/94.6, 
-              top : e.e.offsetY - c.width/37.84,
+              left: e.e.offsetX - c.width/7.2, 
+              top : e.e.offsetY - c.width/30,
               selectable: false,
               perPixelTargetFind: true,
               textAlign: 'center',

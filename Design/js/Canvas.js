@@ -13,7 +13,7 @@ function DesignPlaybookViewModel () {
     var ctx = c.getContext("2d");
     // c.objectCaching = false
     var line, cline, isDown, isCDown;
-    var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = snapToGrid = selection = ctrlDown = false;
+    var lineDraw = xDraw = cDraw = rDraw = tDraw = clDraw = egg = textC = snapToGrid = selection = ctrlDown = false;
 	var clcVisible = true;
     var canvasWrapper = document.getElementById('canvasWrapper');
 	c.setWidth(canvasWrapper.clientWidth);
@@ -25,12 +25,13 @@ function DesignPlaybookViewModel () {
     var editCanvas = false;
     var editCanvasId;
     var editCanvasItem;
+    var dashed = arrowHead = false;
     
     fabric.isTouchSupported = true;
     
     console.log (fabric.isTouchSupported);
     
-    document.addEventListener('touchstart', function(){
+    document.addEventListener('touchstart', function() {
         console.log('touchstart', arguments);
     }, false);
     document.addEventListener('touchmove', function(){
@@ -492,26 +493,7 @@ function DesignPlaybookViewModel () {
     }
 	
     setupBackground ();
-   /*  
-    $("#loadPlay").click (function () {
-        var dItem, oItem;
-        ko.utils.arrayForEach (self.defenseStandardArray(), function(item) {
-            console.log (item);
-            if (item.classActive) {
-                dItem = item;
-            }
-        });
-        
-        ko.utils.arrayForEach (self.offenseStandardArray(), function(item) {
-            console.log (item);
-            if (item.classActive) {
-                dItem = item;
-            }
-        }); 
-            
-        console.log (dItem);
-        console.log (oItem);
-    }); */
+    
     function generateGrid () {
         for (let i = 0; i < (c.width / grid); ++i)
             c.add(new fabric.Line([ i * grid, 0, i * grid, c.width], { stroke: '#ccc', selectable: false, name :'gridLine'}));
@@ -624,11 +606,12 @@ function DesignPlaybookViewModel () {
         var objArr = c.getActiveGroup();
         if (objArr == null) {
             var obj = c.getActiveObject();
+            console.log (obj);
             if (obj != null)
-                obj.set(((obj.get('type') != "text") ? "stroke" : "fill"), self.colour ());
+                obj.set(((obj.get('name') != "cross" && obj.get('name') != "userText") ? "stroke" : "fill"), self.colour ());
         } else
             c.getActiveGroup().forEachObject(function(o){ 
-                o.set(((o.get('type') != "text") ? "stroke" : "fill"), self.colour ());
+                o.set(((o.get('name') != "cross" && o.get('name') != "userText") ? "stroke" : "fill"), self.colour ());
             });
         c.renderAll ();
     });
@@ -658,7 +641,7 @@ function DesignPlaybookViewModel () {
 		$('#selectBtn').addClass('border');
         c.defaultCursor = 'default';
 //<<<<<<< selectCurveLine
-        lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = false;
+        lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = true;
 //=======
         //lineDraw = xDraw = cDraw = clDraw = rDraw = tDraw = egg = true;
         selection = false;
@@ -671,13 +654,38 @@ function DesignPlaybookViewModel () {
         c.renderAll();
     });
     
+    $("#dashLine").click (function () {
+        dashed = !dashed;
+        $('.toolbtn').each(function(index) {
+			$(this).removeClass('border');
+		});
+        
+        if (dashed) 
+            $('#dashLine').addClass('border');
+        if (!lineDraw)
+            $('#lineBtn').addClass('border');
+    });
+    
+    $("#arrowBtn").click (function () {
+       arrowHead = !arrowHead;
+       $('.toolbtn').each(function(index) {
+			$(this).removeClass('border');
+		});
+        if (dashed) 
+            $('#dashLine').addClass('border');
+        if (!lineDraw)
+            $('#lineBtn').addClass('border');
+        if (arrowHead)
+            $('#arrowBtn').addClass('border');
+    });
+    
     $('#lineBtn').click (function () {
 		$('.toolbtn').each(function(index){
 			$(this).removeClass('border');
 		});
 		$('#lineBtn').addClass('border');
         c.off('mouse:down');
-        xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = true;
+        xDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = true;
         lineDraw = false;
         c.defaultCursor = 'default';
         c.on('mouse:down', function(o) {
@@ -686,16 +694,30 @@ function DesignPlaybookViewModel () {
           isDown = true;
           var pointer = c.getPointer(o.e);
           var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
-          line = new fabric.Line(points, {
-              strokeWidth: c.width/189.2,
-              fill: self.colour (),
-              stroke: self.colour (),
-              originX: 'center',
-              originY: 'center',
-              selectable: false,
-              perPixelTargetFind: true,
-              shadow: 'rgba(0,0,0,1) 5px 5px 7px'
-          });
+          if (dashed) {
+              line = new fabric.Line(points, {
+                  strokeWidth: c.width/189.2,
+                  fill: self.colour (),
+                  stroke: self.colour (),
+                  originX: 'center',
+                  originY: 'center',
+                  selectable: false,
+                  perPixelTargetFind: true,
+                  shadow: 'rgba(0,0,0,1) 5px 5px 7px',
+                  strokeDashArray: [10, 10]
+              });
+          } else {
+              line = new fabric.Line(points, {
+                  strokeWidth: c.width/189.2,
+                  fill: self.colour (),
+                  stroke: self.colour (),
+                  originX: 'center',
+                  originY: 'center',
+                  selectable: false,
+                  perPixelTargetFind: true,
+                  shadow: 'rgba(0,0,0,1) 5px 5px 7px',
+              });
+          }
           c.add (line);
         });
 
@@ -715,6 +737,49 @@ function DesignPlaybookViewModel () {
         }); 
     });
     
+    $("#textBtn").click (function () {
+        $('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#textBtn').addClass('border');
+        c.off('mouse:down');
+        lineDraw = cDraw = clDraw = xDraw = tDraw = egg = selection = rDraw = true;
+        textC = false;
+        c.defaultCursor = 'crosshair';
+        c.on ('mouse:down', function (e) {
+            if (textC)
+                return;
+            textObj = new fabric.IText('Tap and Type', { 
+              fontFamily: 'Arial', 
+              fontSize: c.width/20,
+              left: e.e.offsetX - c.width/94.6, 
+              top : e.e.offsetY - c.width/37.84,
+              selectable: false,
+              perPixelTargetFind: true,
+              textAlign: 'center',
+              shadow: 'rgba(0,0,0,1) 5px 5px 7px',
+              fill: self.colour (),
+              name: 'userText'
+            });
+            // textObj.set({fill: self.colour ()});
+            c.add(textObj);
+                        /* c.add (
+            new fabric.Text(canText, {
+                left: e.e.offsetX - c.width/94.6, 
+                top : e.e.offsetY - c.width/37.84,
+                fontFamily: 'Arial', 
+                fontSize: c.width/20,
+                textAlign: 'center',
+                fill: self.colour (),
+                selectable: false,
+                perPixelTargetFind: true,
+                shadow: 'rgba(0,0,0,1) 5px 5px 7px'
+            })); */
+        });
+        
+    });
+    
+    /*
     $('#cLineBtn').click (function () {
         var pointer;
         var points;
@@ -749,7 +814,7 @@ function DesignPlaybookViewModel () {
 				cline = makeCurveLine(pointer.x, pointer.y);
 				p1 = cline.circle1;
 				p2 = cline.circle2;
-				hideLineCircles();
+                hideLineCircles();
 			}
 			
 			var pointer = c.getPointer(o.e);
@@ -757,8 +822,8 @@ function DesignPlaybookViewModel () {
 			p0y = cline.path[0][2];
 			p1x = cline.path[1][1];
 			p1y = cline.path[1][2];
-			deleteCurveLine(cline);
-			cline = makeCurveLine(p0x, p0y, p1x, p1y, pointer.x, pointer.y);
+			// deleteCurveLine(cline);
+			// cline = makeCurveLine(p0x, p0y, p1x, p1y, pointer.x, pointer.y);
 			c.renderAll();
         });
 		c.on('mouse:up', function(o){
@@ -780,6 +845,69 @@ function DesignPlaybookViewModel () {
 			clDraw = false;
             // clDraw = true;
         });
+    }); */
+     $('#cLineBtn').click (function () {
+         $('.toolbtn').each(function(index){
+			$(this).removeClass('border');
+		});
+		$('#cLineBtn').addClass('border');
+        var pointer;
+        var points;
+		var p1, p2;
+        // c.defaultCursor = 'default';
+        c.defaultCursor = 'crosshair';
+        lineDraw = xDraw = cDraw = rDraw = tDraw = egg = textC = true;
+		clDraw = false;
+		c.on ('mouse:down', function (o) {
+            if (clDraw)
+				return;
+			isCDown = true;
+        	pointer = c.getPointer(o.e);
+
+			cline = makeCurveLine(pointer.x, pointer.y);
+			p1 = cline.circle1;
+			p2 = cline.circle2;
+			c.add(cline);
+
+            cline.setCoords();
+            
+			clDraw = true;
+        });
+		
+		c.on ('mouse:move', function(o){
+            clDraw = false;
+		    if (clDraw)
+                return;
+            if (!isCDown)
+                return;
+            var pointer = c.getPointer(o.e);
+            cline.path[1][3] = pointer.x;
+            cline.path[1][4] = pointer.y;
+			p2.setLeft(pointer.x - 12);
+			p2.setTop(pointer.y - 12);
+			cline.path[1][1] = pointer.x - 100;
+            cline.path[1][2] = pointer.y - 50;
+			p1.setLeft(cline.path[1][1] - 12);
+			p1.setTop(cline.path[1][2] - 12);
+			c.renderAll();
+        });
+
+        c.on('mouse:up', function(o){
+            if (clDraw)
+                return;
+            isCDown = false;
+			c.deactivateAll().renderAll();
+			p1.animate('opacity', '0', {
+                duration: 200,
+                onChange: c.renderAll.bind(c),
+            });
+            c.deactivateAll().renderAll();
+            cline.circle0.setCoords();
+            cline.circle1.setCoords();
+            cline.circle2.setCoords();
+            cline.setCoords();
+            // clDraw = true;
+        });
     });
     
     $('#circleBtn').click (function () {
@@ -789,7 +917,7 @@ function DesignPlaybookViewModel () {
 		$('#circleBtn').addClass('border');
         c.off('mouse:down');
         c.defaultCursor = 'crosshair';
-        lineDraw = xDraw = clDraw = rDraw = tDraw = egg = selection = true;
+        lineDraw = xDraw = clDraw = rDraw = tDraw = egg = selection = textC = true;
         cDraw    = false;
         c.on ('mouse:down', function (e) {
             if (cDraw)
@@ -823,7 +951,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#crossBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = true;
+        lineDraw = cDraw = clDraw = rDraw = tDraw = egg = selection = textC = true;
         xDraw    = false;
         c.defaultCursor = 'crosshair';        
         c.on ('mouse:down', function (e) {
@@ -836,7 +964,8 @@ function DesignPlaybookViewModel () {
                             fill: self.colour (),
                             selectable: false,
                             perPixelTargetFind: true,
-                            shadow: 'rgba(0,0,0,1) 5px 5px 7px'
+                            shadow: 'rgba(0,0,0,1) 5px 5px 7px',
+                            name: 'cross'
                             });
             c.add(cross);
             cross.setCoords();
@@ -849,7 +978,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#rectBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = xDraw = tDraw = egg = selection = true;
+        lineDraw = cDraw = clDraw = xDraw = tDraw = egg = selection = textC = true;
         rDraw    = false;
         c.defaultCursor = 'crosshair';        
         c.on ('mouse:down', function (e) {
@@ -888,7 +1017,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#triangleBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = xDraw = rDraw = egg = selection = true;
+        lineDraw = cDraw = clDraw = xDraw = rDraw = egg = selection = textC = true;
         tDraw = false;
         c.defaultCursor = 'crosshair';        
         c.on ('mouse:down', function (e) {
@@ -917,7 +1046,7 @@ function DesignPlaybookViewModel () {
 		});
 		$('#eggBtn').addClass('border');
         c.off('mouse:down');
-        lineDraw = cDraw = clDraw = xDraw = rDraw = tDraw = selection = true;
+        lineDraw = cDraw = clDraw = xDraw = rDraw = tDraw = selection = textC = true;
         egg = false;
         c.defaultCursor = 'crosshair';      
         c.on ('mouse:down', function (e) {
@@ -1238,7 +1367,7 @@ function DesignPlaybookViewModel () {
 					
 		var l = new fabric.Path('M ' + p0x + ' '  + p0y + ' Q ' + p1x + ', ' + p1y + ', ' + p2x + ', ' + p2y,
 			{ fill: 'rgba(0,0,0,0)', stroke: self.colour (), strokeWidth: 5, objectCaching: false, perPixelTargetFind: true
-                    ,selectable: true, hasBorders: false, shadow: 'rgba(0,0,0,1) 5px 5px 7px'});
+                    ,selectable: false, hasBorders: false, shadow: 'rgba(0,0,0,1) 5px 5px 7px'});
 
 		// l.path[0][1] = p0x; //p1x
         
@@ -1458,7 +1587,8 @@ function DesignPlaybookViewModel () {
 				c.renderAll();
 			});
 		}
-	} else if (e.target.name == "curve") {
+	} 
+    /* else if (e.target.name == "curve") {
 		console.log(clDraw)
 		if (clDraw) 
 			return;
@@ -1480,7 +1610,7 @@ function DesignPlaybookViewModel () {
 			showLineCircles();
 			c.renderAll();
 		});
-	}
+	} */
     else if (e.target.name == "p0" || e.target.name == "p2") {
       var p = e.target;
       p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
